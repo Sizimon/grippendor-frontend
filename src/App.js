@@ -1,23 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 function App() {
+  const [attendance, setAttendance] = useState([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:3000/attendance')
+      .then(response => {
+        setAttendance(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Attendance Log</h1>
+      {attendance.length > 0 ? (
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Names</th>
+            </tr>
+          </thead>
+          <tbody>
+            {attendance.map((entry, index) => (
+              <tr key={index}>
+                <td>{new Date(entry.date).toLocaleDateString()}</td>
+                <td>{entry.names.join(', ')}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p>Loading...</p>
+      )}
     </div>
   );
 }
