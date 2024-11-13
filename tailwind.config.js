@@ -2,8 +2,17 @@
 module.exports = {
   content: ["./src/**/*.{html,js}"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'primary': '#050505',
+        'secondary': '#FF007F',
+        'tertiary': '#902D41',
+      },
+      fontFamily: {
+        Anton: ['Anton', 'sans-serif'],
+        WorkSans: ['Work Sans', 'sans-serif'],
+      }
+    },
+    plugins: [],
   },
-  plugins: [],
-}
-
+};
