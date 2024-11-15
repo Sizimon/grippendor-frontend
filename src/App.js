@@ -17,7 +17,6 @@ function App() {
     'TOMYLO',
     'AvgCasualPlayer',
     'Dayko',
-    'vvvv4',
     'MasterNipp',
     'Ahm3d',
     'Silwa',
@@ -57,7 +56,7 @@ function App() {
 
   useEffect(() => {
     // console.log('Fetching attendance...');
-    axios.get('http://localhost:5001/attendance')
+    axios.get('https://backend.webbers.support/attendance')
       .then(response => {
         // console.log('Attendance fetched:', response.data);
         setAttendance(response.data);
