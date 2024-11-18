@@ -5,92 +5,105 @@ import Loading from './assets/loading.json';
 
 function App() {
   const [attendance, setAttendance] = useState([]);
+  const [names, setNames] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
+  const [currentDayIndex, setCurrentDayIndex] = useState(new Date().getDay() - 1);
+  const [showWeekly, setShowWeekly] = useState(false);
 
-  const names = [
-    'Hissingen',
-    'Napocalypse',
-    'Ripii',
-    'vonCloud',
-    'Ewaldi',
-    'LordLucky',
-    'TOMYLO',
-    'AvgCasualPlayer',
-    'Dayko',
-    'vvvv4',
-    'MasterNipp',
-    'Ahm3d',
-    'Silwa',
-    'Dwho',
-    'PizzaThePasta',
-    'RBxx',
-    'Kartong',
-    'Riassz',
-    'IBMKI',
-    'Hasrudiin',
-    'SuraAO',
-    'Elper',
-    'SuddenX',
-    'Shantra',
-    'Mikuren',
-    'Daajm',
-    'Girlham',
-    'FornaxHere',
-    'MajorInsult',
-    'Burnzylawd',
-    'Flinga',
-    'Nightmare3',
-    'Atamooni',
-    'Natsuuma',
-    'Zdarof',
-    'magedogus',
-    'iAdvocate',
-    'GoldenSparrow',
-    'Flaapy',
-    'Endofdaze',
-    'prettywoman',
-    'Shyvah',
-    'Joheline',
-    'vaLuMeiii',
-    'Muzmi',
-  ]
 
   useEffect(() => {
-    // console.log('Fetching attendance...');
-    axios.get('http://localhost:5001/attendance')
+    console.log('Fetching attendance...');
+    axios.get('http://localhost:5001/attendance', {
+      headers: {
+        'x-api-key': process.env.API_KEY || 'qu9ul8',
+      },
+    })
       .then(response => {
-        // console.log('Attendance fetched:', response.data);
+        console.log('Attendance fetched:', response.data);
         setAttendance(response.data);
       })
       .catch(error => {
         console.error(error);
       });
+
+      console.log('Fetching names...');
+      axios.get('http://localhost:5001/names', {
+        headers: {
+          'x-api-key': process.env.API_KEY || 'qu9ul8',
+        },
+      })
+        .then(response => {
+          console.log('Names fetched:', response.data);
+          setNames(response.data);
+        })
+        .catch(error => {
+          console.error(error);
+      })
   }, []);
 
   console.log(attendance);
+  console.log(names);
 
-  function getMonthDates(start = new Date()) {
-    const firstDay = new Date(start.getFullYear(), start.getMonth(), 1);
-    const lastDay = new Date(start.getFullYear(), start.getMonth() + 1, 0);
+
+  function getWeekDates(start = new Date()) {
     const dates = [];
-    for (let d = new Date(firstDay); d <= lastDay; d.setDate(d.getDate() + 1)) {
-      dates.push(new Date(d));
+    for (let i = 1; i < 8; i++) {
+      const date = new Date(start);
+      date.setDate(start.getDate() - start.getDay() + i);
+      dates.push(date);
     }
     return dates;
   }
 
-  const monthDates = getMonthDates(startDate);
+  const weekDates = getWeekDates(startDate)
   const currentDateRef = useRef(null);
+
+  const handlePreviousDay = () => {
+    setCurrentDayIndex((prevIndex) => (prevIndex > 0 ? prevIndex -1 : 6));
+  };
+
+  const handleNextDay = () => {
+    setCurrentDayIndex((prevIndex) => (prevIndex < 6 ? prevIndex + 1 : 0));
+  };
+
+  const toggleView = () => {
+    setShowWeekly((prevShowWeekly) => !prevShowWeekly);
+  }
+
+  const currentDay = weekDates[currentDayIndex];
+  const today = currentDay.toDateString();
+  const isToday = currentDay.toDateString() === today;
+  const columnClasses = `flex flex-col justify-start items-center text-white flex-grow border-r border-white ${isToday ? 'bg-zinc-800' : ''} py-12`;
+
+  const parties = [
+    'Party 1',
+    'Party 2',
+    'Party 3',
+    'Party 4',
+    'Party 5',
+    'Party 6',
+    'Party 7',
+    'Party 8',
+    'Party 9',
+    'Party 10',
+  ]
 
   return (
     <div className='flex flex-col bg-primary'>
-      <h1 className='justify-center text-center uppercase text-2xl text-secondary font-WorkSans py-6'>Attendance Log</h1>
+      <h1 className='justify-center text-center uppercase text-2xl text-secondary font-WorkSans py-6'>WEBBERS : Attendance Log</h1>
+      <div className='flex justify-center px-4 bg-primary'>
+        <button onClick={toggleView} className='text-white uppercase font-WorkSans'>{showWeekly ? 'Show Day' : 'Show Week'}</button>
+      </div>
+      <div className='flex justify-between px-4 bg-primary'>
+        <button onClick={handlePreviousDay} className='text-white uppercase font-WorkSans'>Previous</button>
+        <button onClick={handleNextDay} className='text-white uppercase font-WorkSans'>Next</button>
+      </div>
       <div className='flex flex-col'>
         {attendance.length > 0 ? (
-          monthDates.map((date, index) => {
-            const today = date.toDateString();
+          showWeekly ? ( 
+            weekDates.map((date, index) => {
             const isToday = date.toDateString() === today;
-            const columnClasses = `flex flex-col justify-start items-center text-white flex-grow border-r border-white ${isToday ? 'bg-zinc-800' : ''}`;
+            const columnClasses = `flex flex-col justify-start items-center text-white flex-grow border-r border-white ${isToday ? 'bg-zinc-800' : ''} py-12`;
 
             return (
               <div
@@ -105,25 +118,63 @@ function App() {
                     {date.toDateString().slice(0, 3)}
                   </span> {date.toDateString().slice(3)}
                 </h2>
-                <div className='grid grid-flow-row grid-cols-5'>
-                  {names.map((name, nameIndex) => {
-                    const attended = attendance.some(entry => {
-                      const entryDate = new Date(entry.date).toDateString();
-                      const isAttended = entryDate === date.toDateString() && entry.names.includes(name);
-                      // console.log(`Checking attendance for ${name} on ${date.toDateString()}: ${isAttended}`);
-                      return isAttended;
-                    });
-                    return (
-                      <div key={nameIndex} className='col-span-1 flex items-center p-4 m-2 border-[1px] border-secondary'>
-                        <span>{name}</span>
-                        <span className={`w-4 h-4 border-[1px] m-2 rounded-full ${attended ? 'bg-green-600' : 'border-gray-500'}`}></span>
+                <div className='grid grid-flow-row grid-cols-4 w-full px-10'>
+                {parties.map((party, partyIndex) => (
+                      <div key={partyIndex} className='col-span-1'>
+                        <h3 className='text-center text-lg font-WorkSans py-2'>{party}</h3>
+                        {names.slice(partyIndex * 6, (partyIndex + 1) * 6).map((name, nameIndex) => {
+                          const attended = attendance.some(entry => {
+                            const entryDate = new Date(entry.date).toDateString();
+                            const isAttended = entryDate === date.toDateString() && entry.names.includes(name);
+                            return isAttended;
+                          });
+                          return (
+                            <div key={nameIndex} className='flex items-center p-2 m-1 border-[1px] border-secondary'>
+                              <span>{name}</span>
+                              <span className={`w-4 h-4 border-[1px] m-2 rounded-full ${attended ? 'bg-green-600' : 'border-gray-500'}`}></span>
+                            </div>
+                          );
+                        })}
                       </div>
-                    );
-                  })}
+                    ))}
                 </div>
               </div>
             );
           })
+        ) : (
+          <div
+              {...(isToday ? { ref: currentDateRef } : (null))}
+              className={columnClasses}
+            >
+              <h2
+                className='uppercase text-center text-lg font-WorkSans py-4 border-secondary border-b-[1px]'
+              >
+                <span className='text-secondary'>
+                  {currentDay.toDateString().slice(0, 3)}
+                </span> {currentDay.toDateString().slice(3)}
+              </h2>
+              <div className='grid grid-flow-row grid-cols-4 w-full px-10'>
+              {parties.map((party, partyIndex) => (
+                  <div key={partyIndex} className='col-span-1'>
+                    <h3 className='text-center text-lg font-WorkSans py-2'>{party}</h3>
+                    {names.slice(partyIndex * 6, (partyIndex + 1) * 6).map((name, nameIndex) => {
+                      const attended = attendance.some(entry => {
+                        const entryDate = new Date(entry.date).toDateString();
+                        const isAttended = entryDate === currentDay.toDateString() && entry.names.includes(name);
+                        return isAttended;
+                      });
+                      return (
+                        <div key={nameIndex} className='flex items-center p-2 m-1 border-[1px] border-secondary'>
+                          <span>{name}</span>
+                          <span className={`w-4 h-4 border-[1px] m-2 rounded-full ${attended ? 'bg-green-600' : 'border-gray-500'}`}></span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ))}
+              </div>
+            </div>
+        )
         ) : (
           <div className='bg-zinc-800 h-screen flex flex-col justify-center items-center'>
             <Lottie animationData={Loading} style={{ width: 200, height: 200 }} />

@@ -5,7 +5,7 @@ module.exports = {
     extend: {
       colors: {
         'primary': '#050505',
-        'secondary': '#FF007F',
+        'secondary': '#149141',
         'tertiary': '#902D41',
       },
       fontFamily: {
