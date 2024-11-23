@@ -6,62 +6,11 @@ import Loading from './assets/loading.json';
 function App() {
   const [attendance, setAttendance] = useState([]);
   const [names, setNames] = useState([]);
+  const [config, setConfig] = useState(null);
   const [startDate, setStartDate] = useState(new Date());
   const [currentDayIndex, setCurrentDayIndex] = useState(new Date().getDay() - 1);
   const [showWeekly, setShowWeekly] = useState(false);
 
-<<<<<<< HEAD
-  const names = [
-    'Hissingen',
-    'Napocalypse',
-    'Ripii',
-    'vonCloud',
-    'Ewaldi',
-    'LordLucky',
-    'TOMYLO',
-    'AvgCasualPlayer',
-    'Dayko',
-    'MasterNipp',
-    'Ahm3d',
-    'Silwa',
-    'Dwho',
-    'PizzaThePasta',
-    'RBxx',
-    'Kartong',
-    'Riassz',
-    'IBMKI',
-    'Hasrudiin',
-    'SuraAO',
-    'Elper',
-    'SuddenX',
-    'Shantra',
-    'Mikuren',
-    'Daajm',
-    'Girlham',
-    'FornaxHere',
-    'MajorInsult',
-    'Burnzylawd',
-    'Flinga',
-    'Nightmare3',
-    'Atamooni',
-    'Natsuuma',
-    'Zdarof',
-    'magedogus',
-    'iAdvocate',
-    'GoldenSparrow',
-    'Flaapy',
-    'Endofdaze',
-    'prettywoman',
-    'Shyvah',
-    'Joheline',
-    'vaLuMeiii',
-    'Muzmi',
-  ]
-
-  useEffect(() => {
-    // console.log('Fetching attendance...');
-    axios.get('https://backend.webbers.support/attendance')
-=======
 
   useEffect(() => {
     console.log('Fetching attendance...');
@@ -70,7 +19,6 @@ function App() {
         'x-api-key': process.env.API_KEY || 'qu9ul8',
       },
     })
->>>>>>> master
       .then(response => {
         console.log('Attendance fetched:', response.data);
         setAttendance(response.data);
@@ -92,6 +40,23 @@ function App() {
         .catch(error => {
           console.error(error);
       })
+
+      console.log('Fetching configuration data...');
+      axios.get('http://localhost:5001/config', {
+        headers: {
+          'x-api-key': process.env.API_KEY || 'qu9ul8',
+        },
+      })
+        .then(response => {
+          console.log('Configuration data fetched:', response.data);
+          setConfig(response.data);
+          if (response.data.color) {
+            document.documentElement.style.setProperty('--color-primary', response.data.color);
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
   }, []);
 
   console.log(attendance);
