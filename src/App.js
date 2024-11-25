@@ -1,15 +1,19 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import Lottie from 'lottie-react';
-import Loading from './assets/loading.json';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import PartyMaker from './PartyMaker';
+import WeeklyView from './WeeklyView';
+
 
 function App() {
   const [attendance, setAttendance] = useState([]);
   const [names, setNames] = useState([]);
   const [config, setConfig] = useState(null);
+  const [parties, setParties] = useState([]);
+  const [unselectedMembers, setUnselectedMembers] = useState([]);
+
   const [startDate, setStartDate] = useState(new Date());
   const [currentDayIndex, setCurrentDayIndex] = useState(new Date().getDay() - 1);
-  const [showWeekly, setShowWeekly] = useState(false);
 
 
   useEffect(() => {
@@ -59,6 +63,34 @@ function App() {
         });
   }, []);
 
+  useEffect(() => {
+    if (names.length > 0) {
+      createParties();
+    }
+  }, [names]);
+
+  const createParties = () => {
+    const dps = names.filter(member => member.roles.includes('DPS'));
+    const tanks = names.filter(member => member.roles.includes('Tank'));
+    const healers = names.filter(member => member.roles.includes('Healer'));
+    const unselected = names.filter(member => !member.roles.includes('DPS') && !member.roles.includes('Tank') && !member.roles.includes('Healer'));
+
+    const newParties = [];
+    while (dps.length >= 2 && tanks.length >= 1 && healers.length >= 1) {
+      newParties.push({
+        id: newParties.length + 1,
+        members: [
+          dps.pop(),
+          dps.pop(),
+          tanks.pop(),
+          healers.pop()
+        ]
+      });
+    }
+    setParties(newParties);
+    setUnselectedMembers(unselected);
+  };
+
   console.log(attendance);
   console.log(names);
 
@@ -76,130 +108,27 @@ function App() {
   const weekDates = getWeekDates(startDate)
   const currentDateRef = useRef(null);
 
-  const handlePreviousDay = () => {
-    setCurrentDayIndex((prevIndex) => (prevIndex > 0 ? prevIndex -1 : 6));
-  };
-
-  const handleNextDay = () => {
-    setCurrentDayIndex((prevIndex) => (prevIndex < 6 ? prevIndex + 1 : 0));
-  };
-
-  const toggleView = () => {
-    setShowWeekly((prevShowWeekly) => !prevShowWeekly);
-  }
-
   const currentDay = weekDates[currentDayIndex];
   const today = currentDay.toDateString();
   const isToday = currentDay.toDateString() === today;
-  const columnClasses = `flex flex-col justify-start items-center text-white flex-grow border-r border-white ${isToday ? 'bg-zinc-800' : ''} py-12`;
-
-  const parties = [
-    'Party 1',
-    'Party 2',
-    'Party 3',
-    'Party 4',
-    'Party 5',
-    'Party 6',
-    'Party 7',
-    'Party 8',
-    'Party 9',
-    'Party 10',
-  ]
+  const columnClasses = `flex flex-col justify-start items-center text-white flex-grow border-t-[1px] border-b-[1px] border-primary ${isToday ? 'bg-zinc-800' : 'bg-zinc-900'} py-12 h-screen`;
 
   return (
-    <div className='flex flex-col bg-primary'>
-      <h1 className='justify-center text-center uppercase text-2xl text-secondary font-WorkSans py-6'>WEBBERS : Attendance Log</h1>
-      <div className='flex justify-center px-4 bg-primary'>
-        <button onClick={toggleView} className='text-white uppercase font-WorkSans'>{showWeekly ? 'Show Day' : 'Show Week'}</button>
+    <Router>
+      <div className='flex flex-col bg-zinc-900'>
+        <nav className='flex justify-center px-4 bg-zinc-900'>
+          <Link to="/" className='text-white uppercase font-WorkSans px-4'>Party Maker</Link>
+          <Link to="/weekly" className='text-white uppercase font-WorkSans px-4'>Weekly Display</Link>
+        </nav>
+        <Routes>
+          <Route 
+          path="/" 
+          element={<PartyMaker config={config} attendance={attendance} parties={parties} unselectedMembers={unselectedMembers} currentDay={currentDay} currentDateRef={currentDateRef} columnClasses={columnClasses} createParties={createParties} />} 
+          />
+          <Route path="/weekly" element={<WeeklyView names={names} attendance={attendance} weekDates={weekDates} config={config} />} />
+        </Routes>
       </div>
-      <div className='flex justify-between px-4 bg-primary'>
-        <button onClick={handlePreviousDay} className='text-white uppercase font-WorkSans'>Previous</button>
-        <button onClick={handleNextDay} className='text-white uppercase font-WorkSans'>Next</button>
-      </div>
-      <div className='flex flex-col'>
-        {attendance.length > 0 ? (
-          showWeekly ? ( 
-            weekDates.map((date, index) => {
-            const isToday = date.toDateString() === today;
-            const columnClasses = `flex flex-col justify-start items-center text-white flex-grow border-r border-white ${isToday ? 'bg-zinc-800' : ''} py-12`;
-
-            return (
-              <div
-                {...(isToday ? { ref: currentDateRef } : (null))}
-                key={index}
-                className={columnClasses}
-              >
-                <h2
-                  className='uppercase text-center text-lg font-WorkSans py-4 border-secondary border-b-[1px]'
-                >
-                  <span className='text-secondary'>
-                    {date.toDateString().slice(0, 3)}
-                  </span> {date.toDateString().slice(3)}
-                </h2>
-                <div className='grid grid-flow-row grid-cols-4 w-full px-10'>
-                {parties.map((party, partyIndex) => (
-                      <div key={partyIndex} className='col-span-1'>
-                        <h3 className='text-center text-lg font-WorkSans py-2'>{party}</h3>
-                        {names.slice(partyIndex * 6, (partyIndex + 1) * 6).map((name, nameIndex) => {
-                          const attended = attendance.some(entry => {
-                            const entryDate = new Date(entry.date).toDateString();
-                            const isAttended = entryDate === date.toDateString() && entry.names.includes(name);
-                            return isAttended;
-                          });
-                          return (
-                            <div key={nameIndex} className='flex items-center p-2 m-1 border-[1px] border-secondary'>
-                              <span>{name}</span>
-                              <span className={`w-4 h-4 border-[1px] m-2 rounded-full ${attended ? 'bg-green-600' : 'border-gray-500'}`}></span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    ))}
-                </div>
-              </div>
-            );
-          })
-        ) : (
-          <div
-              {...(isToday ? { ref: currentDateRef } : (null))}
-              className={columnClasses}
-            >
-              <h2
-                className='uppercase text-center text-lg font-WorkSans py-4 border-secondary border-b-[1px]'
-              >
-                <span className='text-secondary'>
-                  {currentDay.toDateString().slice(0, 3)}
-                </span> {currentDay.toDateString().slice(3)}
-              </h2>
-              <div className='grid grid-flow-row grid-cols-4 w-full px-10'>
-              {parties.map((party, partyIndex) => (
-                  <div key={partyIndex} className='col-span-1'>
-                    <h3 className='text-center text-lg font-WorkSans py-2'>{party}</h3>
-                    {names.slice(partyIndex * 6, (partyIndex + 1) * 6).map((name, nameIndex) => {
-                      const attended = attendance.some(entry => {
-                        const entryDate = new Date(entry.date).toDateString();
-                        const isAttended = entryDate === currentDay.toDateString() && entry.names.includes(name);
-                        return isAttended;
-                      });
-                      return (
-                        <div key={nameIndex} className='flex items-center p-2 m-1 border-[1px] border-secondary'>
-                          <span>{name}</span>
-                          <span className={`w-4 h-4 border-[1px] m-2 rounded-full ${attended ? 'bg-green-600' : 'border-gray-500'}`}></span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                ))}
-              </div>
-            </div>
-        )
-        ) : (
-          <div className='bg-zinc-800 h-screen flex flex-col justify-center items-center'>
-            <Lottie animationData={Loading} style={{ width: 200, height: 200 }} />
-          </div>
-        )}
-      </div>
-    </div>
+    </Router>
   );
 }
 
