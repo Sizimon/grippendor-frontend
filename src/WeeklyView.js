@@ -1,13 +1,13 @@
 import React from 'react';
+import DPS from './assets/images/DPS.png';
+import TANK from './assets/images/TANK.png';
+import HEALER from './assets/images/HEALER.png';
 
 const WeeklyDisplay = ({ names, attendance, weekDates, config }) => {
   const today = new Date().toDateString();
 
   return (
     <div className='flex flex-col bg-zinc-900'>
-      <h1 className='justify-center text-center uppercase text-4xl text-primary font-WorkSans py-6'>
-        {config ? config.title + ' - Attendance Sheet' : 'Guild Manager - Attendance Sheet'}
-      </h1>
       <div className='flex flex-col'>
         {weekDates.map((date, index) => {
           const isToday = date.toDateString() === today;
@@ -28,7 +28,10 @@ const WeeklyDisplay = ({ names, attendance, weekDates, config }) => {
                   });
                   return (
                     <div key={memberIndex} className='flex items-center p-2 m-1 border-[1px] border-primary'>
-                      <span>{member.name} - {member.roles.join(', ')}</span>
+                      <span>{member.name} - </span>
+                      {member.roles.includes('DPS') && <img src={DPS} alt="DPS" className="w-6 h-6 ml-2" />}
+                      {member.roles.includes('Tank') && <img src={TANK} alt="Tank" className="w-6 h-6 ml-2" />}
+                      {member.roles.includes('Healer') && <img src={HEALER} alt="Healer" className="w-6 h-6 ml-2" />}
                       <span className={`w-4 h-4 border-[1px] m-2 rounded-full ${attended ? 'bg-green-600' : 'border-gray-500'}`}></span>
                     </div>
                   );

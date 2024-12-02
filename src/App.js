@@ -1,8 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link, useLocation } from 'react-router-dom';
+import Home from './Home';
 import PartyMaker from './PartyMaker';
 import WeeklyView from './WeeklyView';
+
+
+import Banner from './assets/images/Banner.png';
 
 
 function App() {
@@ -31,36 +35,36 @@ function App() {
         console.error(error);
       });
 
-      console.log('Fetching names...');
-      axios.get('http://localhost:5001/names', {
-        headers: {
-          'x-api-key': process.env.API_KEY || 'qu9ul8',
-        },
+    console.log('Fetching names...');
+    axios.get('http://localhost:5001/names', {
+      headers: {
+        'x-api-key': process.env.API_KEY || 'qu9ul8',
+      },
+    })
+      .then(response => {
+        console.log('Names fetched:', response.data);
+        setNames(response.data);
       })
-        .then(response => {
-          console.log('Names fetched:', response.data);
-          setNames(response.data);
-        })
-        .catch(error => {
-          console.error(error);
+      .catch(error => {
+        console.error(error);
       })
 
-      console.log('Fetching configuration data...');
-      axios.get('http://localhost:5001/config', {
-        headers: {
-          'x-api-key': process.env.API_KEY || 'qu9ul8',
-        },
+    console.log('Fetching configuration data...');
+    axios.get('http://localhost:5001/config', {
+      headers: {
+        'x-api-key': process.env.API_KEY || 'qu9ul8',
+      },
+    })
+      .then(response => {
+        console.log('Configuration data fetched:', response.data);
+        setConfig(response.data);
+        if (response.data.color) {
+          document.documentElement.style.setProperty('--color-primary', response.data.color);
+        }
       })
-        .then(response => {
-          console.log('Configuration data fetched:', response.data);
-          setConfig(response.data);
-          if (response.data.color) {
-            document.documentElement.style.setProperty('--color-primary', response.data.color);
-          }
-        })
-        .catch(error => {
-          console.error(error);
-        });
+      .catch(error => {
+        console.error(error);
+      });
   }, []);
 
   useEffect(() => {
@@ -113,23 +117,73 @@ function App() {
   const isToday = currentDay.toDateString() === today;
   const columnClasses = `flex flex-col justify-start items-center text-white flex-grow border-t-[1px] border-b-[1px] border-primary ${isToday ? 'bg-zinc-800' : 'bg-zinc-900'} py-12 h-screen`;
 
-  return (
-    <Router>
+  // Allows for the use of useLocation in the AppContent component to render the correct page title
+  const AppContent = ({ config, Banner, columnClasses, currentDay, currentDateRef, attendance, parties, unselectedMembers, createParties, names, weekDates }) => {
+    const location = useLocation();
+
+    const getPageTitle = () => {
+      switch (location.pathname) {
+        case '/party-maker':
+          return 'Party Maker';
+        case '/weekly':
+          return 'Weekly Display';
+        default:
+          return 'Dashboard';
+      }
+    };
+
+    return (
       <div className='flex flex-col bg-zinc-900'>
-        <nav className='flex justify-center px-4 bg-zinc-900'>
-          <Link to="/" className='text-white uppercase font-WorkSans px-4'>Party Maker</Link>
-          <Link to="/weekly" className='text-white uppercase font-WorkSans px-4'>Weekly Display</Link>
-        </nav>
+        <div
+          className='h-44 flex flex-col'
+          style={{
+            backgroundImage: `url(${Banner})`,
+            backgroundSize: 'cover',
+          }}>
+          <nav
+            className='flex justify-center px-4 bg-zinc-900 bg-opacity-60'
+          >
+            <Link 
+              to="/"
+              className='text-white uppercase font-WorkSans px-4 hover:text-primary'
+              >
+                Dashboard
+            </Link>
+            <Link 
+              to="/party-maker" 
+              className='text-white uppercase font-WorkSans px-4 hover:text-primary'>
+                Party Maker
+            </Link>
+            <Link 
+              to="/weekly" 
+              className='text-white uppercase font-WorkSans px-4 hover:text-primary'>
+                Weekly Display
+            </Link>
+          </nav>
+          <div className='flex flex-grow justify-center h-fit items-center'>
+            <h1 className='justify-center text-center uppercase text-4xl text-primary font-WorkSans bg-zinc-900 p-4 bg-opacity-75 rounded'>
+              {config ? `${config.title} - ${getPageTitle()}` : 'Guild Manager'}
+            </h1>
+          </div>
+        </div>
         <Routes>
-          <Route 
-          path="/" 
-          element={<PartyMaker config={config} attendance={attendance} parties={parties} unselectedMembers={unselectedMembers} currentDay={currentDay} currentDateRef={currentDateRef} columnClasses={columnClasses} createParties={createParties} />} 
+          <Route path="/" element={<Home config={config} />} />
+          <Route
+            path="/party-maker"
+            element={<PartyMaker config={config} attendance={attendance} parties={parties} unselectedMembers={unselectedMembers} currentDay={currentDay} currentDateRef={currentDateRef} columnClasses={columnClasses} createParties={createParties} />}
           />
           <Route path="/weekly" element={<WeeklyView names={names} attendance={attendance} weekDates={weekDates} config={config} />} />
         </Routes>
       </div>
+    );
+  };
+
+
+  return (
+    <Router>
+      <AppContent config={config} Banner={Banner} columnClasses={columnClasses} currentDay={currentDay} currentDateRef={currentDateRef} attendance={attendance} parties={parties} unselectedMembers={unselectedMembers} createParties={createParties} names={names} weekDates={weekDates} />
     </Router>
-  );
+  )
 }
 
 export default App;

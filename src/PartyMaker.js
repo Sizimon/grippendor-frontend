@@ -1,12 +1,12 @@
 import React, { useRef } from 'react';
 import Lottie from 'lottie-react';
 import Loading from './assets/loading.json';
+import DPS from './assets/images/DPS.png';
+import TANK from './assets/images/TANK.png';
+import HEALER from './assets/images/HEALER.png';
 
 const PartyMaker = ({ config, attendance, parties, unselectedMembers, currentDay, currentDateRef, columnClasses, createParties }) => (
   <div className='flex flex-col'>
-    <h1 className='justify-center text-center uppercase text-4xl text-primary font-WorkSans py-6'>
-      {config ? config.title : 'Guild Manager'}
-    </h1>
     <div className='flex justify-center px-4 bg-zinc-900'>
       <button onClick={createParties} className='text-white uppercase font-WorkSans'>Create a party +</button>
     </div>
@@ -23,7 +23,7 @@ const PartyMaker = ({ config, attendance, parties, unselectedMembers, currentDay
           </h2>
           <div className='grid grid-flow-row grid-cols-4 w-full px-10'>
             {parties.map((party, partyIndex) => (
-              <div key={partyIndex} className='col-span-1'>
+              <div key={partyIndex} className='col-span-1 bg-zinc-900 rounded-lg m-4 p-4'>
                 <h3 className='text-center text-lg font-WorkSans py-2'>Party {party.id}</h3>
                 {party.members.map((member, memberIndex) => {
                   const attended = attendance.some(entry => {
@@ -33,7 +33,10 @@ const PartyMaker = ({ config, attendance, parties, unselectedMembers, currentDay
                   });
                   return (
                     <div key={memberIndex} className='flex items-center p-2 m-1 border-[1px] border-primary'>
-                      <span>{member.name} - {member.roles.join(', ')}</span>
+                      <span>{member.name} - </span>
+                      {member.roles.includes('DPS') && <img src={DPS} alt="DPS" className="w-6 h-6 ml-2" />}
+                      {member.roles.includes('Tank') && <img src={TANK} alt="Tank" className="w-6 h-6 ml-2" />}
+                      {member.roles.includes('Healer') && <img src={HEALER} alt="Healer" className="w-6 h-6 ml-2" />}
                       <span className={`w-4 h-4 border-[1px] m-2 rounded-full ${attended ? 'bg-green-600' : 'border-gray-500'}`}></span>
                     </div>
                   );
