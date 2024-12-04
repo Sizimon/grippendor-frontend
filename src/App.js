@@ -19,22 +19,31 @@ function App() {
   const [startDate, setStartDate] = useState(new Date());
   const [currentDayIndex, setCurrentDayIndex] = useState(new Date().getDay() - 1);
 
+// Use polling to fetch attendance?
+  useEffect(() => {
+    const fetchAttendance = () => {
+      console.log('Fetching attendance...');
+      axios.get('http://localhost:5001/attendance', {
+        headers: {
+          'x-api-key': process.env.API_KEY || 'qu9ul8',
+        },
+      })
+        .then(response => {
+          console.log('Attendance fetched:', response.data);
+          setAttendance(response.data);
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    };
+
+    fetchAttendance();
+    const intervalId = setInterval(fetchAttendance, 5000); // Poll every 5 seconds
+
+    return () => clearInterval(intervalId); // Cleanup interval on component unmount
+  }, []);
 
   useEffect(() => {
-    console.log('Fetching attendance...');
-    axios.get('http://localhost:5001/attendance', {
-      headers: {
-        'x-api-key': process.env.API_KEY || 'qu9ul8',
-      },
-    })
-      .then(response => {
-        console.log('Attendance fetched:', response.data);
-        setAttendance(response.data);
-      })
-      .catch(error => {
-        console.error(error);
-      });
-
     console.log('Fetching names...');
     axios.get('http://localhost:5001/names', {
       headers: {
