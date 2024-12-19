@@ -31,7 +31,7 @@ const AppContent = () => {
   useEffect(() => {
     const fetchAttendance = () => {
       console.log('Fetching attendance...');
-      axios.get(`http://localhost:5001/attendance`, {
+      axios.get(`http://localhost:5001/attendance/${guildId}`, {
         headers: {
           'x-api-key': process.env.API_KEY || 'qu9ul8',
         },
@@ -46,7 +46,7 @@ const AppContent = () => {
     };
 
     fetchAttendance();
-    const intervalId = setInterval(fetchAttendance, 5000); // Poll every 5 seconds
+    const intervalId = setInterval(fetchAttendance, 10000); // Poll every 5 seconds
 
     return () => clearInterval(intervalId); // Cleanup interval on component unmount
   }, [guildId]);

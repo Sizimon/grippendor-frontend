@@ -24,7 +24,7 @@ const WeeklyDisplay = ({ names, attendance, weekDates, config }) => {
                 {names.map((member, memberIndex) => {
                   const attended = attendance.some(entry => {
                     const entryDate = new Date(entry.date).toDateString();
-                    return entryDate === date.toDateString() && entry.names.includes(member.name);
+                    return entryDate === date.toDateString() && entry.username === member.name;
                   });
                   return (
                     <div key={memberIndex} className='flex items-center p-2 m-1 border-[1px] border-primary'>
