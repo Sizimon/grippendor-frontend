@@ -1,23 +1,34 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import { BrowserRouter as Router, Route, Routes, Link, useLocation, useParams } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link, useLocation, useParams, Navigate } from 'react-router-dom';
 import Home from './Home';
 import PartyMaker from './PartyMaker';
 import WeeklyView from './WeeklyView';
+import Login from './Login';
 import Banner from './assets/images/Banner.png';
 
 function App() {
+  const [auth, setAuth] = useState(null);
+
+  useEffect(() => {
+    const storedAuth = sessionStorage.getItem('auth')
+    if (storedAuth) {
+      setAuth(JSON.parse(storedAuth));
+    }
+  }, []);
+
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/:guildId/*" element={<AppContent />} />
+        <Route path="/login" element={<Login setAuth={setAuth} />} />
+        <Route path="/" element={auth ? <Navigate to={`/${auth.guildId}`} /> : <Navigate to="/login" />} />
+        <Route path="/:guildId/*" element={auth ? <AppContent auth={auth} /> : <Navigate to="/login" />} />
       </Routes>
     </Router>
   );
 }
 
-const AppContent = () => {
+const AppContent = ({ auth }) => {
   const { guildId } = useParams();
   const [attendance, setAttendance] = useState([]);
   const [names, setNames] = useState([]);
@@ -46,16 +57,16 @@ const AppContent = () => {
     };
 
     fetchAttendance();
-    const intervalId = setInterval(fetchAttendance, 10000); // Poll every 5 seconds
+    const intervalId = setInterval(fetchAttendance, 10000); // Poll every 10 seconds
 
     return () => clearInterval(intervalId); // Cleanup interval on component unmount
-  }, [guildId]);
+  }, [guildId, auth.token]);
 
   useEffect(() => {
     console.log('Fetching names...');
-    axios.get(`http://localhost:5001/names`, {
+    axios.get(`http://localhost:5001/names/${guildId}`, {
       headers: {
-        'x-api-key': process.env.API_KEY || 'qu9ul8',
+        'Authorization': `Bearer ${auth.token}`,
       },
     })
       .then(response => {
@@ -69,7 +80,7 @@ const AppContent = () => {
     console.log('Fetching configuration data...');
     axios.get(`http://localhost:5001/config/${guildId}`, {
       headers: {
-        'x-api-key': process.env.API_KEY || 'qu9ul8',
+        'Authorization': `Bearer ${auth.token}`,
       },
     })
       .then(response => {
@@ -82,7 +93,7 @@ const AppContent = () => {
       .catch(error => {
         console.error(error);
       });
-  }, [guildId]);
+  }, [guildId, auth.token]);
 
   useEffect(() => {
     if (names.length > 0 && config) {
@@ -162,12 +173,12 @@ const AppContent = () => {
         </div>
       </div>
       <Routes>
-        <Route path="/" element={<Home config={config} />} />
+        <Route path="/" element={<Home auth={auth} config={config} />} />
         <Route 
           path="party-maker" 
-          element={<PartyMaker config={config} names={names} parties={parties} unselectedMembers={unselectedMembers} currentDay={currentDay} currentDateRef={currentDateRef} columnClasses={columnClasses} createParties={createParties} />} 
+          element={<PartyMaker auth={auth} config={config} names={names} parties={parties} unselectedMembers={unselectedMembers} currentDay={currentDay} currentDateRef={currentDateRef} columnClasses={columnClasses} createParties={createParties} />} 
         />
-        <Route path="weekly" element={<WeeklyView names={names} attendance={attendance} weekDates={weekDates} config={config} />} />
+        <Route path="weekly" element={<WeeklyView auth={auth} names={names} attendance={attendance} weekDates={weekDates} config={config} />} />
       </Routes>
     </div>
   );
