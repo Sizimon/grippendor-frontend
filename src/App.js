@@ -44,7 +44,7 @@ const AppContent = ({ auth }) => {
       console.log('Fetching attendance...');
       axios.get(`http://localhost:5001/attendance/${guildId}`, {
         headers: {
-          'x-api-key': process.env.API_KEY || 'qu9ul8',
+          'Authorization': `Bearer ${auth.token}`,
         },
       })
         .then(response => {
@@ -57,7 +57,7 @@ const AppContent = ({ auth }) => {
     };
 
     fetchAttendance();
-    const intervalId = setInterval(fetchAttendance, 10000); // Poll every 10 seconds
+    const intervalId = setInterval(fetchAttendance, 60000); // Poll every 10 seconds
 
     return () => clearInterval(intervalId); // Cleanup interval on component unmount
   }, [guildId, auth.token]);

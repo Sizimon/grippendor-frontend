@@ -1,16 +1,21 @@
-import React, { useRef } from 'react';
-import Lottie from 'lottie-react';
-import Loading from './assets/loading.json';
+import React, { useState, useEffect } from 'react';
 import DPS from './assets/images/DPS.png';
 import TANK from './assets/images/TANK.png';
 import HEALER from './assets/images/HEALER.png';
 
-const PartyMaker = ({ config, names, parties, unselectedMembers, currentDay, currentDateRef, columnClasses, createParties }) => (
-  <div className='flex flex-col'>
-    <div className='flex justify-center px-4 bg-zinc-900'>
-      <button onClick={createParties} className='text-white uppercase font-WorkSans'>Create a party +</button>
-    </div>
+const PartyMaker = ({ config, names, parties, unselectedMembers, currentDay, currentDateRef, columnClasses, createParties }) => {
+  const [created, setCreated] = useState(false);
+
+  useEffect(() => {
+    if (created === true && names.length > 0 && config) {
+      createParties();
+    }
+  }, [created])
+
+  return (
     <div className='flex flex-col'>
+    {created ? (
+      <div className='flex flex-col'>
       <div
         {...(currentDay.toDateString() === new Date().toDateString() ? { ref: currentDateRef } : null)}
         className={columnClasses}
@@ -37,12 +42,17 @@ const PartyMaker = ({ config, names, parties, unselectedMembers, currentDay, cur
         </div>
       </div>
     </div>
+    ) : (
+    <div className='flex justify-center px-4 bg-zinc-900'>
+      <button onClick={() => setCreated(!created)} className='text-white uppercase font-WorkSans'>Create a party +</button>
+    </div>
+    )}
     {unselectedMembers.length > 0 && (
-      <div className='unselected-members'>
-        <h2 className='text-white'>Unselected Role</h2>
-        <div className='members'>
+      <div className='flex flex-col bg-zinc-900 p-4 justify-center items-center'>
+        <h2 className='text-primary text-xl font-WorkSans uppercase'>Unselected Role</h2>
+        <div className='grid grid-flow-row grid-cols-8'>
           {unselectedMembers.map(member => (
-            <div key={member.name} className='member'>
+            <div key={member.name} className='bg-zinc-800 rounded-lg m-4 p-2 row-span-4 text-center'>
               <span className='text-white'>{member.name}</span>
             </div>
           ))}
@@ -50,6 +60,7 @@ const PartyMaker = ({ config, names, parties, unselectedMembers, currentDay, cur
       </div>
     )}
   </div>
-);
+  )
+}
 
 export default PartyMaker;
