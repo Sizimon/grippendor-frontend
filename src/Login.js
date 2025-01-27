@@ -40,25 +40,25 @@ const Login = ({ setAuth }) => {
     }}>
       <form 
       onSubmit={handleLogin}
-      className='p-16 w-5/8 bg rounded-lg shadow-lg bg-zinc-900 bg-opacity-80 justify-center items-start flex flex-col gap-4'
+      className='p-2 xs:p-8 w-[80vw] md:w-[50vw] ap:w-[30vw] 4k:h-[30vh] 4k:w-[20vw] bg rounded-lg shadow-lg bg-zinc-900 bg-opacity-80 justify-center items-start flex flex-col gap-4'
       >
-        <h2 className='font-WorkSans text-4xl text-white self-center'><span className="text-teal-300">G</span>uild<span className='text-teal-300'>T</span>racker</h2>
+        <h2 className='font-WorkSans text-2xl xs:text-4xl md:text-5xl bp:text-6xl ap:text-6xl 4k:text-9xl text-white self-center py-[2vh]'><span className="text-teal-300">G</span>uild<span className='text-teal-300'>T</span>racker</h2>
         {error && <p className="error">{error}</p>}
         <div className='w-full flex items-center justify-between'>
-          <label className='text-white'>Guild ID:</label>
+          <label className='text-white text-xs xs:text-base md:text-xl bp:text-2xl 4k:text-6xl'>Guild ID:</label>
           <input 
           type="text" 
-          className='p-2 bg-zinc-900 bg-opacity-75 rounded-md outline-none text-white placeholder-zinc-400'
+          className='p-2 bg-zinc-900 bg-opacity-75 rounded-md outline-none text-white text-xs xs:text-base md:text-xl bp:text-2xl 4k:text-6xl placeholder-zinc-400'
           value={guildId} 
           onChange={(e) => setGuildId(e.target.value)}
           placeholder='Enter your Guild ID'
           required />
         </div>
-        <div className='w-full flex items-center justify-between'>
-          <label className='text-white'>Password:</label>
+        <div className='w-full flex items-center justify-between pb-[2vh]'>
+          <label className='text-white text-xs xs:text-base md:text-xl bp:text-2xl 4k:text-6xl'>Password:</label>
           <input
           type="password" 
-          className='p-2  bg-zinc-900 bg-opacity-75 rounded-md outline-none text-white placeholder-zinc-400'
+          className='p-2  bg-zinc-900 bg-opacity-75 rounded-md outline-none text-white text-xs xs:text-base md:text-xl bp:text-2xl 4k:text-6xl placeholder-zinc-400'
           value={password} 
           onChange={(e) => setPassword(e.target.value)} 
           placeholder='Enter your password'
@@ -66,7 +66,7 @@ const Login = ({ setAuth }) => {
         </div>
         <button 
         type="submit"
-        className='p-2 w-20 text-lg font-WorkSans bg-zinc-950 text-white rounded-md self-center hover:text-teal-300 hover:bg-zinc-800 transition-transform transform hover:scale-105'
+        className='p-2 4k:p-6 w-[20vw] md:w-[10vw] 4k:w-[5vw] font-WorkSans bg-zinc-950 text-white xs:text-lg md:text-2xl bp:text-3xl 4k:text-7xl rounded-md self-center hover:text-teal-300 hover:bg-zinc-800 transition-transform transform hover:scale-105'
         >Login</button>
       </form>
     </div>

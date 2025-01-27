@@ -11,7 +11,13 @@ module.exports = {
       fontFamily: {
         Anton: ['Anton', 'sans-serif'],
         WorkSans: ['Work Sans', 'sans-serif'],
-      }
+      },
+      screens: {
+        'xs': '380px',
+        'ap': '1025px',
+        '4k': '2560px',
+        'bp': '1023px'
+      },
     },
     plugins: [],
   },
