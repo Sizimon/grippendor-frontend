@@ -6,6 +6,7 @@ import PartyMaker from './PartyMaker';
 import WeeklyView from './WeeklyView';
 import Login from './Login';
 import Banner from './assets/images/Banner.png';
+import MenuButton from './MenuButton';
 
 function App() {
   const [auth, setAuth] = useState(null);
@@ -38,6 +39,10 @@ const AppContent = ({ auth }) => {
   const [startDate, setStartDate] = useState(new Date());
   const [currentDayIndex, setCurrentDayIndex] = useState(new Date().getDay() - 1);
   const currentDateRef = useRef(null);
+
+  // Hamburger States
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [active, setActive] = useState(false);
 
   useEffect(() => {
     const fetchAttendance = () => {
@@ -153,18 +158,27 @@ const AppContent = ({ auth }) => {
 
   return (
     <div className='flex flex-col bg-zinc-900'>
-      <div 
-        className='h-44 flex flex-col'
+      <div
+        className='h-[20vh] flex flex-col'
         style={{
           backgroundImage: `url(${Banner})`,
           backgroundSize: 'cover',
         }}>
-        <nav 
-          className='flex justify-center px-4 bg-zinc-900 bg-opacity-60'
+        <nav
+          className='flex items-center justify-center px-4 bg-zinc-900 bg-opacity-60'
         >
-          <Link to={`/${guildId}`} className='text-white uppercase font-WorkSans px-4'>Dashboard</Link>
-          <Link to={`/${guildId}/party-maker`} className='text-white uppercase font-WorkSans px-4'>Party Maker</Link>
-          <Link to={`/${guildId}/weekly`} className='text-white uppercase font-WorkSans px-4'>Weekly Display</Link>
+          <div className='text-white uppercase font-WorkSans px-4'><span className='text-primary'>G</span>uild<span className='text-primary'>T</span>racker</div>
+          <MenuButton
+            menuOpen={menuOpen}
+            setMenuOpen={setMenuOpen}
+            active={active}
+            setActive={setActive}
+          />
+          <div className={`flex flex-col md:flex-row gap-4 ${menuOpen ? 'flex' : 'hidden'}`}>
+            <Link to={`/${guildId}`} className='text-white uppercase font-WorkSans px-4'>Dashboard</Link>
+            <Link to={`/${guildId}/party-maker`} className='text-white uppercase font-WorkSans px-4'>Party Maker</Link>
+            <Link to={`/${guildId}/weekly`} className='text-white uppercase font-WorkSans px-4'>Weekly Display</Link>
+          </div>
         </nav>
         <div className='flex flex-grow justify-center h-fit items-center'>
           <h1 className='justify-center text-center uppercase text-4xl text-primary font-WorkSans bg-zinc-900 p-4 bg-opacity-75 rounded'>
@@ -174,9 +188,9 @@ const AppContent = ({ auth }) => {
       </div>
       <Routes>
         <Route path="/" element={<Home auth={auth} config={config} />} />
-        <Route 
-          path="party-maker" 
-          element={<PartyMaker auth={auth} config={config} names={names} parties={parties} unselectedMembers={unselectedMembers} currentDay={currentDay} currentDateRef={currentDateRef} columnClasses={columnClasses} createParties={createParties} />} 
+        <Route
+          path="party-maker"
+          element={<PartyMaker auth={auth} config={config} names={names} parties={parties} unselectedMembers={unselectedMembers} currentDay={currentDay} currentDateRef={currentDateRef} columnClasses={columnClasses} createParties={createParties} />}
         />
         <Route path="weekly" element={<WeeklyView auth={auth} names={names} attendance={attendance} weekDates={weekDates} config={config} />} />
       </Routes>
