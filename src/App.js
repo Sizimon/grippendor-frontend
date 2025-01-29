@@ -177,12 +177,12 @@ const AppContent = ({ auth }) => {
             />
           </div>
           <div id="dropdown" className={`absolute top-10 md:top-16 right-4 z-10 ${!menuOpen ? 'hidden' : 'block'} bg-zinc-900 divide-y divide-gray-100 rounded-lg shadow-sm w-44`}>
-            <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
+            <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
               <div className='font-WorkSans uppercase'>Logged in as:</div>
-              <div class="font-medium font-WorkSans truncate text-primary">{config.title}</div>
-              <div class="text-xs truncate text-primary">{guildId}</div>
+              <div className="font-medium font-WorkSans truncate text-primary">{config ? `${config.title}`: 'GuildTracker'}</div>
+              <div className="text-xs truncate text-primary">{guildId}</div>
             </div>
-            <ul class="py-2 text-sm text-zinc-200" aria-labelledby="dropdownInformationButton">
+            <ul className="py-2 text-sm text-zinc-200" aria-labelledby="dropdownInformationButton">
               <li>
                 <Link to={`/${guildId}`} className='text-white hover:text-primary font-WorkSans px-4 py-2'>Dashboard</Link>
               </li>
@@ -193,8 +193,8 @@ const AppContent = ({ auth }) => {
                 <Link to={`/${guildId}/weekly`} className='text-white hover:text-primary font-WorkSans px-4 py-2'>Weekly Display</Link>
               </li>
             </ul>
-            <div class="py-2">
-              <a href="#" class="px-4 py-2 text-sm font-WorkSans uppercase text-zinc-200 hover:text-primary">Sign out</a>
+            <div className="py-2">
+              <a href="#" className="px-4 py-2 text-sm font-WorkSans uppercase text-zinc-200 hover:text-primary">Sign out</a>
             </div>
           </div>
           <div className='hidden bp:flex bp:flex-row gap-4'>

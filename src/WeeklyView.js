@@ -20,7 +20,7 @@ const WeeklyDisplay = ({ names, attendance, weekDates, config }) => {
                   {date.toDateString().slice(0, 3)}
                 </span> {date.toDateString().slice(3)}
               </h2>
-              <div className='grid grid-flow-row grid-cols-4 w-full px-10'>
+              <div className='grid grid-flow-row grid-cols-1 md:grid-cols-2 bp:grid-cols-4 w-full px-10'>
                 {names.map((member, memberIndex) => {
                   const attended = attendance.some(entry => {
                     const entryDate = new Date(entry.date).toDateString();
