@@ -25,7 +25,7 @@ const PartyMaker = ({ config, names, parties, unselectedMembers, currentDay, cur
             {currentDay.toDateString().slice(0, 3)}
           </span> {currentDay.toDateString().slice(3)}
         </h2>
-        <div className='grid grid-flow-row grid-cols-4 w-full px-10'>
+        <div className='grid grid-flow-row grid-cols-1 md:grid-cols-2 bp:grid-cols-3 w-full px-10'>
           {parties.map((party, partyIndex) => (
             <div key={partyIndex} className='col-span-1 bg-zinc-900 rounded-lg m-4 p-4'>
               <h3 className='text-center text-lg font-WorkSans py-2'>Party {party.id}</h3>

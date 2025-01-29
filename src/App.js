@@ -165,10 +165,44 @@ const AppContent = ({ auth }) => {
           backgroundSize: 'cover',
         }}>
         <nav
-          className='flex items-center justify-center px-4 bg-zinc-900 bg-opacity-60'
+          className='flex items-center justify-between px-4 md:py-2 bp:py-0 bg-zinc-900 bg-opacity-60'
         >
-          <div className='text-white uppercase font-WorkSans px-4'><span className='text-primary'>G</span>uild<span className='text-primary'>T</span>racker</div>
-          <MenuButton
+          <div className='text-white uppercase font-WorkSans px-4 text-base md:text-2xl bp:text-3xl'><span className='text-primary'>G</span>uild<span className='text-primary'>T</span>racker</div>
+          <div className='bp:hidden flex justify-center items-center'>
+            <MenuButton
+              menuOpen={menuOpen}
+              setMenuOpen={setMenuOpen}
+              active={active}
+              setActive={setActive}
+            />
+          </div>
+          <div id="dropdown" className={`absolute top-10 md:top-16 right-4 z-10 ${!menuOpen ? 'hidden' : 'block'} bg-zinc-900 divide-y divide-gray-100 rounded-lg shadow-sm w-44`}>
+            <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
+              <div className='font-WorkSans uppercase'>Logged in as:</div>
+              <div class="font-medium font-WorkSans truncate text-primary">{config.title}</div>
+              <div class="text-xs truncate text-primary">{guildId}</div>
+            </div>
+            <ul class="py-2 text-sm text-zinc-200" aria-labelledby="dropdownInformationButton">
+              <li>
+                <Link to={`/${guildId}`} className='text-white hover:text-primary font-WorkSans px-4 py-2'>Dashboard</Link>
+              </li>
+              <li>
+                <Link to={`/${guildId}/party-maker`} className='text-white hover:text-primary font-WorkSans px-4 py-2'>Party Maker</Link>
+              </li>
+              <li>
+                <Link to={`/${guildId}/weekly`} className='text-white hover:text-primary font-WorkSans px-4 py-2'>Weekly Display</Link>
+              </li>
+            </ul>
+            <div class="py-2">
+              <a href="#" class="px-4 py-2 text-sm font-WorkSans uppercase text-zinc-200 hover:text-primary">Sign out</a>
+            </div>
+          </div>
+          <div className='hidden bp:flex bp:flex-row gap-4'>
+            <Link to={`/${guildId}`} className='text-white transition delay-100 duration-200 hover:text-primary hover:scale-105 text-xl uppercase font-WorkSans px-4'>Dashboard</Link>
+            <Link to={`/${guildId}/party-maker`} className='text-white transition delay-100 duration-200 hover:text-primary hover:scale-105 text-xl uppercase font-WorkSans px-4'>Party Maker</Link>
+            <Link to={`/${guildId}/weekly`} className='text-white transition delay-100 duration-200 hover:text-primary hover:scale-105 text-xl uppercase font-WorkSans px-4'>Weekly Display</Link>
+          </div>
+          {/* <MenuButton
             menuOpen={menuOpen}
             setMenuOpen={setMenuOpen}
             active={active}
@@ -178,10 +212,10 @@ const AppContent = ({ auth }) => {
             <Link to={`/${guildId}`} className='text-white uppercase font-WorkSans px-4'>Dashboard</Link>
             <Link to={`/${guildId}/party-maker`} className='text-white uppercase font-WorkSans px-4'>Party Maker</Link>
             <Link to={`/${guildId}/weekly`} className='text-white uppercase font-WorkSans px-4'>Weekly Display</Link>
-          </div>
+          </div>  */}
         </nav>
         <div className='flex flex-grow justify-center h-fit items-center'>
-          <h1 className='justify-center text-center uppercase text-4xl text-primary font-WorkSans bg-zinc-900 p-4 bg-opacity-75 rounded'>
+          <h1 className='justify-center text-center uppercase text-2xl md:text-4xl bp:text-5xl text-primary font-WorkSans bg-zinc-900 p-4 bg-opacity-75 rounded'>
             {config ? `${config.title} - ${getPageTitle()}` : 'Guild Manager'}
           </h1>
         </div>

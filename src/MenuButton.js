@@ -13,7 +13,7 @@ function MenuButton({menuOpen, setMenuOpen, active, setActive}) {
         }}
         >
             <motion.button 
-                className="relative w-8 h-8"
+                className="relative w-8 h-8 md:w-12 md:h-12"
                 onClick={() => {
                     setActive(!active);
                     setMenuOpen(!menuOpen);
@@ -22,7 +22,7 @@ function MenuButton({menuOpen, setMenuOpen, active, setActive}) {
                 initial={false}
             >
                 <motion.span
-                className="absolute h-[1px] w-4 bg-white"
+                className="absolute h-[1px] md:h-[1.5px] w-4 md:w-6 bg-white"
                 style={{
                     left: "50%",
                     top: "35%",
@@ -42,7 +42,7 @@ function MenuButton({menuOpen, setMenuOpen, active, setActive}) {
                 }}
                 />
                 <motion.span
-                className="absolute h-[1px] w-4 bg-primary"
+                className="absolute h-[1px] md:h-[1.5px] w-4 md:w-6 bg-primary"
                 style={{
                     left: "50%",
                     top: "50%",
@@ -60,7 +60,7 @@ function MenuButton({menuOpen, setMenuOpen, active, setActive}) {
                 }}
                 />
                 <motion.span
-                className="absolute h-[1px] w-4 bg-white"
+                className="absolute h-[1px] md:h-[1.5px] w-4 md:w-6 bg-white"
                 style={{
                     left: "50%",
                     bottom: "35%",

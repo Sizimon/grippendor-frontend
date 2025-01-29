@@ -66,7 +66,7 @@ const Login = ({ setAuth }) => {
         </div>
         <button 
         type="submit"
-        className='p-2 4k:p-6 w-[20vw] md:w-[10vw] 4k:w-[5vw] font-WorkSans bg-zinc-950 text-white xs:text-lg md:text-2xl bp:text-3xl 4k:text-7xl rounded-md self-center hover:text-teal-300 hover:bg-zinc-800 transition-transform transform hover:scale-105'
+        className='p-2 4k:p-6 w-[20vw] md:w-[10vw] 4k:w-[5vw] font-WorkSans xs:text-lg md:text-2xl bp:text-3xl 4k:text-7xl rounded-md self-center transition delay-50 duration-200 ease-in-out bg-zinc-950 text-white hover:text-teal-300 hover:bg-zinc-800 hover:scale-105 hover:translate-y-1'
         >Login</button>
       </form>
     </div>
