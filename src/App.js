@@ -159,7 +159,7 @@ const AppContent = ({ auth }) => {
   return (
     <div className='flex flex-col bg-zinc-900'>
       <div
-        className='h-[20vh] flex flex-col'
+        className='h-[20vh] ap:h-[30vh] flex flex-col'
         style={{
           backgroundImage: `url(${Banner})`,
           backgroundSize: 'cover',
@@ -184,13 +184,13 @@ const AppContent = ({ auth }) => {
             </div>
             <ul className="py-2 text-sm text-zinc-200" aria-labelledby="dropdownInformationButton">
               <li>
-                <Link to={`/${guildId}`} className='text-white hover:text-primary font-WorkSans px-4 py-2'>Dashboard</Link>
+                <Link to={`/${guildId}`} className='text-white transition delay-50 duration-200 ease-in-out hover:text-primary font-WorkSans px-4 py-2'>Dashboard</Link>
               </li>
               <li>
-                <Link to={`/${guildId}/party-maker`} className='text-white hover:text-primary font-WorkSans px-4 py-2'>Party Maker</Link>
+                <Link to={`/${guildId}/party-maker`} className='text-white transition delay-50 duration-200 ease-in-out hover:text-primary font-WorkSans px-4 py-2'>Party Maker</Link>
               </li>
               <li>
-                <Link to={`/${guildId}/weekly`} className='text-white hover:text-primary font-WorkSans px-4 py-2'>Weekly Display</Link>
+                <Link to={`/${guildId}/weekly`} className='text-white transition delay-50 duration-200 ease-in-out hover:text-primary font-WorkSans px-4 py-2'>Weekly Display</Link>
               </li>
             </ul>
             <div className="py-2">
@@ -198,9 +198,9 @@ const AppContent = ({ auth }) => {
             </div>
           </div>
           <div className='hidden bp:flex bp:flex-row gap-4'>
-            <Link to={`/${guildId}`} className='text-white transition delay-100 duration-200 hover:text-primary hover:scale-105 text-xl uppercase font-WorkSans px-4'>Dashboard</Link>
-            <Link to={`/${guildId}/party-maker`} className='text-white transition delay-100 duration-200 hover:text-primary hover:scale-105 text-xl uppercase font-WorkSans px-4'>Party Maker</Link>
-            <Link to={`/${guildId}/weekly`} className='text-white transition delay-100 duration-200 hover:text-primary hover:scale-105 text-xl uppercase font-WorkSans px-4'>Weekly Display</Link>
+            <Link to={`/${guildId}`} className='text-white transition delay-50 duration-200 ease-in-out hover:text-primary hover:scale-105 text-xl uppercase font-WorkSans px-4'>Dashboard</Link>
+            <Link to={`/${guildId}/party-maker`} className='text-white transition delay-50 duration-200 ease-in-out hover:text-primary hover:scale-105 text-xl uppercase font-WorkSans px-4'>Party Maker</Link>
+            <Link to={`/${guildId}/weekly`} className='text-white transition delay-50 duration-200 ease-in-out hover:text-primary hover:scale-105 text-xl uppercase font-WorkSans px-4'>Weekly Display</Link>
           </div>
           {/* <MenuButton
             menuOpen={menuOpen}

@@ -2,9 +2,24 @@ import React from 'react';
 import DPS from './assets/images/DPS.png';
 import TANK from './assets/images/TANK.png';
 import HEALER from './assets/images/HEALER.png';
+import { useRef, useEffect } from 'react';
 
 const WeeklyDisplay = ({ names, attendance, weekDates, config }) => {
   const today = new Date().toDateString();
+  const currentDateRef = useRef(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+        if (currentDateRef.current) {
+            currentDateRef.current.scrollIntoView({
+                behavior: 'smooth', 
+                block: 'nearest',
+            });
+        }
+    }, 500);
+
+    return () => clearTimeout(timer);
+}, []);
 
   return (
     <div className='flex flex-col bg-zinc-900'>
@@ -14,7 +29,10 @@ const WeeklyDisplay = ({ names, attendance, weekDates, config }) => {
           const columnClasses = `flex flex-col justify-start items-center text-white flex-grow ${isToday ? 'bg-zinc-800' : 'bg-zinc-900'} py-12 border-t-[1px] border-primary`;
 
           return (
-            <div key={index} className={columnClasses}>
+            <div 
+            key={index} 
+            className={columnClasses}
+            {...(isToday ? { ref: currentDateRef } : null)}>
               <h2 className='uppercase text-center text-lg font-WorkSans py-4 border-primary border-b-[1px]'>
                 <span className='text-primary'>
                   {date.toDateString().slice(0, 3)}

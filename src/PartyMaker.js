@@ -43,8 +43,8 @@ const PartyMaker = ({ config, names, parties, unselectedMembers, currentDay, cur
       </div>
     </div>
     ) : (
-    <div className='flex justify-center px-4 bg-zinc-900'>
-      <button onClick={() => setCreated(!created)} className='text-white uppercase font-WorkSans'>Create a party +</button>
+    <div className='flex justify-center px-4 pt-[35vh] bg-zinc-900'>
+      <button onClick={() => setCreated(!created)} className='text-white uppercase font-WorkSans'>Create Parties</button>
     </div>
     )}
     {unselectedMembers.length > 0 && (
