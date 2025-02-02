@@ -29,20 +29,55 @@ function App() {
   );
 }
 
+const getWeekDates = (start = new Date()) => {
+  const dates = [];
+  const dayOfWeek = (start.getDay() + 6) % 7; // Adjust to make Monday the start of the week
+  const startOfWeek = new Date(start); // Clone the start date
+
+  // Adjust the start date to the previous Monday
+  startOfWeek.setDate(start.getDate() - dayOfWeek);
+
+  for (let i = 0; i < 7; i++) {
+    const date = new Date(startOfWeek);
+    date.setDate(startOfWeek.getDate() + i);
+    dates.push(date);
+  }
+  return dates;
+};
+
 const AppContent = ({ auth }) => {
+  const location = useLocation();
   const { guildId } = useParams();
   const [attendance, setAttendance] = useState([]);
   const [names, setNames] = useState([]);
   const [config, setConfig] = useState(null);
-  const [parties, setParties] = useState([]);
-  const [unselectedMembers, setUnselectedMembers] = useState([]);
-  const [startDate, setStartDate] = useState(new Date());
-  const [currentDayIndex, setCurrentDayIndex] = useState(new Date().getDay() - 1);
+
+  const startDate = new Date();
+  const currentDayIndex = (new Date().getDay() + 6) % 7;
   const currentDateRef = useRef(null);
+  const weekDates = getWeekDates(startDate);
+  const today = new Date().toDateString();
+  const currentDay = weekDates[currentDayIndex];
+
+  const columnClasses = `flex flex-col justify-start items-center text-white flex-grow border-t-[1px] border-b-[1px] border-primary ${currentDay && currentDay.toDateString() === today ? 'bg-zinc-800' : 'bg-zinc-900'} py-12 h-screen`;
+
+  
+  const getPageTitle = () => {
+    switch (location.pathname) {
+      case `/${guildId}/party-maker`:
+        return 'Party Maker';
+      case `/${guildId}/weekly`:
+        return 'Weekly Display';
+      default:
+        return 'Dashboard';
+    }
+  };
 
   // Hamburger States
   const [menuOpen, setMenuOpen] = useState(false);
   const [active, setActive] = useState(false);
+
+  // FETCHES 
 
   useEffect(() => {
     const fetchAttendance = () => {
@@ -100,61 +135,7 @@ const AppContent = ({ auth }) => {
       });
   }, [guildId, auth.token]);
 
-  useEffect(() => {
-    if (names.length > 0 && config) {
-      createParties();
-    }
-  }, [names, config]);
-
-  const createParties = () => {
-    const dps = names.filter(member => member.roles && member.roles.includes('DPS'));
-    const tanks = names.filter(member => member.roles && member.roles.includes('Tank'));
-    const healers = names.filter(member => member.roles && member.roles.includes('Healer'));
-    const unselected = names.filter(member => !member.roles || (!member.roles.includes('DPS') && !member.roles.includes('Tank') && !member.roles.includes('Healer')));
-
-    const newParties = [];
-    while (dps.length >= 2 && tanks.length >= 1 && healers.length >= 1) {
-      newParties.push({
-        id: newParties.length + 1,
-        members: [
-          dps.pop(),
-          dps.pop(),
-          tanks.pop(),
-          healers.pop(),
-        ],
-      });
-    }
-    setParties(newParties);
-    setUnselectedMembers(unselected);
-  };
-
-  const getWeekDates = (start = new Date()) => {
-    const dates = [];
-    for (let i = 1; i < 8; i++) {
-      const date = new Date(start);
-      date.setDate(start.getDate() - start.getDay() + i);
-      dates.push(date);
-    }
-    return dates;
-  };
-
-  const weekDates = getWeekDates(startDate);
-  const today = new Date().toDateString();
-  const currentDay = weekDates[currentDayIndex];
-  const columnClasses = `flex flex-col justify-start items-center text-white flex-grow border-t-[1px] border-b-[1px] border-primary ${currentDay.toDateString() === today ? 'bg-zinc-800' : 'bg-zinc-900'} py-12 h-screen`;
-
-  const location = useLocation();
-
-  const getPageTitle = () => {
-    switch (location.pathname) {
-      case `/${guildId}/party-maker`:
-        return 'Party Maker';
-      case `/${guildId}/weekly`:
-        return 'Weekly Display';
-      default:
-        return 'Dashboard';
-    }
-  };
+  // END FETCHES
 
   return (
     <div className='flex flex-col bg-zinc-900'>
@@ -165,9 +146,9 @@ const AppContent = ({ auth }) => {
           backgroundSize: 'cover',
         }}>
         <nav
-          className='flex items-center justify-between px-4 md:py-2 bp:py-0 bg-zinc-900 bg-opacity-60'
+          className='fixed top-0 flex items-center justify-between px-4 md:py-[2.5vh] 4k:py-[2.5vh] 4k:px-[2.5vw] bg-zinc-900 bg-opacity-60 w-full'
         >
-          <div className='text-white uppercase font-WorkSans px-4 text-base md:text-2xl bp:text-3xl'><span className='text-primary'>G</span>uild<span className='text-primary'>T</span>racker</div>
+          <div className='text-white uppercase font-WorkSans px-4 text-base md:text-2xl bp:text-4xl 4k:text-8xl'><span className='text-primary'>G</span>uild<span className='text-primary'>T</span>racker</div>
           <div className='bp:hidden flex justify-center items-center'>
             <MenuButton
               menuOpen={menuOpen}
@@ -198,24 +179,13 @@ const AppContent = ({ auth }) => {
             </div>
           </div>
           <div className='hidden bp:flex bp:flex-row gap-4'>
-            <Link to={`/${guildId}`} className='text-white transition delay-50 duration-200 ease-in-out hover:text-primary hover:scale-105 text-xl uppercase font-WorkSans px-4'>Dashboard</Link>
-            <Link to={`/${guildId}/party-maker`} className='text-white transition delay-50 duration-200 ease-in-out hover:text-primary hover:scale-105 text-xl uppercase font-WorkSans px-4'>Party Maker</Link>
-            <Link to={`/${guildId}/weekly`} className='text-white transition delay-50 duration-200 ease-in-out hover:text-primary hover:scale-105 text-xl uppercase font-WorkSans px-4'>Weekly Display</Link>
+            <Link to={`/${guildId}`} className='text-white transition delay-50 duration-200 ease-in-out hover:text-primary hover:scale-105 text-xl 4k:text-6xl uppercase font-WorkSans px-4'>Dashboard</Link>
+            <Link to={`/${guildId}/party-maker`} className='text-white transition delay-50 duration-200 ease-in-out hover:text-primary hover:scale-105 text-xl 4k:text-6xl uppercase font-WorkSans px-4'>Party Maker</Link>
+            <Link to={`/${guildId}/weekly`} className='text-white transition delay-50 duration-200 ease-in-out hover:text-primary hover:scale-105 text-xl 4k:text-6xl uppercase font-WorkSans px-4'>Weekly Display</Link>
           </div>
-          {/* <MenuButton
-            menuOpen={menuOpen}
-            setMenuOpen={setMenuOpen}
-            active={active}
-            setActive={setActive}
-          />
-          <div className={`flex flex-col md:flex-row gap-4 ${menuOpen ? 'flex' : 'hidden'}`}>
-            <Link to={`/${guildId}`} className='text-white uppercase font-WorkSans px-4'>Dashboard</Link>
-            <Link to={`/${guildId}/party-maker`} className='text-white uppercase font-WorkSans px-4'>Party Maker</Link>
-            <Link to={`/${guildId}/weekly`} className='text-white uppercase font-WorkSans px-4'>Weekly Display</Link>
-          </div>  */}
         </nav>
         <div className='flex flex-grow justify-center h-fit items-center'>
-          <h1 className='justify-center text-center uppercase text-2xl md:text-4xl bp:text-5xl text-primary font-WorkSans bg-zinc-900 p-4 bg-opacity-75 rounded'>
+          <h1 className='justify-center text-center uppercase text-2xl md:text-4xl bp:text-5xl 4k:text-9xl text-primary font-WorkSans bg-zinc-900 bg-opacity-75 p-2'>
             {config ? `${config.title} - ${getPageTitle()}` : 'Guild Manager'}
           </h1>
         </div>
@@ -224,9 +194,9 @@ const AppContent = ({ auth }) => {
         <Route path="/" element={<Home auth={auth} config={config} />} />
         <Route
           path="party-maker"
-          element={<PartyMaker auth={auth} config={config} names={names} parties={parties} unselectedMembers={unselectedMembers} currentDay={currentDay} currentDateRef={currentDateRef} columnClasses={columnClasses} createParties={createParties} />}
+          element={<PartyMaker auth={auth} config={config} names={names} currentDay={currentDay} currentDateRef={currentDateRef} columnClasses={columnClasses} />}
         />
-        <Route path="weekly" element={<WeeklyView auth={auth} names={names} attendance={attendance} weekDates={weekDates} config={config} />} />
+        <Route path="weekly" element={<WeeklyView auth={auth} names={names} attendance={attendance} weekDates={weekDates} currentDateRef={currentDateRef} config={config} />} />
       </Routes>
     </div>
   );

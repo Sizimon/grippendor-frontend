@@ -4,9 +4,8 @@ import TANK from './assets/images/TANK.png';
 import HEALER from './assets/images/HEALER.png';
 import { useRef, useEffect } from 'react';
 
-const WeeklyDisplay = ({ names, attendance, weekDates, config }) => {
+const WeeklyDisplay = ({ names, attendance, weekDates, currentDateRef, config }) => {
   const today = new Date().toDateString();
-  const currentDateRef = useRef(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -24,7 +23,8 @@ const WeeklyDisplay = ({ names, attendance, weekDates, config }) => {
   return (
     <div className='flex flex-col bg-zinc-900'>
       <div className='flex flex-col'>
-        {weekDates.map((date, index) => {
+        {weekDates && weekDates.map((date, index) => {
+          if (!date) return null;
           const isToday = date.toDateString() === today;
           const columnClasses = `flex flex-col justify-start items-center text-white flex-grow ${isToday ? 'bg-zinc-800' : 'bg-zinc-900'} py-12 border-t-[1px] border-primary`;
 

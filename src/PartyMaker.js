@@ -3,8 +3,32 @@ import DPS from './assets/images/DPS.png';
 import TANK from './assets/images/TANK.png';
 import HEALER from './assets/images/HEALER.png';
 
-const PartyMaker = ({ config, names, parties, unselectedMembers, currentDay, currentDateRef, columnClasses, createParties }) => {
+const PartyMaker = ({ config, names, currentDay, currentDateRef, columnClasses }) => {
+  const [parties, setParties] = useState([]);
+  const [unselectedMembers, setUnselectedMembers] = useState([]);
   const [created, setCreated] = useState(false);
+
+  const createParties = () => {
+    const dps = names.filter(member => member.roles && member.roles.includes('DPS'));
+    const tanks = names.filter(member => member.roles && member.roles.includes('Tank'));
+    const healers = names.filter(member => member.roles && member.roles.includes('Healer'));
+    const unselected = names.filter(member => !member.roles || (!member.roles.includes('DPS') && !member.roles.includes('Tank') && !member.roles.includes('Healer')));
+
+    const newParties = [];
+    while (dps.length >= 2 && tanks.length >= 1 && healers.length >= 1) {
+      newParties.push({
+        id: newParties.length + 1,
+        members: [
+          dps.pop(),
+          dps.pop(),
+          tanks.pop(),
+          healers.pop(),
+        ],
+      });
+    }
+    setParties(newParties);
+    setUnselectedMembers(unselected);
+  };
 
   useEffect(() => {
     if (created === true && names.length > 0 && config) {
