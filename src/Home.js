@@ -2,11 +2,18 @@ import React, {useState} from 'react';
 import { Link } from 'react-router-dom'; 
 import { motion } from 'framer-motion';
 
-const Home = ({ config }) => {
+const Home = ({ config, names }) => {
+
+  // Most Activity Sorter
+  const sortedNames = names.sort((a, b) => b.counter - a.counter);
+  const topAttendance = sortedNames.slice(0, 5);
+  // End Most Activity Sorter
+
   const CardDetails = [
     {
       title: 'Most Activity',
       description: 'Most active members.',
+      content: topAttendance,
     },
     {
       title: 'Most Kills',
@@ -32,6 +39,7 @@ const Home = ({ config }) => {
               key={index}
               title={card.title}
               description={card.description}
+              content={card.content}
             />
           ))}
         </div>
@@ -48,13 +56,12 @@ const Home = ({ config }) => {
   );
 };
 
-const DashboardCard = ({ title, description }) => {
+const DashboardCard = ({ title, description, content }) => {
   const [isHovered, setIsHovered] = useState(false);
-
 
   return (
     <motion.div 
-            className='flex flex-col items-center bg-zinc-950 h-[50vh] md:h-[25vh] ap:h-[50vh] 4k:h-[40vh]  p-4 m-4 4k:px-[2.5vw] 4k:py-[2.5vh]'
+            className='flex flex-col items-center bg-zinc-950 h-[50vh] md:h-[25vh] ap:h-[50vh] 4k:h-[40vh] p-4 m-4 4k:px-[2.5vw] 4k:py-[2.5vh]'
             style={{
               boxShadow: '0 0 4px var(--color-primary)',
             }}
@@ -78,6 +85,40 @@ const DashboardCard = ({ title, description }) => {
             >
                 <h2 className='text-2xl 4k:text-7xl font-bold'>{title}</h2>
                 <p className="text-base md:text-xl 4k:text-5xl">{description}</p>
+                <div className='flex flex-col items-center justify-center h-full w-full'>
+                {content && (
+                  <ul className='flex flex-col items-center w-full'>
+                    {content.map((member, index) => (
+                      <motion.li 
+                      key={index}
+                      style={{
+                        boxShadow: index === 0 ? '0 0 4px var(--color-primary)' : '0 0 4px white',
+                      }}
+                      whileHover={index !== 0 ? {
+                        boxShadow: '0 0 10px white',
+                      } : {}}
+                      animate={{
+                        boxShadow: index === 0 ? [
+                          '0 0 4px var(--color-primary)',
+                          '0 0 20px var(--color-primary)',
+                          '0 0 10px var(--color-primary)',
+                        ] : null,
+                      }}
+                      transition={{
+                        duration: 1,
+                        ease: 'easeInOut',
+                        repeat: index === 0 ? Infinity : 0,
+                        repeatType: 'reverse',
+                      }}
+                      className='flex flex-row w-full p-2 m-2 justify-evenly items-start text-sm md:text-base 4k:text-3xl'>
+                        <p>{member.name}</p>
+                        <p> - {member.counter} events attended.</p>
+                      </motion.li>
+                    ))}
+                  </ul>
+                )}
+                </div>
+
             </motion.div>
   );
 };

@@ -120,7 +120,7 @@ const AppContent = ({ auth }) => {
         console.error(error);
       });
 
-    console.log('Fetching guild users...');
+    console.log('Fetching Guild Users...');
     axios.get(`http://localhost:5001/names/${guildId}`, {
       headers: {
         'Authorization': `Bearer ${auth.token}`,
@@ -135,7 +135,6 @@ const AppContent = ({ auth }) => {
       .catch(error => {
         console.error(error);
       });
-
   }, [guildId, auth.token]);
 
   // END FETCHES
@@ -194,7 +193,7 @@ const AppContent = ({ auth }) => {
         </div>
       </div>
       <Routes>
-        <Route path="/" element={<Home auth={auth} config={config} />} />
+        <Route path="/" element={<Home auth={auth} config={config} names={names} />} />
         <Route
           path="party-maker"
           element={<PartyMaker auth={auth} config={config} names={names} currentDay={currentDay} currentDateRef={currentDateRef} columnClasses={columnClasses} />}
