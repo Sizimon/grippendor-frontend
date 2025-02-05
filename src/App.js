@@ -61,7 +61,7 @@ const AppContent = ({ auth }) => {
 
   const columnClasses = `flex flex-col justify-start items-center text-white flex-grow border-t-[1px] border-b-[1px] border-primary ${currentDay && currentDay.toDateString() === today ? 'bg-zinc-800' : 'bg-zinc-900'} py-12 h-screen`;
 
-  
+
   const getPageTitle = () => {
     switch (location.pathname) {
       case `/${guildId}/party-maker`:
@@ -103,20 +103,6 @@ const AppContent = ({ auth }) => {
   }, [guildId, auth.token]);
 
   useEffect(() => {
-    console.log('Fetching names...');
-    axios.get(`http://localhost:5001/names/${guildId}`, {
-      headers: {
-        'Authorization': `Bearer ${auth.token}`,
-      },
-    })
-      .then(response => {
-        console.log('Names fetched:', response.data);
-        setNames(response.data);
-      })
-      .catch(error => {
-        console.error(error);
-      });
-
     console.log('Fetching configuration data...');
     axios.get(`http://localhost:5001/config/${guildId}`, {
       headers: {
@@ -133,6 +119,23 @@ const AppContent = ({ auth }) => {
       .catch(error => {
         console.error(error);
       });
+
+    console.log('Fetching guild users...');
+    axios.get(`http://localhost:5001/names/${guildId}`, {
+      headers: {
+        'Authorization': `Bearer ${auth.token}`,
+      },
+    })
+      .then(response => {
+        console.log('Guild usernames fetched:', response.data);
+        if (response.data) {
+          setNames(response.data);
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+
   }, [guildId, auth.token]);
 
   // END FETCHES
@@ -160,7 +163,7 @@ const AppContent = ({ auth }) => {
           <div id="dropdown" className={`absolute top-10 md:top-16 right-4 z-10 ${!menuOpen ? 'hidden' : 'block'} bg-zinc-900 divide-y divide-gray-100 rounded-lg shadow-sm w-44`}>
             <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
               <div className='font-WorkSans uppercase'>Logged in as:</div>
-              <div className="font-medium font-WorkSans truncate text-primary">{config ? `${config.title}`: 'GuildTracker'}</div>
+              <div className="font-medium font-WorkSans truncate text-primary">{config ? `${config.title}` : 'GuildTracker'}</div>
               <div className="text-xs truncate text-primary">{guildId}</div>
             </div>
             <ul className="py-2 text-sm text-zinc-200" aria-labelledby="dropdownInformationButton">
