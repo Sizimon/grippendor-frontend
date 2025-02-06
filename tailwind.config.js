@@ -9,7 +9,7 @@ module.exports = {
         'tertiary': '#902D41',
       },
       fontFamily: {
-        Anton: ['Anton', 'sans-serif'],
+        Roboto: ['Roboto', 'sans-serif'],
         WorkSans: ['Work Sans', 'sans-serif'],
       },
       screens: {

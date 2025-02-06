@@ -3,7 +3,7 @@ import DPS from './assets/images/DPS.png';
 import TANK from './assets/images/TANK.png';
 import HEALER from './assets/images/HEALER.png';
 
-const PartyMaker = ({ config, names, currentDay, currentDateRef, columnClasses }) => {
+const PartyMaker = ({ config, names, currentDay }) => {
   const [parties, setParties] = useState([]);
   const [unselectedMembers, setUnselectedMembers] = useState([]);
   const [created, setCreated] = useState(false);
@@ -41,8 +41,7 @@ const PartyMaker = ({ config, names, currentDay, currentDateRef, columnClasses }
     {created ? (
       <div className='flex flex-col'>
       <div
-        {...(currentDay.toDateString() === new Date().toDateString() ? { ref: currentDateRef } : null)}
-        className={columnClasses}
+        className='flex flex-col justify-start items-center text-white flex-grow border-t-[1px] border-b-[1px] border-primary bg-zinc-900 py-12 h-screen'
       >
         <h2 className='uppercase text-center text-lg font-WorkSans py-4 border-primary border-b-[1px]'>
           <span className='text-primary'>

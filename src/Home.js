@@ -12,7 +12,7 @@ const Home = ({ config, names }) => {
   const CardDetails = [
     {
       title: 'Most Activity',
-      description: 'Most active members.',
+      description: 'Most active members. (By events attended)',
       content: topAttendance,
     },
     {
@@ -30,7 +30,7 @@ const Home = ({ config, names }) => {
   ]
 
   return (
-    <div className="flex flex-col items-center justify-center h-full bg-zinc-800 text-white py-[5vh]">
+    <div className="flex flex-col items-center justify-center h-full bg-zinc-900 text-white py-[5vh]">
       <div
         className="bg-zinc-900 px-[1vw] md:px-[2vw] md:py-[2vh] text-center w-[100vw] md:w-[80vw]">
         <div className='grid grid-flow-row grid-cols-1 md:grid-cols-2'>
@@ -83,8 +83,8 @@ const DashboardCard = ({ title, description, content }) => {
               repeatType: 'reverse',
             }}
             >
-                <h2 className='text-2xl 4k:text-7xl font-bold'>{title}</h2>
-                <p className="text-base md:text-xl 4k:text-5xl">{description}</p>
+                <h2 className='font-WorkSans uppercase text-2xl 4k:text-7xl font-bold'>{title}</h2>
+                <p className="font-Roboto font-thin text-base md:text-xl 4k:text-5xl">{description}</p>
                 <div className='flex flex-col items-center justify-center h-full w-full'>
                 {content && (
                   <ul className='flex flex-col items-center w-full'>
@@ -110,9 +110,9 @@ const DashboardCard = ({ title, description, content }) => {
                         repeat: index === 0 ? Infinity : 0,
                         repeatType: 'reverse',
                       }}
-                      className='flex flex-row w-full p-2 m-2 justify-evenly items-start text-sm md:text-base 4k:text-3xl'>
-                        <p>{member.name}</p>
-                        <p> - {member.counter} events attended.</p>
+                      className='flex flex-row w-full p-2 m-2 justify-between items-start text-sm md:text-base 4k:text-3xl rounded-xl'>
+                        <p>{index + 1}. {member.name}</p>
+                        <p>{member.counter}</p>
                       </motion.li>
                     ))}
                   </ul>
