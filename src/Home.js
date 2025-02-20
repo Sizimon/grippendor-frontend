@@ -2,30 +2,30 @@ import React, {useState} from 'react';
 import { Link } from 'react-router-dom'; 
 import { motion } from 'framer-motion';
 
-const Home = ({ config, names }) => {
+const Home = ({ config, userData }) => {
 
   // Most Activity Sorter
-  const sortedNames = names.sort((a, b) => b.counter - a.counter);
+  const sortedNames = userData.sort((a, b) => b.counter - a.counter);
   const topAttendance = sortedNames.slice(0, 5);
   // End Most Activity Sorter
 
   const CardDetails = [
     {
-      title: 'Most Activity',
+      title: 'Most Active',
       description: 'Most active members. (By events attended)',
       content: topAttendance,
     },
     {
-      title: 'Most Kills',
-      description: 'Best Killers.',
+      title: 'Most Commended',
+      description: 'Recieved most commendations',
     },
     {
-      title: 'Priority Bounty Targets',
-      description: 'Your Bounty Targets.',
+      title: 'Previous Event Results',
+      description: '(Insert Date of Event) TBD',
     },
     {
-      title: 'Supplies Delivered',
-      description: 'Most Supplies Delivered',
+      title: 'Upcoming Event (Insert Time)',
+      description: '(Insert Date of Event) Most Supplies Delivered',
     },
   ]
 

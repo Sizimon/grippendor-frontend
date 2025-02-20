@@ -49,7 +49,7 @@ const AppContent = ({ auth }) => {
   const location = useLocation();
   const { guildId } = useParams();
   const [attendance, setAttendance] = useState([]);
-  const [names, setNames] = useState([]);
+  const [userData, setUserData] = useState([]);
   const [config, setConfig] = useState(null);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -94,6 +94,41 @@ const AppContent = ({ auth }) => {
   // FETCHES 
 
   useEffect(() => {
+    console.log('Fetching configuration data...');
+    axios.get(`http://localhost:5001/config/${guildId}`, {
+      headers: {
+        'Authorization': `Bearer ${auth.token}`,
+      },
+    })
+      .then(response => {
+        console.log('Configuration data fetched:', response.data);
+        setConfig(response.data);
+        if (response.data.color) {
+          document.documentElement.style.setProperty('--color-primary', response.data.color);
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+
+    console.log('Fetching Guild Users...');
+    axios.get(`http://localhost:5001/userdata/${guildId}`, {
+      headers: {
+        'Authorization': `Bearer ${auth.token}`,
+      },
+    })
+      .then(response => {
+        console.log('Guild usernames fetched:', response.data);
+        if (response.data) {
+          setUserData(response.data);
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, [guildId, auth.token]);
+
+  useEffect(() => {
     const fetchAttendance = () => {
       console.log('Fetching attendance...');
       axios.get(`http://localhost:5001/attendance/${guildId}`, {
@@ -114,41 +149,6 @@ const AppContent = ({ auth }) => {
     const intervalId = setInterval(fetchAttendance, 60000); // Poll every 10 seconds
 
     return () => clearInterval(intervalId); // Cleanup interval on component unmount
-  }, [guildId, auth.token]);
-
-  useEffect(() => {
-    console.log('Fetching configuration data...');
-    axios.get(`http://localhost:5001/config/${guildId}`, {
-      headers: {
-        'Authorization': `Bearer ${auth.token}`,
-      },
-    })
-      .then(response => {
-        console.log('Configuration data fetched:', response.data);
-        setConfig(response.data);
-        if (response.data.color) {
-          document.documentElement.style.setProperty('--color-primary', response.data.color);
-        }
-      })
-      .catch(error => {
-        console.error(error);
-      });
-
-    console.log('Fetching Guild Users...');
-    axios.get(`http://localhost:5001/names/${guildId}`, {
-      headers: {
-        'Authorization': `Bearer ${auth.token}`,
-      },
-    })
-      .then(response => {
-        console.log('Guild usernames fetched:', response.data);
-        if (response.data) {
-          setNames(response.data);
-        }
-      })
-      .catch(error => {
-        console.error(error);
-      });
   }, [guildId, auth.token]);
 
   // END FETCHES
@@ -204,12 +204,12 @@ const AppContent = ({ auth }) => {
           backgroundSize: 'cover',
         }} />
       <Routes>
-        <Route path="/" element={<Home auth={auth} config={config} names={names} />} />
+        <Route path="/" element={<Home auth={auth} config={config} userData={userData} />} />
         <Route
           path="party-maker"
-          element={<PartyMaker auth={auth} config={config} names={names} currentDay={currentDay} currentDateRef={currentDateRef} columnClasses={columnClasses} />}
+          element={<PartyMaker auth={auth} config={config} userData={userData} currentDay={currentDay} currentDateRef={currentDateRef} columnClasses={columnClasses} />}
         />
-        <Route path="weekly" element={<WeeklyView auth={auth} names={names} attendance={attendance} weekDates={weekDates} currentDateRef={currentDateRef} config={config} />} />
+        <Route path="weekly" element={<WeeklyView auth={auth} userData={userData} attendance={attendance} weekDates={weekDates} currentDateRef={currentDateRef} config={config} />} />
       </Routes>
     </div>
   );

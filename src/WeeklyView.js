@@ -4,7 +4,7 @@ import TANK from './assets/images/TANK.png';
 import HEALER from './assets/images/HEALER.png';
 import { useRef, useEffect } from 'react';
 
-const WeeklyDisplay = ({ names, attendance, weekDates, currentDateRef, config }) => {
+const WeeklyDisplay = ({ userData, attendance, weekDates, currentDateRef, config }) => {
   const today = new Date().toDateString();
 
   useEffect(() => {
@@ -39,7 +39,7 @@ const WeeklyDisplay = ({ names, attendance, weekDates, currentDateRef, config })
                 </span> {date.toDateString().slice(3)}
               </h2>
               <div className='grid grid-flow-row grid-cols-1 md:grid-cols-2 bp:grid-cols-4 w-full px-10'>
-                {names.map((member, memberIndex) => {
+                {userData.map((member, memberIndex) => {
                   const attended = attendance.some(entry => {
                     const entryDate = new Date(entry.date).toDateString();
                     return entryDate === date.toDateString() && entry.username === member.name;
