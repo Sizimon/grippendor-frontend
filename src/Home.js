@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { Link } from 'react-router-dom'; 
 import { motion } from 'framer-motion';
 
-const Home = ({ config, userData }) => {
+const Home = ({ config, userData, events }) => {
 
   // Most Activity Sorter
   const sortedNames = userData.sort((a, b) => b.counter - a.counter);

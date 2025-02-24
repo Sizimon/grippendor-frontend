@@ -3,23 +3,27 @@ import React, { useState, useEffect } from 'react';
 // import TANK from './assets/images/TANK.png';
 // import HEALER from './assets/images/HEALER.png';
 
-const PartyMaker = ({ config, userData, currentDay }) => {
+const PartyMaker = ({ config, userData, eventUserData, currentDay }) => {
   const [parties, setParties] = useState([]);
   const [unselectedMembers, setUnselectedMembers] = useState([]);
   const [created, setCreated] = useState(false);
 
   const createParties = () => {
-    const teamLeaders = userData.filter(member => member.roles && member.roles.includes('Team Leader'));
-    const medics = userData.filter(member => member.roles && member.roles.includes('Medic'));
-    const fillers = userData.filter(member => member.roles && ['Engineer', 'Rifleman', 'Grenadier', 'Autorifleman'].some(role => member.roles.includes(role)));
-    const unselected = userData.filter(member => !member.roles || (!member.roles.includes('Team Leader') && !member.roles.includes('Medic') && !['Engineer', 'Grenadier', 'Rifleman', 'Autorifleman'].some(role => member.roles.includes(role))));
+    console.log('eventUserData:', eventUserData);
+    const teamLeaders = eventUserData.filter(member => member.roles && member.roles.includes('Team Leader'));
+    const medics = eventUserData.filter(member => member.roles && member.roles.includes('Medic'));
+    const fillers = eventUserData.filter(member => member.roles && ['Engineer', 'Rifleman', 'Grenadier', 'Autorifleman', 'Marksman'].some(role => member.roles.includes(role)));
+    const unselected = eventUserData.filter(member => !member.roles || (!member.roles.includes('Team Leader') && !member.roles.includes('Medic') && !['Engineer', 'Grenadier', 'Rifleman', 'Autorifleman', 'Marksman'].some(role => member.roles.includes(role))));
 
+    console.log(teamLeaders)
+    console.log(medics)
+    console.log(fillers)
     const newParties = [];
     const usedMembers = new Set();
 
     const removeFromAllArrays = (member) => {
       const removeFromArray = (array, member) => {
-        const index = array.findIndex(m => m.name === member.name);
+        const index = array.findIndex(m => m.user_id === member.user_id);
         if (index !== -1) {
           array.splice(index, 1);
         }
@@ -32,42 +36,51 @@ const PartyMaker = ({ config, userData, currentDay }) => {
     while (teamLeaders.length >= 1 && medics.length >= 1 && fillers.length >= 2) {
       const partyMembers = [];
 
-      const teamLeader = teamLeaders.find(member => !usedMembers.has(member.name));
-      if (teamLeader) {
-        usedMembers.add(teamLeader.name);
+      let teamLeader = teamLeaders.find(member => !usedMembers.has(member.user_id) && !member.roles.includes('Medic'));
+      if (!teamLeader) {
+        if (medics.length > 1) {
+          teamLeader = teamLeaders.find(member => !usedMembers.has(member.user_id) && member.roles.includes('Medic'));
+        }
+      }
+      
+      const medic = medics.find(member => !usedMembers.has(member.user_id));
+
+      if (teamLeader && medic) {
+        usedMembers.add(teamLeader.user_id);
         removeFromAllArrays(teamLeader);
         partyMembers.push({ ...teamLeader, role: 'Team Leader' });
-      }
 
-      const medic = medics.find(member => !usedMembers.has(member.name));
-      if (medic) {
-        usedMembers.add(medic.name);
+        usedMembers.add(medic.user_id);
         removeFromAllArrays(medic);
         partyMembers.push({ ...medic, role: 'Medic' });
-      }
 
-      const filler1 = fillers.find(member => !usedMembers.has(member.name));
-      if (filler1) {
-        usedMembers.add(filler1.name);
-        removeFromAllArrays(filler1);
-        const filler1Role = filler1.roles.find(role => ['Engineer', 'Rifleman', 'Grenadier', 'Autorifleman'].includes(role));
-        partyMembers.push({ ...filler1, role: filler1Role });
-      }
+        const filler1 = fillers.find(member => !usedMembers.has(member.user_id));
+        if (filler1) {
+          usedMembers.add(filler1.user_id);
+          removeFromAllArrays(filler1);
+          const filler1Role = filler1.roles.find(role => ['Engineer', 'Rifleman', 'Grenadier', 'Autorifleman', 'Marksman'].includes(role));
+          partyMembers.push({ ...filler1, role: filler1Role });
+        }
 
-      const filler2 = fillers.find(member => !usedMembers.has(member.name));
-      if (filler2) {
-        usedMembers.add(filler2.name);
-        removeFromAllArrays(filler2);
-        const filler2Role = filler2.roles.find(role => ['Engineer', 'Rifleman', 'Grenadier', 'Autorifleman'].includes(role));
-        partyMembers.push({ ...filler2, role: filler2Role });
-      }
+        const filler2 = fillers.find(member => !usedMembers.has(member.user_id));
+        if (filler2) {
+          usedMembers.add(filler2.user_id);
+          removeFromAllArrays(filler2);
+          const filler2Role = filler2.roles.find(role => ['Engineer', 'Rifleman', 'Grenadier', 'Autorifleman', 'Marksman'].includes(role));
+          partyMembers.push({ ...filler2, role: filler2Role });
+        }
 
-      if (partyMembers.length === 4) {
-        const party = {
-          id: newParties.length + 1,
-          members: partyMembers
-        };
-        newParties.push(party);
+        console.log(usedMembers);
+
+        if (partyMembers.length === 4) {
+          const party = {
+            id: newParties.length + 1,
+            members: partyMembers
+          };
+          newParties.push(party);
+        } else {
+          break;
+        }
       } else {
         break;
       }
@@ -78,10 +91,10 @@ const PartyMaker = ({ config, userData, currentDay }) => {
   };
 
     useEffect(() => {
-      if (created === true && userData.length > 0 && config) {
+      if (created === true && eventUserData.length > 0 && config) {
         createParties();
       }
-    }, [created, userData, config]);
+    }, [created, eventUserData, config]);
 
     return (
       <div className='flex flex-col'>
@@ -101,10 +114,7 @@ const PartyMaker = ({ config, userData, currentDay }) => {
                     <h3 className='text-center text-lg font-WorkSans py-2'>Party {party.id}</h3>
                     {party.members.map((member, memberIndex) => (
                       <div key={memberIndex} className='flex items-center p-2 m-1 border-[1px] border-primary'>
-                        <span>{member.name} - {member.role} </span>
-                        {/* {member.roles.includes('DPS') && <img src={DPS} alt="DPS" className="w-6 h-6 ml-2" />}
-                  {member.roles.includes('Tank') && <img src={TANK} alt="Tank" className="w-6 h-6 ml-2" />}
-                  {member.roles.includes('Healer') && <img src={HEALER} alt="Healer" className="w-6 h-6 ml-2" />} */}
+                        <span>{member.name} - {member.role}</span>
                       </div>
                     ))}
                   </div>

@@ -50,6 +50,8 @@ const AppContent = ({ auth }) => {
   const { guildId } = useParams();
   const [attendance, setAttendance] = useState([]);
   const [userData, setUserData] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [eventUserData, setEventUserData] = useState([]);
   const [config, setConfig] = useState(null);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -122,6 +124,22 @@ const AppContent = ({ auth }) => {
         if (response.data) {
           setUserData(response.data);
         }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+
+    axios.get(`http://localhost:5001/eventdata/${guildId}`, {
+      headers: {
+        'Authorization': `Bearer ${auth.token}`,
+      },
+    })
+      .then(response => {
+        const data = response.data;
+        console.log('Events:', data.events);
+        setEvents(data.events);
+        console.log('Latest Event User Data:', data.latestEventUserData);
+        setEventUserData(data.latestEventUserData);
       })
       .catch(error => {
         console.error(error);
@@ -204,10 +222,10 @@ const AppContent = ({ auth }) => {
           backgroundSize: 'cover',
         }} />
       <Routes>
-        <Route path="/" element={<Home auth={auth} config={config} userData={userData} />} />
+        <Route path="/" element={<Home auth={auth} config={config} userData={userData} events={events} />} />
         <Route
           path="party-maker"
-          element={<PartyMaker auth={auth} config={config} userData={userData} currentDay={currentDay} currentDateRef={currentDateRef} columnClasses={columnClasses} />}
+          element={<PartyMaker auth={auth} config={config} userData={userData} eventUserData={eventUserData} currentDay={currentDay} currentDateRef={currentDateRef} columnClasses={columnClasses} />}
         />
         <Route path="weekly" element={<WeeklyView auth={auth} userData={userData} attendance={attendance} weekDates={weekDates} currentDateRef={currentDateRef} config={config} />} />
       </Routes>
