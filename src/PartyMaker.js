@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-// import DPS from './assets/images/DPS.png';
-// import TANK from './assets/images/TANK.png';
-// import HEALER from './assets/images/HEALER.png';
 
-const PartyMaker = ({ config, userData, eventUserData, currentDay }) => {
+const PartyMaker = ({ config, eventUserData, latestEvent, formatDateTime }) => {
   const [parties, setParties] = useState([]);
   const [unselectedMembers, setUnselectedMembers] = useState([]);
   const [created, setCreated] = useState(false);
+
 
   const createParties = () => {
     console.log('eventUserData:', eventUserData);
@@ -42,7 +40,7 @@ const PartyMaker = ({ config, userData, eventUserData, currentDay }) => {
           teamLeader = teamLeaders.find(member => !usedMembers.has(member.user_id) && member.roles.includes('Medic'));
         }
       }
-      
+
       const medic = medics.find(member => !usedMembers.has(member.user_id));
 
       if (teamLeader && medic) {
@@ -103,10 +101,10 @@ const PartyMaker = ({ config, userData, eventUserData, currentDay }) => {
             <div
               className='flex flex-col justify-start items-center text-white flex-grow border-t-[1px] border-b-[1px] border-primary bg-zinc-900 py-12 h-screen'
             >
-              <h2 className='uppercase text-center text-lg font-WorkSans py-4 border-primary border-b-[1px]'>
-                <span className='text-primary'>
-                  {currentDay.toDateString().slice(0, 3)}
-                </span> {currentDay.toDateString().slice(3)}
+              <h2 className='flex flex-col uppercase text-center text-lg font-WorkSans py-4 border-primary border-b-[1px]'>
+                <span className='text-primary'>{latestEvent ? latestEvent.name : 'No Upcoming Events'}</span>
+                <span>{latestEvent ? `${latestEvent.description}` : ''}</span>
+                <span>{latestEvent ? `${formatDateTime(latestEvent.event_date)}` : ''}</span>
               </h2>
               <div className='grid grid-flow-row grid-cols-1 md:grid-cols-2 bp:grid-cols-3 w-full px-10'>
                 {parties.map((party, partyIndex) => (
@@ -123,10 +121,10 @@ const PartyMaker = ({ config, userData, eventUserData, currentDay }) => {
             </div>
           </div>
         ) : (
-          <div className='flex justify-center px-4 pt-[35vh] bg-zinc-900'>
+          <div className='flex justify-center px-4 pt-[28vh] bg-zinc-900'>
             <button
               onClick={() => setCreated(!created)}
-              className='text-white uppercase font-WorkSans'
+              className='text-white uppercase font-WorkSans transition delay-50 duration-200 ease-in-out hover:text-primary text-2xl'
             >
               Create Parties
             </button>

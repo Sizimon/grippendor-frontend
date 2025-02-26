@@ -78,16 +78,6 @@ const AppContent = ({ auth }) => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-  // const getPageTitle = () => {
-  //   switch (location.pathname) {
-  //     case `/${guildId}/party-maker`:
-  //       return 'Party Maker';
-  //     case `/${guildId}/weekly`:
-  //       return 'Weekly Display';
-  //     default:
-  //       return 'Dashboard';
-  //   }
-  // };
 
   // Hamburger States
   const [menuOpen, setMenuOpen] = useState(false);
@@ -171,6 +161,27 @@ const AppContent = ({ auth }) => {
 
   // END FETCHES
 
+  // EVENT HANDLING
+  const latestEvent = events[events.length - 1];
+  const previousEvent = events[events.length - 2];
+  // END
+
+  // FORMATTING DATES
+  const formatDateTime = (dateString) => {
+    const date = new Date(dateString);
+    const formattedDate = date.toLocaleDateString(undefined, {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+    const formattedTime = date.toLocaleTimeString(undefined, {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+    return `${formattedDate} at ${formattedTime}`;
+  }
+  // END
+
   return (
     <div className='flex flex-col bg-zinc-900'>
       <nav
@@ -222,10 +233,10 @@ const AppContent = ({ auth }) => {
           backgroundSize: 'cover',
         }} />
       <Routes>
-        <Route path="/" element={<Home auth={auth} config={config} userData={userData} events={events} />} />
+        <Route path="/" element={<Home auth={auth} config={config} userData={userData} latestEvent={latestEvent} previousEvent={previousEvent} formatDateTime={formatDateTime} guildId={guildId} />} />
         <Route
           path="party-maker"
-          element={<PartyMaker auth={auth} config={config} userData={userData} eventUserData={eventUserData} currentDay={currentDay} currentDateRef={currentDateRef} columnClasses={columnClasses} />}
+          element={<PartyMaker auth={auth} config={config} userData={userData} eventUserData={eventUserData} latestEvent={latestEvent} formatDateTime={formatDateTime} currentDay={currentDay} currentDateRef={currentDateRef} columnClasses={columnClasses} events={events} />}
         />
         <Route path="weekly" element={<WeeklyView auth={auth} userData={userData} attendance={attendance} weekDates={weekDates} currentDateRef={currentDateRef} config={config} />} />
       </Routes>

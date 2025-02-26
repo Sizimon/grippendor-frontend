@@ -1,13 +1,15 @@
-import React, {useState} from 'react';
-import { Link } from 'react-router-dom'; 
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
-const Home = ({ config, userData, events }) => {
+const Home = ({ config, userData, events, guildId, latestEvent, previousEvent, formatDateTime }) => {
 
   // Most Activity Sorter
   const sortedNames = userData.sort((a, b) => b.counter - a.counter);
   const topAttendance = sortedNames.slice(0, 5);
   // End Most Activity Sorter
+
+  console.log(events)
 
   const CardDetails = [
     {
@@ -20,12 +22,20 @@ const Home = ({ config, userData, events }) => {
       description: 'Recieved most commendations',
     },
     {
-      title: 'Previous Event Results',
-      description: '(Insert Date of Event) TBD',
+      title: previousEvent ? `${previousEvent.name}` : 'No Previous Event',
+      description: previousEvent ? `${previousEvent.description}` : 'No Previous Event',
+      time: `FINISHED EVENT`,
+      debrief: 'DEBRIEF PLACEHOLDER',
     },
     {
-      title: 'Upcoming Event (Insert Time)',
-      description: '(Insert Date of Event) Most Supplies Delivered',
+      title: latestEvent ? `${latestEvent.name}` : 'No Upcoming Event',
+      description: latestEvent ? `MISSION DETAILS: ${latestEvent.description}` : 'No Upcoming Event',
+      time: latestEvent ? formatDateTime(latestEvent.event_date) : 'No Date Available',
+      partymaker: latestEvent && (
+        <Link to={`/${guildId}/party-maker`} className="block uppercase bg-zinc-800 border-[1px] border-zinc-900 hover:border-[1px] hover:border-primary text-white font-bold py-2 px-4 rounded-xl">
+          FORM PARTIES
+        </Link>
+      ),
     },
   ]
 
@@ -40,86 +50,87 @@ const Home = ({ config, userData, events }) => {
               title={card.title}
               description={card.description}
               content={card.content}
+              time={card.time}
+              partymaker={card.partymaker}
             />
           ))}
-        </div>
-        <div className="flex-row justify-center gap-4 hidden bp:flex">
-          <Link to="/party-maker" className="block uppercase bg-zinc-800 border-[1px] border-zinc-900 hover:border-[1px] hover:border-primary text-white font-bold py-2 px-4 rounded-xl">
-            Party Maker
-          </Link>
-          <Link to="/weekly" className="block uppercase bg-zinc-800 border-[1px] border-zinc-900 hover:border-[1px] hover:border-primary text-white font-bold py-2 px-4 rounded-xl">
-            Weekly Display
-          </Link>
         </div>
       </div>
     </div>
   );
 };
 
-const DashboardCard = ({ title, description, content }) => {
+const DashboardCard = ({ title, description, content, time, partymaker }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <motion.div 
-            className='flex flex-col items-center bg-zinc-950 h-[50vh] md:h-[25vh] ap:h-[50vh] 4k:h-[40vh] p-4 m-4 4k:px-[2.5vw] 4k:py-[2.5vh]'
-            style={{
-              boxShadow: '0 0 4px var(--color-primary)',
-            }}
-            onHoverStart={() => setIsHovered(true)}
-            onHoverEnd={() => setIsHovered(false)}
-            animate={isHovered ? {
-              boxShadow: [
-                '0 0 4px var(--color-primary)',
-                '0 0 20px var(--color-primary)',
-                '0 0 10px var(--color-primary)',
-              ],
-            } : {
-              boxShadow: '0 0 4px var(--color-primary)',
-            }}
-            transition={{
-              duration: 3,
-              ease: 'easeInOut',
-              repeat: isHovered ? Infinity : 0,
-              repeatType: 'reverse',
-            }}
-            >
-                <h2 className='font-WorkSans uppercase text-2xl 4k:text-7xl font-bold'>{title}</h2>
-                <p className="font-Roboto font-thin text-base md:text-xl 4k:text-5xl">{description}</p>
-                <div className='flex flex-col items-center justify-center h-full w-full'>
-                {content && (
-                  <ul className='flex flex-col items-center w-full'>
-                    {content.map((member, index) => (
-                      <motion.li 
-                      key={index}
-                      style={{
-                        boxShadow: index === 0 ? '0 0 4px var(--color-primary)' : '0 0 4px white',
-                      }}
-                      whileHover={index !== 0 ? {
-                        boxShadow: '0 0 10px white',
-                      } : {}}
-                      animate={{
-                        boxShadow: index === 0 ? [
-                          '0 0 4px var(--color-primary)',
-                          '0 0 20px var(--color-primary)',
-                          '0 0 10px var(--color-primary)',
-                        ] : null,
-                      }}
-                      transition={{
-                        duration: 1,
-                        ease: 'easeInOut',
-                        repeat: index === 0 ? Infinity : 0,
-                        repeatType: 'reverse',
-                      }}
-                      className='flex flex-row w-full p-2 m-2 justify-between items-start text-sm md:text-base 4k:text-3xl rounded-xl'>
-                        <p>{index + 1}. {member.name}</p>
-                        <p>{member.counter}</p>
-                      </motion.li>
-                    ))}
-                  </ul>
-                )}
-                </div>
-
-            </motion.div>
+    <motion.div
+      className='flex flex-col items-center bg-zinc-950 h-[50vh] md:h-[25vh] ap:h-[50vh] 4k:h-[40vh] p-4 m-4 4k:px-[2.5vw] 4k:py-[2.5vh]'
+      style={{
+        boxShadow: '0 0 4px var(--color-primary)',
+      }}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+      animate={isHovered ? {
+        boxShadow: [
+          '0 0 4px var(--color-primary)',
+          '0 0 20px var(--color-primary)',
+          '0 0 10px var(--color-primary)',
+        ],
+      } : {
+        boxShadow: '0 0 4px var(--color-primary)',
+      }}
+      transition={{
+        duration: 3,
+        ease: 'easeInOut',
+        repeat: isHovered ? Infinity : 0,
+        repeatType: 'reverse',
+      }}
+    >
+      {time && (
+        <p className='font-Roboto font-thin text-base md:text-xl 4k:text-5xl pb-6'>{time}</p>
+      )}
+      <h2 className='font-WorkSans uppercase text-2xl 4k:text-7xl font-bold'>{title}</h2>
+      <p className="font-Roboto font-thin text-base md:text-xl 4k:text-5xl">{description}</p>
+      {partymaker && (
+        <div className='flex items-center justify-center w-full mt-auto'>
+          {partymaker}
+        </div>
+      )}
+      {content && (
+        <div className='flex flex-col items-center justify-center h-full w-full'>
+          <ul className='flex flex-col items-center w-full'>
+            {content.map((member, index) => (
+              <motion.li
+                key={index}
+                style={{
+                  boxShadow: index === 0 ? '0 0 4px var(--color-primary)' : '0 0 4px white',
+                }}
+                whileHover={index !== 0 ? {
+                  boxShadow: '0 0 10px white',
+                } : {}}
+                animate={{
+                  boxShadow: index === 0 ? [
+                    '0 0 4px var(--color-primary)',
+                    '0 0 20px var(--color-primary)',
+                    '0 0 10px var(--color-primary)',
+                  ] : null,
+                }}
+                transition={{
+                  duration: 1,
+                  ease: 'easeInOut',
+                  repeat: index === 0 ? Infinity : 0,
+                  repeatType: 'reverse',
+                }}
+                className='flex flex-row w-full p-2 m-2 justify-between items-start text-sm md:text-base 4k:text-3xl rounded-xl'>
+                <p>{index + 1}. {member.name}</p>
+                <p>{member.counter}</p>
+              </motion.li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </motion.div>
   );
 };
 
