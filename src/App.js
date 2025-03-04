@@ -3,7 +3,7 @@ import axios from 'axios';
 import { BrowserRouter as Router, Route, Routes, Link, useLocation, useParams, Navigate } from 'react-router-dom';
 import Home from './Home';
 import PartyMaker from './PartyMaker';
-import PastEvents from './PastEvents';
+import Events from './Events';
 import Login from './Login';
 import Banner from './assets/images/banner-spf.png';
 import MenuButton from './MenuButton';
@@ -213,7 +213,7 @@ const AppContent = ({ auth }) => {
               <Link to={`/${guildId}/party-maker`} className='text-white transition delay-50 duration-200 ease-in-out hover:text-primary font-WorkSans px-4 py-2'>Party Maker</Link>
             </li>
             <li>
-              <Link to={`/${guildId}/past-events`} className='text-white transition delay-50 duration-200 ease-in-out hover:text-primary font-WorkSans px-4 py-2'>Past Events</Link>
+              <Link to={`/${guildId}/past-events`} className='text-white transition delay-50 duration-200 ease-in-out hover:text-primary font-WorkSans px-4 py-2'>Events</Link>
             </li>
           </ul>
           <div className="py-2">
@@ -223,7 +223,7 @@ const AppContent = ({ auth }) => {
         <div className='hidden bp:flex bp:flex-row gap-4'>
           <Link to={`/${guildId}`} className='text-white transition delay-50 duration-200 ease-in-out hover:text-primary hover:scale-105 text-xl 4k:text-6xl uppercase font-WorkSans px-4'>Dashboard</Link>
           <Link to={`/${guildId}/party-maker`} className='text-white transition delay-50 duration-200 ease-in-out hover:text-primary hover:scale-105 text-xl 4k:text-6xl uppercase font-WorkSans px-4'>Party Maker</Link>
-          <Link to={`/${guildId}/past-events`} className='text-white transition delay-50 duration-200 ease-in-out hover:text-primary hover:scale-105 text-xl 4k:text-6xl uppercase font-WorkSans px-4'>Past Events</Link>
+          <Link to={`/${guildId}/events`} className='text-white transition delay-50 duration-200 ease-in-out hover:text-primary hover:scale-105 text-xl 4k:text-6xl uppercase font-WorkSans px-4'>Events</Link>
         </div>
       </nav>
       <div
@@ -238,7 +238,7 @@ const AppContent = ({ auth }) => {
           path="party-maker"
           element={<PartyMaker auth={auth} config={config} eventUserData={eventUserData} latestEvent={latestEvent} formatDateTime={formatDateTime} columnClasses={columnClasses} events={events} />}
         />
-        <Route path="past-events" element={<PastEvents auth={auth} events={events} formatDateTime={formatDateTime} config={config} />} />
+        <Route path="events" element={<Events auth={auth} events={events} formatDateTime={formatDateTime} config={config} />} />
       </Routes>
     </div>
   );
