@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import Typewriter from './components/TypeWriter';
 
 const PartyMaker = ({ config, eventUserData, latestEvent, formatDateTime }) => {
   const [parties, setParties] = useState([]);
@@ -88,15 +90,67 @@ const PartyMaker = ({ config, eventUserData, latestEvent, formatDateTime }) => {
     setUnselectedMembers(unselected);
   };
 
-    useEffect(() => {
-      if (created === true && eventUserData.length > 0 && config) {
-        createParties();
-      }
-    }, [created, eventUserData, config]);
+  useEffect(() => {
+    if (created === true && eventUserData.length > 0 && config) {
+      createParties();
+    }
+  }, [created, eventUserData, config]);
 
-    return (
-      <div className='flex flex-col'>
+  return (
+    <div className='flex flex-col min-h-screen'>
+      <AnimatePresence>
         {created ? (
+          <motion.div
+            key="created"
+            className='flex flex-col flex-grow'
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.5, ease: 'easeInOut' }}
+          >
+            <div className='flex flex-col justify-start items-center text-white flex-grow bg-zinc-900 py-12 min-h-screen'>
+              <h2 className='flex flex-col uppercase text-center text-lg font-WorkSans py-4 px-12'>
+                <span className='text-primary'>{latestEvent ? latestEvent.name : 'No Upcoming Events'}</span>
+                <span>{latestEvent ? `${latestEvent.summary}` : ''}</span>
+                <span>{latestEvent ? `${formatDateTime(latestEvent.event_date)}` : ''}</span>
+              </h2>
+              <div className='grid grid-flow-row grid-cols-1 md:grid-cols-2 bp:grid-cols-3 w-full px-10'>
+                {parties.map((party, partyIndex) => (
+                  <div key={partyIndex} className='col-span-1 bg-zinc-900 rounded-lg m-4 p-4'>
+                    <h3 className='text-center text-lg font-WorkSans py-2'>Party {party.id}</h3>
+                    {party.members.map((member, memberIndex) => (
+                      <div key={memberIndex} className='flex items-center p-2 m-1'>
+                        <span>{member.name} - {member.role}</span>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="not-created"
+            className='flex flex-col justify-center px-4 h-screen bg-zinc-900'
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.5, ease: 'easeInOut' }}
+          >
+            <div className='flex flex-row justify-center text-white uppercase font-WorkSans text-center'>
+              <h2 className='text-2xl'>Create Squads For&nbsp;</h2>
+              <h2 className='text-primary text-2xl'><Typewriter header={latestEvent.name} /></h2>
+            </div>
+            <button
+              onClick={() => setCreated(!created)}
+              className='text-white uppercase font-WorkSans transition delay-50 duration-200 ease-in-out hover:text-primary text-2xl mt-4'
+            >
+              Create Parties
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      {/* {created ? (
           <div className='flex flex-col'>
             <div
               className='flex flex-col justify-start items-center text-white flex-grow border-t-[1px] border-b-[1px] border-primary bg-zinc-900 py-12 h-screen'
@@ -121,7 +175,11 @@ const PartyMaker = ({ config, eventUserData, latestEvent, formatDateTime }) => {
             </div>
           </div>
         ) : (
-          <div className='flex justify-center px-4 pt-[28vh] bg-zinc-900'>
+          <div className='flex flex-col justify-center px-4 pt-[28vh] bg-zinc-900'>
+            <div className='flex flex-row justify-center text-white uppercase font-WorkSans text-center'>
+              <h2 className='text-2xl'>Create Squads For&nbsp;</h2>
+              <h2 className='text-primary text-2xl'><Typewriter header={latestEvent.name}/></h2>
+            </div>
             <button
               onClick={() => setCreated(!created)}
               className='text-white uppercase font-WorkSans transition delay-50 duration-200 ease-in-out hover:text-primary text-2xl'
@@ -129,8 +187,9 @@ const PartyMaker = ({ config, eventUserData, latestEvent, formatDateTime }) => {
               Create Parties
             </button>
           </div>
-        )}
-        {unselectedMembers.length > 0 && (
+        )} */}
+      {/* {
+        unselectedMembers.length > 0 && (
           <div className='flex flex-col bg-zinc-900 p-4 justify-center items-center'>
             <h2 className='text-primary text-xl font-WorkSans uppercase'>Unselected Role</h2>
             <div className='grid grid-flow-row grid-cols-8'>
@@ -141,9 +200,10 @@ const PartyMaker = ({ config, eventUserData, latestEvent, formatDateTime }) => {
               ))}
             </div>
           </div>
-        )}
-      </div>
-    )
-  }
+        )
+      } */}
+    </div >
+  )
+}
 
-  export default PartyMaker;
+export default PartyMaker;

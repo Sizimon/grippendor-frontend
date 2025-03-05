@@ -136,29 +136,6 @@ const AppContent = ({ auth }) => {
       });
   }, [guildId, auth.token]);
 
-  useEffect(() => {
-    const fetchAttendance = () => {
-      console.log('Fetching attendance...');
-      axios.get(`http://localhost:5001/attendance/${guildId}`, {
-        headers: {
-          'Authorization': `Bearer ${auth.token}`,
-        },
-      })
-        .then(response => {
-          console.log('Attendance fetched:', response.data);
-          setAttendance(response.data);
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    };
-
-    fetchAttendance();
-    const intervalId = setInterval(fetchAttendance, 60000); // Poll every 10 seconds
-
-    return () => clearInterval(intervalId); // Cleanup interval on component unmount
-  }, [guildId, auth.token]);
-
   // END FETCHES
 
   // EVENT HANDLING
@@ -186,7 +163,7 @@ const AppContent = ({ auth }) => {
     <div className='flex flex-col bg-zinc-900'>
       <nav
         className={`${isScrolled ? 'sticky top-0 bg-opacity-60' : 'top-0'
-          } flex items-center justify-between px-4 md:py-[2.5vh] 4k:py-[2.5vh] 4k:px-[2.5vw] bg-zinc-900 w-full transition-all duration-300`}
+          } flex z-30 items-center justify-between px-4 md:py-[2.5vh] 4k:py-[2.5vh] 4k:px-[2.5vw] bg-zinc-900 w-full transition-all duration-300`}
       >
         <div className='text-white uppercase font-WorkSans px-4 text-base md:text-2xl bp:text-4xl 4k:text-8xl'>
           <span className='text-primary'>G</span>uild<span className='text-primary'>T</span>racker

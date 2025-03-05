@@ -14,28 +14,20 @@ const Home = ({ config, userData, events, guildId, latestEvent, previousEvent, f
   const CardDetails = [
     {
       title: 'Most Active',
-      description: 'Most active members. (By events attended)',
+      description: 'Most active members. (WORK IN PROGRESS)',
       content: topAttendance,
     },
     {
-      title: 'Most Commended',
-      description: 'Recieved most commendations',
+      title: 'Most Kills',
+      description: 'Most kills in all events. (WORK IN PROGRESS)',
     },
     {
-      title: previousEvent ? `${previousEvent.name}` : 'No Previous Event',
-      description: previousEvent ? `${previousEvent.description}` : 'No Previous Event',
-      time: `FINISHED EVENT`,
-      debrief: 'DEBRIEF PLACEHOLDER',
+      title: 'Most Teamkills / Civilian Kills',
+      description: 'Most teamkills or civilian kills in all events. (WORK IN PROGRESS)',
     },
     {
-      title: latestEvent ? `${latestEvent.name}` : 'No Upcoming Event',
-      description: latestEvent ? `MISSION DETAILS: ${latestEvent.description}` : 'No Upcoming Event',
-      time: latestEvent ? formatDateTime(latestEvent.event_date) : 'No Date Available',
-      partymaker: latestEvent && (
-        <Link to={`/${guildId}/party-maker`} className="block uppercase bg-zinc-800 border-[1px] border-zinc-900 hover:border-[1px] hover:border-primary text-white font-bold py-2 px-4 rounded-xl">
-          FORM PARTIES
-        </Link>
-      ),
+      title: 'Mission Points Available',
+      description: 'Total Mission Points Available For Missions (WORK IN PROGRESS)',
     },
   ]
 
