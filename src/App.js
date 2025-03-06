@@ -190,7 +190,7 @@ const AppContent = ({ auth }) => {
               <Link to={`/${guildId}/party-maker`} className='text-white transition delay-50 duration-200 ease-in-out hover:text-primary font-WorkSans px-4 py-2'>Party Maker</Link>
             </li>
             <li>
-              <Link to={`/${guildId}/past-events`} className='text-white transition delay-50 duration-200 ease-in-out hover:text-primary font-WorkSans px-4 py-2'>Events</Link>
+              <Link to={`/${guildId}/events`} className='text-white transition delay-50 duration-200 ease-in-out hover:text-primary font-WorkSans px-4 py-2'>Events</Link>
             </li>
           </ul>
           <div className="py-2">

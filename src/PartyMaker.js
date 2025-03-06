@@ -97,7 +97,7 @@ const PartyMaker = ({ config, eventUserData, latestEvent, formatDateTime }) => {
   }, [created, eventUserData, config]);
 
   return (
-    <div className='flex flex-col min-h-screen'>
+    <div className='flex flex-col'>
       <AnimatePresence>
         {created ? (
           <motion.div
@@ -108,30 +108,40 @@ const PartyMaker = ({ config, eventUserData, latestEvent, formatDateTime }) => {
             exit={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.5, ease: 'easeInOut' }}
           >
-            <div className='flex flex-col justify-start items-center text-white flex-grow bg-zinc-900 py-12 min-h-screen'>
-              <h2 className='flex flex-col uppercase text-center text-lg font-WorkSans py-4 px-12'>
-                <span className='text-primary'>{latestEvent ? latestEvent.name : 'No Upcoming Events'}</span>
+            <div className='flex flex-col justify-start items-center text-white flex-grow bg-zinc-900 py-12'>
+              <h2 className='flex flex-col uppercase text-center text-lg font-WorkSans py-12 px-12'>
+                <span className='text-primary text-4xl'>{latestEvent ? latestEvent.name : 'No Upcoming Events'}</span>
                 <span>{latestEvent ? `${latestEvent.summary}` : ''}</span>
                 <span>{latestEvent ? `${formatDateTime(latestEvent.event_date)}` : ''}</span>
               </h2>
               <div className='grid grid-flow-row grid-cols-1 md:grid-cols-2 bp:grid-cols-3 w-full px-10'>
-                {parties.map((party, partyIndex) => (
-                  <div key={partyIndex} className='col-span-1 bg-zinc-900 rounded-lg m-4 p-4'>
-                    <h3 className='text-center text-lg font-WorkSans py-2'>Party {party.id}</h3>
-                    {party.members.map((member, memberIndex) => (
-                      <div key={memberIndex} className='flex items-center p-2 m-1'>
-                        <span>{member.name} - {member.role}</span>
-                      </div>
-                    ))}
+                {parties.length !== 0 ? (
+                  parties.map((party, partyIndex) => (
+                    <div key={partyIndex} className='col-span-1 bg-zinc-900 rounded-lg m-4 p-4'>
+                      <h3 className='text-center text-lg font-WorkSans py-2'>Party {party.id}</h3>
+                      {party.members.map((member, memberIndex) => (
+                        <div key={memberIndex} className='flex items-center p-2 m-1'>
+                          <span>{member.name} - {member.role}</span>
+                        </div>
+                      ))}
+                    </div>
+                  ))
+                ) : (
+                  <div className='col-span-1 md:col-span-2 bp:col-span-3 text-center text-lg font-WorkSans py-4'>
+                    <h2 className='uppercase text-primary text-2xl'>You do not have enough available members to create a party.</h2>
+                    <button
+                    className='transition delay-50 duration-200 ease-in-out hover:text-primary'
+                    onClick={() => setCreated(!created)}
+                    >GO BACK</button>
                   </div>
-                ))}
+                )}
               </div>
             </div>
           </motion.div>
         ) : (
           <motion.div
             key="not-created"
-            className='flex flex-col justify-center px-4 h-screen bg-zinc-900'
+            className='flex flex-col justify-center items-center px-4 bg-zinc-900 py-44'
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
@@ -150,58 +160,6 @@ const PartyMaker = ({ config, eventUserData, latestEvent, formatDateTime }) => {
           </motion.div>
         )}
       </AnimatePresence>
-      {/* {created ? (
-          <div className='flex flex-col'>
-            <div
-              className='flex flex-col justify-start items-center text-white flex-grow border-t-[1px] border-b-[1px] border-primary bg-zinc-900 py-12 h-screen'
-            >
-              <h2 className='flex flex-col uppercase text-center text-lg font-WorkSans py-4 border-primary border-b-[1px]'>
-                <span className='text-primary'>{latestEvent ? latestEvent.name : 'No Upcoming Events'}</span>
-                <span>{latestEvent ? `${latestEvent.description}` : ''}</span>
-                <span>{latestEvent ? `${formatDateTime(latestEvent.event_date)}` : ''}</span>
-              </h2>
-              <div className='grid grid-flow-row grid-cols-1 md:grid-cols-2 bp:grid-cols-3 w-full px-10'>
-                {parties.map((party, partyIndex) => (
-                  <div key={partyIndex} className='col-span-1 bg-zinc-900 rounded-lg m-4 p-4'>
-                    <h3 className='text-center text-lg font-WorkSans py-2'>Party {party.id}</h3>
-                    {party.members.map((member, memberIndex) => (
-                      <div key={memberIndex} className='flex items-center p-2 m-1 border-[1px] border-primary'>
-                        <span>{member.name} - {member.role}</span>
-                      </div>
-                    ))}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className='flex flex-col justify-center px-4 pt-[28vh] bg-zinc-900'>
-            <div className='flex flex-row justify-center text-white uppercase font-WorkSans text-center'>
-              <h2 className='text-2xl'>Create Squads For&nbsp;</h2>
-              <h2 className='text-primary text-2xl'><Typewriter header={latestEvent.name}/></h2>
-            </div>
-            <button
-              onClick={() => setCreated(!created)}
-              className='text-white uppercase font-WorkSans transition delay-50 duration-200 ease-in-out hover:text-primary text-2xl'
-            >
-              Create Parties
-            </button>
-          </div>
-        )} */}
-      {/* {
-        unselectedMembers.length > 0 && (
-          <div className='flex flex-col bg-zinc-900 p-4 justify-center items-center'>
-            <h2 className='text-primary text-xl font-WorkSans uppercase'>Unselected Role</h2>
-            <div className='grid grid-flow-row grid-cols-8'>
-              {unselectedMembers.map(member => (
-                <div key={member.name} className='bg-zinc-800 rounded-lg m-4 p-2 row-span-4 text-center'>
-                  <span className='text-white'>{member.name}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )
-      } */}
     </div >
   )
 }
