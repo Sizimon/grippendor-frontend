@@ -2,8 +2,9 @@ import React from 'react';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Typewriter from './components/TypeWriter';
+const moment = require('moment');
 
-const PastEvents = ({ events, formatDateTime }) => {
+const Events = ({ events, formatDateTime }) => {
   const [showUpcoming, setShowUpcoming] = useState(true);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -57,11 +58,10 @@ const PastEvents = ({ events, formatDateTime }) => {
                 backgroundPosition: 'center',
                 backgroundSize: 'cover',
               }}>
-              {console.log(event)}
               <div className='absolute inset-0 bg-black opacity-50 rounded-lg'></div> {/* Overlay */}
               <div className='relative flex flex-col justify-center items-center flex-grow'>
                 <div className='flex flex-col justify-center items-center py-4'>
-                  <p>{formatDateTime(event.event_date)}</p>
+                  <p>{formatDateTime(moment(event.event_date).unix())}</p>
                   <h1 className='text-xl md:text-4xl font-bold text-primary text-center uppercase'>{event.name}</h1>
                   <h2 className='text-lg'>{event.type}</h2>
                 </div>
@@ -104,7 +104,7 @@ const PastEvents = ({ events, formatDateTime }) => {
               exit={{ scale: 0.8 }}
             >
               <div className='flex flex-col items-center pb-4'>
-                <p>{formatDateTime(selectedEvent.event_date)}</p>
+                <p>{formatDateTime(moment(selectedEvent.event_date).unix())}</p>
                 <h2 className='text-2xl font-bold'>{selectedEvent.name}</h2>
                 <h3 className='text-lg'>{selectedEvent.type}</h3>
               </div>
@@ -112,7 +112,7 @@ const PastEvents = ({ events, formatDateTime }) => {
                 <div className='flex flex-col items-center p-6'>
                   <p className='mb-4'>{selectedEvent.description}</p>
                 </div>
-                <div className='grid grid-flow-row grid-cols-1 md:grid-cols-3 justify-center items-center w-full p-6'>
+                {/* <div className='grid grid-flow-row grid-cols-1 md:grid-cols-3 justify-center items-center w-full p-6'>
                   {typeof selectedEvent.image_urls === 'string' && JSON.parse(selectedEvent.image_urls).map((url, index) => (
                     <img
                       key={index}
@@ -121,6 +121,20 @@ const PastEvents = ({ events, formatDateTime }) => {
                       className='shadow-lg cursor-pointer col-span-1 h-full w-full object-cover p-2'
                       onClick={() => handleImageClick(url)} />
                   ))}
+                </div> */}
+                <div className='grid grid-flow-row grid-cols-1 md:grid-cols-3 justify-center items-center w-full p-6'>
+                  {typeof selectedEvent.image_urls === 'string' && JSON.parse(selectedEvent.image_urls).length > 0 ? (
+                    JSON.parse(selectedEvent.image_urls).map((url, index) => (
+                      <img
+                        key={index}
+                        src={url}
+                        alt={`Event image ${index + 1}`}
+                        className='shadow-lg cursor-pointer col-span-1 h-full w-full object-cover p-2'
+                        onClick={() => handleImageClick(url)} />
+                    ))
+                  ) : (
+                    <p className='text-white col-span-3 text-4xl'>No Images Available</p>
+                  )}
                 </div>
               </div>
               {selectedEvent.debrief && <p className='mb-4'>{selectedEvent.debrief}</p>}
@@ -158,4 +172,4 @@ const PastEvents = ({ events, formatDateTime }) => {
   );
 };
 
-export default PastEvents;
+export default Events;

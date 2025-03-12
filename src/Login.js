@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
 import Hero from './assets/images/HeroImage.webp';
 
 const Login = ({ setAuth }) => {
@@ -14,19 +13,20 @@ const Login = ({ setAuth }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5001/login', { guildId, password }, {
+      const response = await axios.post('https://szymonsamus.dev/bot-backend/login', { guildId, password }, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
       if (response.data.success) {
         setAuth({ guildId, token: response.data.token });
-        navigate(`/${guildId}`);
+        navigate(`/bot-dashboard/${guildId}`);
       } else {
         setError('Invalid guildId or password');
       }
     } catch (err) {
-      setError('An error occurred. Please try again.');
+      console.error('Login error:', err);
+      setError(`Error: ${err.response ? err.response.data.message : err.message}`);
     }
   };
 
@@ -40,7 +40,7 @@ const Login = ({ setAuth }) => {
       }}>
       <form
         onSubmit={handleLogin}
-        className='p-2 xs:p-8 w-[80vw] md:w-[50vw] ap:w-[30vw] 4k:h-[30vh] 4k:w-[20vw] bg rounded-lg shadow-lg bg-zinc-900 bg-opacity-80 justify-center items-start flex flex-col gap-4'
+        className='p-2 xs:p-8 w-[80vw] md:w-[50vw] ap:w-[30vw] 4k:h-[30vh] 4k:w-[20vw] shadow-lg bg-zinc-900 bg-opacity-90 justify-center items-start flex flex-col gap-4'
       >
         <h2 className='font-WorkSans text-2xl xs:text-4xl md:text-5xl bp:text-6xl ap:text-6xl 4k:text-9xl text-white self-center py-[2vh]'><span className="text-teal-300">G</span>uild<span className='text-teal-300'>T</span>racker</h2>
         {error && <p className="error">{error}</p>}
@@ -48,10 +48,10 @@ const Login = ({ setAuth }) => {
           <label className='text-white text-xs xs:text-base md:text-xl bp:text-2xl 4k:text-6xl'>Guild ID</label>
           <input
             type="text"
-            className='p-2 w-full bg-zinc-900 bg-opacity-75 rounded-full outline-none text-white text-xs xs:text-base md:text-xl bp:text-2xl 4k:text-6xl placeholder-zinc-400'
+            className='p-2 w-full bg-zinc-800 bg-opacity-75 rounded-full outline-none text-white text-xs xs:text-base md:text-xl bp:text-2xl 4k:text-6xl placeholder-zinc-400'
             value={guildId}
             onChange={(e) => setGuildId(e.target.value)}
-            placeholder='Enter your Guild ID'
+            placeholder='GuildID'
             title='Copy your discord server ID and use it as your guild ID to login.'
             required />
         </div>
@@ -59,10 +59,10 @@ const Login = ({ setAuth }) => {
           <label className='text-white text-xs xs:text-base md:text-xl bp:text-2xl 4k:text-6xl'>Password</label>
           <input
             type="password"
-            className='p-2 w-full bg-zinc-900 bg-opacity-75 rounded-full outline-none text-white text-xs xs:text-base md:text-xl bp:text-2xl 4k:text-6xl placeholder-zinc-400'
+            className='p-2 w-full bg-zinc-800 bg-opacity-75 rounded-full outline-none text-white text-xs xs:text-base md:text-xl bp:text-2xl 4k:text-6xl placeholder-zinc-400'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder='Enter your password'
+            placeholder='Password'
             title='Use the password provided during bot setup to login, or contact your server admin for the password.'
             required />
         </div>

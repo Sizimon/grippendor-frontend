@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Typewriter from './components/TypeWriter';
+const moment = require('moment');
 
 const PartyMaker = ({ config, eventUserData, latestEvent, formatDateTime }) => {
   const [parties, setParties] = useState([]);
@@ -112,7 +113,7 @@ const PartyMaker = ({ config, eventUserData, latestEvent, formatDateTime }) => {
               <h2 className='flex flex-col uppercase text-center text-lg font-WorkSans py-12 px-12'>
                 <span className='text-primary text-4xl'>{latestEvent ? latestEvent.name : 'No Upcoming Events'}</span>
                 <span>{latestEvent ? `${latestEvent.summary}` : ''}</span>
-                <span>{latestEvent ? `${formatDateTime(latestEvent.event_date)}` : ''}</span>
+                <span>{latestEvent ? formatDateTime(moment(latestEvent.event_date).unix()) : ''}</span>
               </h2>
               <div className='grid grid-flow-row grid-cols-1 md:grid-cols-2 bp:grid-cols-3 w-full px-10'>
                 {parties.length !== 0 ? (
