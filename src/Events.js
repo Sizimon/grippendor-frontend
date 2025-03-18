@@ -112,16 +112,6 @@ const Events = ({ events, formatDateTime }) => {
                 <div className='flex flex-col items-center p-6'>
                   <p className='mb-4'>{selectedEvent.description}</p>
                 </div>
-                {/* <div className='grid grid-flow-row grid-cols-1 md:grid-cols-3 justify-center items-center w-full p-6'>
-                  {typeof selectedEvent.image_urls === 'string' && JSON.parse(selectedEvent.image_urls).map((url, index) => (
-                    <img
-                      key={index}
-                      src={url}
-                      alt={`Event image ${index + 1}`}
-                      className='shadow-lg cursor-pointer col-span-1 h-full w-full object-cover p-2'
-                      onClick={() => handleImageClick(url)} />
-                  ))}
-                </div> */}
                 <div className='grid grid-flow-row grid-cols-1 md:grid-cols-3 justify-center items-center w-full p-6'>
                   {typeof selectedEvent.image_urls === 'string' && JSON.parse(selectedEvent.image_urls).length > 0 ? (
                     JSON.parse(selectedEvent.image_urls).map((url, index) => (

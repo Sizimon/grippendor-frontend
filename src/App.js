@@ -38,6 +38,7 @@ const AppContent = ({ auth, setAuth }) => {
   const [eventUserData, setEventUserData] = useState([]);
   const [config, setConfig] = useState(null);
   const [isScrolled, setIsScrolled] = useState(false);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -57,6 +58,22 @@ const AppContent = ({ auth, setAuth }) => {
   // Hamburger States
   const [menuOpen, setMenuOpen] = useState(false);
   const [active, setActive] = useState(false);
+
+  // TRIAL WIP (NOT TESTED CHANGES!!!) -----------------------------------------
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setMenuOpen(false);
+        setActive(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [menuOpen, active]);
+  // END Hamburger States -------------------------------------------------------
 
   // FETCHES 
 
@@ -155,7 +172,7 @@ const AppContent = ({ auth, setAuth }) => {
             setActive={setActive}
           />
         </div>
-        <div id="dropdown" className={`absolute top-10 md:top-16 right-4 z-10 ${!menuOpen ? 'hidden' : 'block'} bg-zinc-900 divide-y divide-gray-100 shadow-sm w-44`}>
+        <div ref={dropdownRef} id="dropdown" className={`absolute top-10 md:top-16 right-4 z-10 ${!menuOpen ? 'hidden' : 'block'} bg-zinc-900 divide-y divide-gray-100 shadow-sm w-44`}>
           <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
             <div className='font-WorkSans uppercase'>Logged in as:</div>
             <div className="font-medium font-WorkSans truncate text-primary">{config ? `${config.title}` : 'GuildTracker'}</div>
