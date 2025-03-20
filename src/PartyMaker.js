@@ -10,6 +10,11 @@ const PartyMaker = ({ config, eventUserData, latestEvent, formatDateTime }) => {
 
 
   const createParties = () => {
+    if (!latestEvent || !eventUserData) {
+      console.warn('No events or user data available.');
+      return;
+    }
+
     console.log('eventUserData:', eventUserData);
     const teamLeaders = eventUserData.filter(member => member.roles && member.roles.includes('Team Leader'));
     const medics = eventUserData.filter(member => member.roles && member.roles.includes('Medic'));
@@ -97,6 +102,19 @@ const PartyMaker = ({ config, eventUserData, latestEvent, formatDateTime }) => {
     }
   }, [created, eventUserData, config]);
 
+
+  // CONDITIONAL COMPONENT IF EVENTS DATA IS EMPTY (TO PREVENT CRASH)
+  const NoEvents = () => {
+    <div className='flex flex-col justify-center items-center px-4 bg-zinc-900 py-44'>
+        <h1 className='text-white text-2xl'>No events currently exist.</h1>
+      </div>
+  }
+
+  if (!latestEvent || !eventUserData) {
+    return <NoEvents />;
+  }
+  // END !!!
+
   return (
     <div className='flex flex-col'>
       <AnimatePresence>
@@ -131,8 +149,8 @@ const PartyMaker = ({ config, eventUserData, latestEvent, formatDateTime }) => {
                   <div className='col-span-1 md:col-span-2 bp:col-span-3 text-center text-lg font-WorkSans py-4'>
                     <h2 className='uppercase text-primary text-2xl'>You do not have enough available members to create a party.</h2>
                     <button
-                    className='transition delay-50 duration-200 ease-in-out hover:text-primary'
-                    onClick={() => setCreated(!created)}
+                      className='transition delay-50 duration-200 ease-in-out hover:text-primary'
+                      onClick={() => setCreated(!created)}
                     >GO BACK</button>
                   </div>
                 )}
