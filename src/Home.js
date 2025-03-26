@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
-const Home = ({ userData, events }) => {
+const Home = ({ userData, events, config }) => {
 
   // Most Activity Sorter
   const sortedNames = userData.sort((a, b) => b.counter - a.counter);

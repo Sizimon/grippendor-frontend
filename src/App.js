@@ -162,7 +162,7 @@ const AppContent = ({ auth, setAuth }) => {
           } flex z-30 items-center justify-between px-4 md:py-[2.5vh] 4k:py-[2.5vh] 4k:px-[2.5vw] bg-zinc-900 w-full transition-all duration-300`}
       >
         <div className='text-white uppercase font-WorkSans px-4 text-base md:text-2xl bp:text-4xl 4k:text-8xl'>
-          <span className='text-primary'>G</span>uild<span className='text-primary'>T</span>racker
+          {config.icon ? <img src={config.icon}/> : <span><span className='text-primary'>G</span>uild<span className='text-primary'>T</span>racker</span>}
         </div>
         <div className='bp:hidden flex justify-center items-center'>
           <MenuButton
