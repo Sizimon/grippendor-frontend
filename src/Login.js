@@ -42,7 +42,7 @@ const Login = ({ setAuth }) => {
         onSubmit={handleLogin}
         className='p-2 xs:p-8 w-[80vw] md:w-[50vw] ap:w-[30vw] 4k:h-[30vh] 4k:w-[20vw] shadow-lg bg-zinc-900 bg-opacity-90 justify-center items-start flex flex-col gap-4'
       >
-        <h2 className='font-WorkSans text-2xl xs:text-4xl md:text-5xl bp:text-6xl ap:text-6xl 4k:text-9xl text-white self-center py-[2vh]'><span className="text-teal-300">G</span>uild<span className='text-teal-300'>T</span>racker</h2>
+        <h2 className='font-WorkSans text-2xl xs:text-4xl md:text-5xl bp:text-6xl ap:text-6xl 4k:text-9xl text-white self-center py-[2vh]'><span className="text-teal-300">G</span>ripendor<span className='text-teal-300'>B</span>ot</h2>
         {error && <p className="error">{error}</p>}
         <div className='w-full flex flex-col items-start justify-between'>
           <label className='text-white text-xs xs:text-base md:text-xl bp:text-2xl 4k:text-6xl'>Guild ID</label>
