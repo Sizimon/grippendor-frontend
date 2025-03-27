@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Route, Routes, Link, useLocation, useParams, Navigate, useNavigate } from 'react-router-dom';
-import Home from './Home';
-import PartyMaker from './PartyMaker';
-import Events from './Events';
-import Login from './Login';
 import Banner from './assets/images/banner-spf.png';
-import MenuButton from './MenuButton';
+import { MenuButton, Typewriter, Footer } from './components';
+import { Login, Home, Events, PartyMaker } from './pages';
+
 
 function App() {
   const [auth, setAuth] = useState(null);
@@ -39,6 +37,15 @@ const AppContent = ({ auth, setAuth }) => {
   const [config, setConfig] = useState(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const dropdownRef = useRef(null);
+
+  const pageTitles = {
+    '/': 'DASHBOARD',
+    '/party-maker': 'PARTY MAKER',
+    '/events': 'EVENTS'
+  };
+
+  // Get the current page title based on the path
+  const currentPage = pageTitles[location.pathname.replace(`/bot-dashboard/${guildId}`, '')] || 'Dashboard';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -163,15 +170,15 @@ const AppContent = ({ auth, setAuth }) => {
       >
         <div className='text-white uppercase font-WorkSans px-4 text-base md:text-2xl bp:text-4xl 4k:text-8xl'>
           {config?.icon ? (
-            <img 
+            <img
               src={config.icon}
               alt="Guild Icon"
-              className='h-[10vh] max-w-[100%]' />
-           ) : (
-           <span>
-            <span className='text-primary'>G</span>ripendor
-            <span className='text-primary'>B</span>ot
-          </span>
+              className='h-[6vh] bp:h-[10vh] max-w-full' />
+          ) : (
+            <span>
+              <span className='text-primary'>G</span>ripendor
+              <span className='text-primary'>B</span>ot
+            </span>
           )}
         </div>
         <div className='bp:hidden flex justify-center items-center'>
@@ -200,9 +207,9 @@ const AppContent = ({ auth, setAuth }) => {
             </li>
           </ul>
           <div className="py-2">
-            <p 
-            className="px-4 py-2 text-sm font-WorkSans uppercase text-zinc-200 hover:text-primary"
-            onClick={() => handleSignOut()}
+            <p
+              className="px-4 py-2 text-sm font-WorkSans uppercase text-zinc-200 hover:text-primary"
+              onClick={() => handleSignOut()}
             >Sign out</p>
           </div>
         </div>
@@ -213,11 +220,13 @@ const AppContent = ({ auth, setAuth }) => {
         </div>
       </nav>
       <div
-        className='h-[20vh] ap:h-[30vh]'
+        className='h-[20vh] ap:h-[30vh] flex items-center justify-center text-primary text-4xl md:text-6xl bp:text-8xl 4k:text-10xl font-bold'
         style={{
           backgroundImage: `url(${Banner})`,
           backgroundSize: 'cover',
-        }} />
+        }}>
+        <Typewriter header={currentPage} />
+      </div>
       <Routes>
         <Route path="/" element={<Home auth={auth} config={config} userData={userData} latestEvent={latestEvent} previousEvent={previousEvent} formatDateTime={formatDateTime} guildId={guildId} />} />
         <Route
@@ -226,6 +235,7 @@ const AppContent = ({ auth, setAuth }) => {
         />
         <Route path="events" element={<Events auth={auth} events={events} formatDateTime={formatDateTime} config={config} />} />
       </Routes>
+      <Footer />
     </div>
   );
 };

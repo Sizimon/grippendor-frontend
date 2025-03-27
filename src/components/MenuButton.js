@@ -1,5 +1,4 @@
 // THIS IS A ANIMATED HAMBURGER MENU BUTTON COMPONENT
-
 import React, {useState} from "react";
 import { motion, MotionConfig } from "framer-motion";
 

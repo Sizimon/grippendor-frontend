@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Typewriter from './components/TypeWriter';
+import Typewriter from '../components/TypeWriter';
 const moment = require('moment');
 
 const PartyMaker = ({ config, eventUserData, latestEvent, formatDateTime }) => {
