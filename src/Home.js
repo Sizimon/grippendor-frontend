@@ -6,7 +6,7 @@ const Home = ({ config }) => {
     <div className="flex flex-col items-center justify-center h-full bg-zinc-900 text-white py-[5vh]">
       <div
         className="bg-zinc-900 px-[1vw] md:px-[2vw] md:py-[2vh] text-center w-[100vw] md:w-[80vw]">
-        <div className='grid grid-flow-row grid-cols-1 md:grid-cols-2'>
+        <div className='grid grid-flow-row grid-cols-1'>
           <DashboardCard
             config={config}
           />
