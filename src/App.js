@@ -166,7 +166,7 @@ const AppContent = ({ auth, setAuth }) => {
             <img 
               src={config.icon}
               alt="Guild Icon"
-              className='h-10vh max-w-[100%]' />
+              className='h-[10vh] max-w-[100%]' />
            ) : (
            <span>
             <span className='text-primary'>G</span>ripendor
