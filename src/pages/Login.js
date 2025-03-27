@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Hero from './assets/images/HeroImage.webp';
+import Hero from '../assets/images/HeroImage.webp';
 
 const Login = ({ setAuth }) => {
   const [guildId, setGuildId] = useState('');
