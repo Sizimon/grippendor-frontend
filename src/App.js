@@ -163,7 +163,10 @@ const AppContent = ({ auth, setAuth }) => {
       >
         <div className='text-white uppercase font-WorkSans px-4 text-base md:text-2xl bp:text-4xl 4k:text-8xl'>
           {config?.icon ? (
-            <img src={config.icon} alt="Guild Icon" />
+            <img 
+              src={config.icon}
+              alt="Guild Icon"
+              className='h-10vh max-w-[100%]' />
            ) : (
            <span>
             <span className='text-primary'>G</span>ripendor
