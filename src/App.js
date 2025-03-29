@@ -181,36 +181,42 @@ const AppContent = ({ auth, setAuth }) => {
             </span>
           )}
         </div>
-        <div className='bp:hidden flex justify-center items-center'>
-          <MenuButton
-            menuOpen={menuOpen}
-            setMenuOpen={setMenuOpen}
-            active={active}
-            setActive={setActive}
-          />
-        </div>
-        <div ref={dropdownRef} id="dropdown" className={`absolute top-10 md:top-16 right-4 z-10 ${!menuOpen ? 'hidden' : 'block'} bg-zinc-900 divide-y divide-gray-100 shadow-sm w-44`}>
-          <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-            <div className='font-WorkSans uppercase'>Logged in as:</div>
-            <div className="font-medium font-WorkSans truncate text-primary">{config ? `${config.title}` : 'GuildTracker'}</div>
-            <div className="text-xs truncate text-primary">{guildId}</div>
+        <div ref={dropdownRef} className='relative'> 
+          <div className='bp:hidden flex justify-center items-center'>
+            <MenuButton
+              menuOpen={menuOpen}
+              setMenuOpen={setMenuOpen}
+              active={active}
+              setActive={setActive}
+            />
           </div>
-          <ul className="py-2 text-sm text-zinc-200" aria-labelledby="dropdownInformationButton">
-            <li>
-              <Link to={`/bot-dashboard/${guildId}`} className='text-white transition delay-50 duration-200 ease-in-out hover:text-primary font-WorkSans px-4 py-2 uppercase'>Dashboard</Link>
-            </li>
-            <li>
-              <Link to={`/bot-dashboard/${guildId}/party-maker`} className='text-white transition delay-50 duration-200 ease-in-out hover:text-primary font-WorkSans px-4 py-2 uppercase'>Party Maker</Link>
-            </li>
-            <li>
-              <Link to={`/bot-dashboard/${guildId}/events`} className='text-white transition delay-50 duration-200 ease-in-out hover:text-primary font-WorkSans px-4 py-2 uppercase'>Events</Link>
-            </li>
-          </ul>
-          <div className="py-2">
-            <p
-              className="px-4 py-2 text-sm font-WorkSans uppercase text-zinc-200 hover:text-primary"
-              onClick={() => handleSignOut()}
-            >Sign out</p>
+          <div 
+          id="dropdown" 
+          className={`absolute top-10 md:top-16 right-4 z-10 ${
+            !menuOpen ? 'hidden' : 'block'} bg-zinc-900 divide-y divide-gray-100 shadow-sm w-44`}
+            >
+            <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
+              <div className='font-WorkSans uppercase'>Logged in as:</div>
+              <div className="font-medium font-WorkSans truncate text-primary">{config ? `${config.title}` : 'GuildTracker'}</div>
+              <div className="text-xs truncate text-primary">{guildId}</div>
+            </div>
+            <ul className="py-2 text-sm text-zinc-200" aria-labelledby="dropdownInformationButton">
+              <li>
+                <Link to={`/bot-dashboard/${guildId}`} className='text-white transition delay-50 duration-200 ease-in-out hover:text-primary font-WorkSans px-4 py-2 uppercase'>Dashboard</Link>
+              </li>
+              <li>
+                <Link to={`/bot-dashboard/${guildId}/party-maker`} className='text-white transition delay-50 duration-200 ease-in-out hover:text-primary font-WorkSans px-4 py-2 uppercase'>Party Maker</Link>
+              </li>
+              <li>
+                <Link to={`/bot-dashboard/${guildId}/events`} className='text-white transition delay-50 duration-200 ease-in-out hover:text-primary font-WorkSans px-4 py-2 uppercase'>Events</Link>
+              </li>
+            </ul>
+            <div className="py-2">
+              <p
+                className="px-4 py-2 text-sm font-WorkSans uppercase text-zinc-200 hover:text-primary"
+                onClick={() => handleSignOut()}
+              >Sign out</p>
+            </div>
           </div>
         </div>
         <div className='hidden bp:flex bp:flex-row gap-4'>
