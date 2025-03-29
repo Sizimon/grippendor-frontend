@@ -13,7 +13,8 @@ function MenuButton({menuOpen, setMenuOpen, active, setActive}) {
         >
             <motion.button 
                 className="relative w-8 h-8 md:w-12 md:h-12"
-                onClick={() => {
+                onClick={(event) => {
+                    event.stopPropagation(); // Stops the mousedown event from propagating which was causing menu to close than reopen (TEST)
                     setActive(!active);
                     setMenuOpen(!menuOpen);
                 }}
