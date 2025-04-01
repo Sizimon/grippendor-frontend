@@ -94,11 +94,11 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth }) => {
   const currentEvents = events.filter(event => !event.debrief);
 
   // State for selected event
-  const [selectedEvent, setSelectedEvent] = useState(currentEvents[0]);
+  const [selectedEvent, setSelectedEvent] = useState(currentEvents.length > 0 ? currentEvents[0] : null);
 
   const handleEventChange = (event) => {
     const selectedEventId = event.target.value;
-    const eventDetails = currentEvents.find(e => e.d === selectedEventId);
+    const eventDetails = currentEvents.find(e => e.id === selectedEventId);
     setSelectedEvent(eventDetails);
   }
 
