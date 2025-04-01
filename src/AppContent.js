@@ -55,7 +55,7 @@ const AppContent = ({ auth, setAuth }) => {
           headers: { Authorization: `Bearer ${auth.token}` },
         });
         setEvents(eventsResponse.data);
-        console.log(events.data);
+        console.log(eventsResponse.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }

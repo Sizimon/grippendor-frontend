@@ -4,6 +4,7 @@ import MenuButton from './MenuButton';
 
 const NavigationBar = ({ config, guildId, isScrolled, handleSignOut }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [active, setActive] = useState(false);
   const dropdownRef = useRef(null);
 
   // Close dropdown when clicking outside
@@ -33,7 +34,7 @@ const NavigationBar = ({ config, guildId, isScrolled, handleSignOut }) => {
       </div>
       <div ref={dropdownRef} className="relative">
         <div className="bp:hidden flex justify-center items-center">
-          <MenuButton menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+          <MenuButton menuOpen={menuOpen} setMenuOpen={setMenuOpen} active={active} setActive={setActive} />
         </div>
         <div
           id="dropdown"
