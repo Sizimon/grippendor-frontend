@@ -10,6 +10,7 @@ const NoEvents = () => {
     <h1 className='text-white text-2xl'>No events currently exist.</h1>
   </div>
 }
+// ---
 
 // Sub-Component: Event Selection Dropdown
 const EventSelection = ({ currentEvents, selectedEvent, handleEventChange, formatDateTime }) => (
@@ -29,6 +30,7 @@ const EventSelection = ({ currentEvents, selectedEvent, handleEventChange, forma
     </select>
   </div>
 );
+// ---
 
 // Sub-Component: Party List
 const PartyList = ({ parties }) => (
@@ -51,6 +53,8 @@ const PartyList = ({ parties }) => (
     )}
   </div>
 );
+// ---
+
 
 const PartyMaker = ({ events, formatDateTime, guildId, auth }) => {
   const [parties, setParties] = useState([]);
@@ -102,7 +106,7 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth }) => {
     setSelectedEvent(eventDetails);
   }
 
-
+  // Revamp in future to take premade presets that users declare.
   const createParties = (event) => {
     if (!event || !eventUserData) {
       console.warn('No event selected or user data available.');
