@@ -66,6 +66,7 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth }) => {
 
   // Fetches the event user data whenever the user selects a new event from the list.
   useEffect(() => {
+    console.log('Selected Event:', selectedEvent);
     if (selectedEvent) {
       fetchEventUserData(selectedEvent.id);
     }
