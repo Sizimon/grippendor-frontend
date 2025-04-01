@@ -45,7 +45,7 @@ const AppContent = ({ auth, setAuth }) => {
   };
 
   // Get the current page title based on the path
-  const currentPage = pageTitles[location.pathname.replace(`/bot-dashboard/${guildId}`, '')] || 'Dashboard';
+  const currentPage = pageTitles[location.pathname.replace(`/bot-dashboard/${guildId}`, '')] || 'DASHBOARD';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -127,8 +127,6 @@ const AppContent = ({ auth, setAuth }) => {
         const data = response.data;
         console.log('Events:', data.events);
         setEvents(data.events);
-        console.log('Latest Event User Data:', data.latestEventUserData);
-        setEventUserData(data.latestEventUserData);
       })
       .catch(error => {
         console.error(error);
@@ -138,8 +136,8 @@ const AppContent = ({ auth, setAuth }) => {
   // END FETCHES
 
   // EVENT HANDLING
-  const latestEvent = events[events.length - 1];
-  const previousEvent = events[events.length - 2];
+  // const latestEvent = events[events.length - 1];
+  // const previousEvent = events[events.length - 2];
   // END
 
   // FORMATTING DATES
@@ -234,10 +232,10 @@ const AppContent = ({ auth, setAuth }) => {
         <Typewriter header={currentPage} />
       </div>
       <Routes>
-        <Route path="/" element={<Home auth={auth} config={config} userData={userData} latestEvent={latestEvent} previousEvent={previousEvent} formatDateTime={formatDateTime} guildId={guildId} />} />
+        <Route path="/" element={<Home auth={auth} config={config} userData={userData} formatDateTime={formatDateTime} guildId={guildId} />} />
         <Route
           path="party-maker"
-          element={<PartyMaker auth={auth} config={config} eventUserData={eventUserData} latestEvent={latestEvent} formatDateTime={formatDateTime} events={events} />}
+          element={<PartyMaker auth={auth} config={config} eventUserData={eventUserData} formatDateTime={formatDateTime} events={events} guildId={guildId} />}
         />
         <Route path="events" element={<Events auth={auth} events={events} formatDateTime={formatDateTime} config={config} />} />
       </Routes>

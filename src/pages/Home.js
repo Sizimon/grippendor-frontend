@@ -59,6 +59,7 @@ const DashboardCard = ({ config }) => {
       <div className='flex flex-col py-3'>
         <h2 className='text-xl bp:text-2xl md:text-3xl 4k:text-6xl text-primary'>Planned Features</h2>
         <ol className='list-decimal list-inside tracking-wider text-base bp:text-lg md:text-xl'>
+          <li>Dynamic Party Making | Allow users to create their own partymaking presets.</li>
           <li>Stat Tracking | Ability for the bot to track player statistics given a specific setup.</li>
           <li>Warthunder Integration | Plans to add Warthunder tracking functionality.</li>
         </ol>
