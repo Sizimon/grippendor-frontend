@@ -83,7 +83,7 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth }) => {
       );
       setEventUserData(response.data.eventUserData);
     } catch (error) {
-      console.error('Error fetching event user data:', err);
+      console.error('Error fetching event user data:', error);
       setError('Failed to fetch event user data.');
     } finally {
       setLoading(false);
