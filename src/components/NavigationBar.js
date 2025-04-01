@@ -12,6 +12,7 @@ const NavigationBar = ({ config, guildId, isScrolled, handleSignOut }) => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setMenuOpen(false);
+        setActive(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);

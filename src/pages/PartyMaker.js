@@ -14,11 +14,11 @@ const NoEvents = () => {
 
 // Sub-Component: Event Selection Dropdown
 const EventSelection = ({ currentEvents, selectedEvent, handleEventChange, formatDateTime }) => (
-  <div className="flex flex-row justify-center text-white uppercase font-WorkSans text-center">
+  <div className="flex flex-col justify-center text-white uppercase font-WorkSans text-center">
     <label htmlFor="event-select" className="block text-2xl mb-2">Select Event</label>
     <select
       id="event-select"
-      className="bg-zinc-800 text-white p-2 rounded"
+      className="bg-zinc-800 text-white p-2 rounded mb-4 text-center"
       value={selectedEvent?.id || ''}
       onChange={handleEventChange}
     >
@@ -60,9 +60,11 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth }) => {
   const [parties, setParties] = useState([]);
   const [unselectedMembers, setUnselectedMembers] = useState([]);
   const [created, setCreated] = useState(false);
-  const [eventUserData, setEventUserData] = useState(null); 
+  const [eventUserData, setEventUserData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const [isHovered, setIsHovered] = useState(false);
 
   console.log(events)
   // Filter events with no debrief (Events that have not finished)
@@ -105,7 +107,7 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth }) => {
   };
 
   const handleEventChange = (event) => {
-    const selectedEventId = event.target.value;
+    const selectedEventId = Number(event.target.value);
     const eventDetails = currentEvents.find(e => e.id === selectedEventId);
     setSelectedEvent(eventDetails);
   }
@@ -234,7 +236,7 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth }) => {
             exit={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.5, ease: 'easeInOut' }}
           >
-            <EventSelection 
+            <EventSelection
               currentEvents={currentEvents}
               selectedEvent={selectedEvent}
               handleEventChange={handleEventChange}
@@ -243,11 +245,30 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth }) => {
             {loading && <p className="text-white">Loading event user data...</p>}
             {error && <p className="text-red-500">{error}</p>}
             {selectedEvent && eventUserData && (
-              <div className='mb-4'>
+              <motion.div
+                className='flex flex-col justify-center items-center bg-zinc-950 text-white p-6 mb-4'
+                onHoverStart={() => setIsHovered(true)}
+                onHoverEnd={() => setIsHovered(false)}
+                animate={isHovered ? {
+                  boxShadow: [
+                    '0 0 4px var(--color-primary)',
+                    '0 0 20px var(--color-primary)',
+                    '0 0 10px var(--color-primary)',
+                  ],
+                } : {
+                  boxShadow: '0 0 4px var(--color-primary)',
+                }}
+                transition={{
+                  duration: 3,
+                  ease: 'easeInOut',
+                  repeat: isHovered ? Infinity : 0,
+                  repeatType: 'reverse',
+                }}
+              >
                 <h2 className="text-xl font-bold">{selectedEvent.name}</h2>
                 <p>{formatDateTime(moment(selectedEvent.event_date).unix())}</p>
                 <p>{selectedEvent.summary}</p>
-              </div>
+              </motion.div>
             )}
             <button
               onClick={() => createParties(selectedEvent)}
