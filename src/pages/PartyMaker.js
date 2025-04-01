@@ -96,13 +96,13 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth }) => {
   };
 
   // Filter events with no debrief (Events that have not finished)
-  const currentEvents = events.filter(event => !event.debrief);
+  const currentEvents = events.filter(event => !event.debrief || !event.debried === '');
 
   // State for selected event
   const [selectedEvent, setSelectedEvent] = useState(currentEvents.length > 0 ? currentEvents[0] : null);
 
   const handleEventChange = (event) => {
-    const selectedEventId = event.target.value;
+    const selectedEventId = Number(event.target.value); // change back if doesnt work
     const eventDetails = currentEvents.find(e => e.id === selectedEventId);
     setSelectedEvent(eventDetails);
   }
