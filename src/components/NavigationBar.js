@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { MenuButton } from './MenuButton';
+import MenuButton from './MenuButton';
 
 const NavigationBar = ({ config, guildId, isScrolled, handleSignOut }) => {
   const [menuOpen, setMenuOpen] = useState(false);
