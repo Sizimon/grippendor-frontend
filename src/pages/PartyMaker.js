@@ -64,6 +64,15 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  console.log(events)
+  // Filter events with no debrief (Events that have not finished)
+  const currentEvents = events.filter(event => !event.debrief || !event.debried === '');
+  console.log(currentEvents);
+
+  // State for selected event
+  const [selectedEvent, setSelectedEvent] = useState(currentEvents.length > 0 ? currentEvents[0] : null);
+  console.log(selectedEvent);
+
   // Fetches the event user data whenever the user selects a new event from the list.
   useEffect(() => {
     console.log('Selected Event:', selectedEvent);
@@ -95,14 +104,8 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth }) => {
     }
   };
 
-  // Filter events with no debrief (Events that have not finished)
-  const currentEvents = events.filter(event => !event.debrief || !event.debried === '');
-
-  // State for selected event
-  const [selectedEvent, setSelectedEvent] = useState(currentEvents.length > 0 ? currentEvents[0] : null);
-
   const handleEventChange = (event) => {
-    const selectedEventId = Number(event.target.value); // change back if doesnt work
+    const selectedEventId = event.target.value;
     const eventDetails = currentEvents.find(e => e.id === selectedEventId);
     setSelectedEvent(eventDetails);
   }
