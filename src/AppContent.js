@@ -54,8 +54,8 @@ const AppContent = ({ auth, setAuth }) => {
         const eventsResponse = await axios.get(`https://szymonsamus.dev/bot-backend/eventdata/${guildId}`, {
           headers: { Authorization: `Bearer ${auth.token}` },
         });
-        setEvents(eventsResponse.data.events);
-        console.log(events);
+        setEvents(eventsResponse.data);
+        console.log(events.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
