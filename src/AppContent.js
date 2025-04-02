@@ -13,6 +13,7 @@ const AppContent = ({ auth, setAuth }) => {
   // State variables
   const [userData, setUserData] = useState([]);
   const [events, setEvents] = useState([]);
+  const [presets, setPresets] = useState([]);
   const [config, setConfig] = useState(null);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -56,6 +57,12 @@ const AppContent = ({ auth, setAuth }) => {
           headers: { Authorization: `Bearer ${auth.token}` },
         });
         setEvents(eventsResponse.data);
+
+        // Fetch presets
+        const presetsResponse = await axios.get(`https://szymonsamus.dev/bot-backend/presets/${guildId}`, {
+          headers: { Authorization: `Bearer ${auth.token}` },
+        });
+        setPresets(presetsResponse.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -114,7 +121,7 @@ const AppContent = ({ auth, setAuth }) => {
         />
         <Route
           path="party-maker"
-          element={<PartyMaker auth={auth} config={config} events={events} formatDateTime={formatDateTime} guildId={guildId} />}
+          element={<PartyMaker auth={auth} config={config} events={events} presets={presets} formatDateTime={formatDateTime} guildId={guildId} />}
         />
         <Route
           path="events"

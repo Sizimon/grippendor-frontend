@@ -19,7 +19,7 @@ const EventCard = ({ event, formatDateTime, handleEventClick }) => (
       <div className='flex flex-col justify-center items-center py-4'>
         <p>{formatDateTime(moment(event.event_date).unix())}</p>
         <h1 className='text-xl md:text-4xl font-bold text-primary text-center uppercase'>{event.name}</h1>
-        <h2 className='text-lg'>{event.type}</h2>
+        <h2 className='text-lg'>{event.game_name}</h2>
       </div>
       <div className='flex justify-center items-center'>
         <p className='text-white'>

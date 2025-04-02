@@ -49,7 +49,7 @@ const PartyList = ({ parties }) => (
 // ---
 
 
-const PartyMaker = ({ events, formatDateTime, guildId, auth }) => {
+const PartyMaker = ({ events, formatDateTime, guildId, auth, presets }) => {
   const [parties, setParties] = useState([]);
   const [unselectedMembers, setUnselectedMembers] = useState([]);
   const [created, setCreated] = useState(false);
@@ -58,7 +58,11 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth }) => {
   const [error, setError] = useState(null);
 
   const [isHovered, setIsHovered] = useState(false);
-  
+
+  // Preset states
+  const [filteredPresets, setFilteredPresets] = useState([]);
+  const [selectedPreset, setSelectedPreset] = useState(null);
+
   // Filter events with no debrief (Events that have not finished)
   const currentEvents = events.filter(event => !event.debrief || !event.debried === '');
   console.log(currentEvents);
@@ -71,9 +75,15 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth }) => {
   useEffect(() => {
     console.log('Selected Event:', selectedEvent);
     if (selectedEvent) {
+      const matchingPresets = presets.filter(preset => preset.game_role_id === selectedEvent.game_name);
+      setFilteredPresets(matchingPresets);
       fetchEventUserData(selectedEvent.id);
     }
-  }, [selectedEvent]);
+  }, [selectedEvent, presets]);
+
+  const handlePresetSelect = (preset) => {
+    setSelectedPreset(preset);
+  };
 
   // API to communicate with backend and fetch eventUserData
   const fetchEventUserData = async (eventId) => {
@@ -106,89 +116,126 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth }) => {
 
   // Revamp in future to take premade presets that users declare.
   const createParties = (event) => {
-    if (!event || !eventUserData) {
-      console.warn('No event selected or user data available.');
+    if (!event || !eventUserData || !selectedPreset) {
+      console.warn('No event, user data or preset selected.');
       return;
     }
 
-    console.log('eventUserData:', eventUserData);
-    const teamLeaders = eventUserData.filter(member => member.roles && member.roles.includes('Team Leader'));
-    const medics = eventUserData.filter(member => member.roles && member.roles.includes('Medic'));
-    const fillers = eventUserData.filter(member => member.roles && ['Engineer', 'Rifleman', 'Grenadier', 'Autorifleman', 'Marksman'].some(role => member.roles.includes(role)));
-    const unselected = eventUserData.filter(member => !member.roles || (!member.roles.includes('Team Leader') && !member.roles.includes('Medic') && !['Engineer', 'Grenadier', 'Rifleman', 'Autorifleman', 'Marksman'].some(role => member.roles.includes(role))));
-
+    const { roles } = selectedPreset.data;
     const newParties = [];
     const usedMembers = new Set();
 
-    const removeFromAllArrays = (member) => {
-      const removeFromArray = (array, member) => {
-        const index = array.findIndex(m => m.user_id === member.user_id);
-        if (index !== -1) {
-          array.splice(index, 1);
-        }
-      };
-      removeFromArray(teamLeaders, member);
-      removeFromArray(medics, member);
-      removeFromArray(fillers, member);
-    };
+    const getMembersForRole = (roleId, count) => {
+      const members = eventUserData.filter(
+        (member) => !usedMembers.has(member.user_id) && member.roles && member.roles.includes(roleId)
+      );
+      return member.slice(0, count);
+    }
 
-    while (teamLeaders.length >= 1 && medics.length >= 1 && fillers.length >= 2) {
+    while (true) {
       const partyMembers = [];
+      let canFormParty = true;
 
-      let teamLeader = teamLeaders.find(member => !usedMembers.has(member.user_id) && !member.roles.includes('Medic'));
-      if (!teamLeader) {
-        if (medics.length > 1) {
-          teamLeader = teamLeaders.find(member => !usedMembers.has(member.user_id) && member.roles.includes('Medic'));
-        }
-      }
-
-      const medic = medics.find(member => !usedMembers.has(member.user_id));
-
-      if (teamLeader && medic) {
-        usedMembers.add(teamLeader.user_id);
-        removeFromAllArrays(teamLeader);
-        partyMembers.push({ ...teamLeader, role: 'Team Leader' });
-
-        usedMembers.add(medic.user_id);
-        removeFromAllArrays(medic);
-        partyMembers.push({ ...medic, role: 'Medic' });
-
-        const filler1 = fillers.find(member => !usedMembers.has(member.user_id));
-        if (filler1) {
-          usedMembers.add(filler1.user_id);
-          removeFromAllArrays(filler1);
-          const filler1Role = filler1.roles.find(role => ['Engineer', 'Rifleman', 'Grenadier', 'Autorifleman', 'Marksman'].includes(role));
-          partyMembers.push({ ...filler1, role: filler1Role });
-        }
-
-        const filler2 = fillers.find(member => !usedMembers.has(member.user_id));
-        if (filler2) {
-          usedMembers.add(filler2.user_id);
-          removeFromAllArrays(filler2);
-          const filler2Role = filler2.roles.find(role => ['Engineer', 'Rifleman', 'Grenadier', 'Autorifleman', 'Marksman'].includes(role));
-          partyMembers.push({ ...filler2, role: filler2Role });
-        }
-
-        console.log(usedMembers);
-
-        if (partyMembers.length === 4) {
-          const party = {
-            id: newParties.length + 1,
-            members: partyMembers
-          };
-          newParties.push(party);
+      roles.forEach(({ roleId, roleName, count }) => {
+        const members = getMembersForRole(roleId, count);
+        if (members.length < count) {
+          canFormParty = false;
         } else {
-          break;
+          members.forEach((member) => {
+            usedMembers.add(member.user_id);
+            partyMembers.push({ ...member, role: roleName });
+          });
         }
-      } else {
-        break;
-      }
+      });
+
+      if (!canFormParty) break;
+
+      newParties.push({
+        id: newParties.length + 1,
+        members: partyMembers,
+      });
     }
 
     setParties(newParties);
-    setUnselectedMembers(unselected);
+    setUnselectedMembers(eventUserData.filter((member) => !usedMembers.has(member.user_id)));
     setCreated(!created);
   };
+
+  //   console.log('eventUserData:', eventUserData);
+  //   const teamLeaders = eventUserData.filter(member => member.roles && member.roles.includes('Team Leader'));
+  //   const medics = eventUserData.filter(member => member.roles && member.roles.includes('Medic'));
+  //   const fillers = eventUserData.filter(member => member.roles && ['Engineer', 'Rifleman', 'Grenadier', 'Autorifleman', 'Marksman'].some(role => member.roles.includes(role)));
+  //   const unselected = eventUserData.filter(member => !member.roles || (!member.roles.includes('Team Leader') && !member.roles.includes('Medic') && !['Engineer', 'Grenadier', 'Rifleman', 'Autorifleman', 'Marksman'].some(role => member.roles.includes(role))));
+
+  //   const removeFromAllArrays = (member) => {
+  //     const removeFromArray = (array, member) => {
+  //       const index = array.findIndex(m => m.user_id === member.user_id);
+  //       if (index !== -1) {
+  //         array.splice(index, 1);
+  //       }
+  //     };
+  //     removeFromArray(teamLeaders, member);
+  //     removeFromArray(medics, member);
+  //     removeFromArray(fillers, member);
+  //   };
+
+  //   while (teamLeaders.length >= 1 && medics.length >= 1 && fillers.length >= 2) {
+  //     const partyMembers = [];
+
+  //     let teamLeader = teamLeaders.find(member => !usedMembers.has(member.user_id) && !member.roles.includes('Medic'));
+  //     if (!teamLeader) {
+  //       if (medics.length > 1) {
+  //         teamLeader = teamLeaders.find(member => !usedMembers.has(member.user_id) && member.roles.includes('Medic'));
+  //       }
+  //     }
+
+  //     const medic = medics.find(member => !usedMembers.has(member.user_id));
+
+  //     if (teamLeader && medic) {
+  //       usedMembers.add(teamLeader.user_id);
+  //       removeFromAllArrays(teamLeader);
+  //       partyMembers.push({ ...teamLeader, role: 'Team Leader' });
+
+  //       usedMembers.add(medic.user_id);
+  //       removeFromAllArrays(medic);
+  //       partyMembers.push({ ...medic, role: 'Medic' });
+
+  //       const filler1 = fillers.find(member => !usedMembers.has(member.user_id));
+  //       if (filler1) {
+  //         usedMembers.add(filler1.user_id);
+  //         removeFromAllArrays(filler1);
+  //         const filler1Role = filler1.roles.find(role => ['Engineer', 'Rifleman', 'Grenadier', 'Autorifleman', 'Marksman'].includes(role));
+  //         partyMembers.push({ ...filler1, role: filler1Role });
+  //       }
+
+  //       const filler2 = fillers.find(member => !usedMembers.has(member.user_id));
+  //       if (filler2) {
+  //         usedMembers.add(filler2.user_id);
+  //         removeFromAllArrays(filler2);
+  //         const filler2Role = filler2.roles.find(role => ['Engineer', 'Rifleman', 'Grenadier', 'Autorifleman', 'Marksman'].includes(role));
+  //         partyMembers.push({ ...filler2, role: filler2Role });
+  //       }
+
+  //       console.log(usedMembers);
+
+  //       if (partyMembers.length === 4) {
+  //         const party = {
+  //           id: newParties.length + 1,
+  //           members: partyMembers
+  //         };
+  //         newParties.push(party);
+  //       } else {
+  //         break;
+  //       }
+  //     } else {
+  //       break;
+  //     }
+  //   }
+
+  //   setParties(newParties);
+  //   setUnselectedMembers(unselected);
+  //   setCreated(!created);
+  // };
 
   if (!events) {
     return <NoEvents />;
@@ -257,11 +304,54 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth }) => {
                 <h2 className="text-xl font-bold">{selectedEvent.name}</h2>
                 <p>{formatDateTime(moment(selectedEvent.event_date).unix())}</p>
                 <p>{selectedEvent.summary}</p>
+                {filteredPresets.length > 0 ? (
+                  <div className="flex flex-col items-center text-white mt-4">
+                    <h3 className="text-lg font-bold">Available Presets</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                      {filteredPresets.map((preset) => {
+                        let roles = [];
+                        try {
+                          roles = JSON.parse(preset.data)?.roles || [];
+                        } catch (error) {
+                          console.error('Failed to parse roles:', error);
+                        }
+
+                        return (
+                          <div
+                            key={preset.id}
+                            className={`p-4 rounded-lg cursor-pointer ${selectedPreset?.id === preset.id ? 'bg-primary' : 'bg-zinc-800'}`}
+                            onClick={() => handlePresetSelect(preset)}
+                          >
+                            <h4 className="text-center font-semibold">{preset.preset_name}</h4>
+                            <p className="text-sm text-center">Party Size: {preset.party_size}</p>
+                            <p className="text-sm text-center">Roles: </p>
+                            <ul className='text-sm text-center'>
+                              {roles.map((role, index) => (
+                                <li key={index}
+                                  className="text-sm text-center">
+                                  {role.roleName} : {role.count}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center text-white mt-4">
+                    <h3 className="text-lg font-bold">No Presets Available</h3>
+                    <p className="text-sm text-center mt-2">
+                      You can create a preset using the Discord bot. Use the command <code>/create-preset</code> to get started.
+                    </p>
+                  </div>
+                )}
               </motion.div>
             )}
             <button
               onClick={() => createParties(selectedEvent)}
               className='text-white uppercase font-WorkSans transition delay-50 duration-200 ease-in-out hover:text-primary text-2xl mt-4'
+              disabled={!selectedPreset}
             >
               Create Parties For Selected Event
             </button>
