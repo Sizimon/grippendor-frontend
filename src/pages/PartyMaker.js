@@ -246,7 +246,7 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth }) => {
             {error && <p className="text-red-500">{error}</p>}
             {selectedEvent && eventUserData && (
               <motion.div
-                className='flex flex-col justify-center items-center bg-zinc-950 text-white p-6 mb-4'
+                className='flex flex-col justify-center items-center bg-zinc-950 text-white p-12 mb-4 rounded-lg'
                 onHoverStart={() => setIsHovered(true)}
                 onHoverEnd={() => setIsHovered(false)}
                 animate={isHovered ? {
