@@ -15,24 +15,12 @@ const NoEvents = () => {
 // Sub-Component: Event Selection Dropdown
 const EventSelection = ({ currentEvents, selectedEvent, handleEventChange, formatDateTime }) => (
   <div className="flex flex-col justify-center text-white uppercase font-WorkSans text-center">
-    <CustomDropdown 
-      formatDateTime={formatDateTime}
-      options={currentEvents} 
+    <CustomDropdown
+      options={currentEvents}
       selectedOption={selectedEvent}
-      onOptionSelect={(option) => handleEventChange({ target: {value:option.id} })}/>
-    {/* <label htmlFor="event-select" className="block text-2xl mb-2">Select Event</label>
-    <select
-      id="event-select"
-      className="bg-zinc-800 text-white p-2 rounded mb-4 text-center"
-      value={selectedEvent?.id || ''}
-      onChange={handleEventChange}
-    >
-      {currentEvents.map(event => (
-        <option key={event.id} value={event.id}>
-          {event.name} - {formatDateTime(moment(event.event_date).unix())}
-        </option>
-      ))}
-    </select> */}
+      onOptionSelect={handleEventChange}
+      formatDateTime={formatDateTime}
+    />
   </div>
 );
 // ---
@@ -70,8 +58,7 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth }) => {
   const [error, setError] = useState(null);
 
   const [isHovered, setIsHovered] = useState(false);
-
-  console.log(events)
+  
   // Filter events with no debrief (Events that have not finished)
   const currentEvents = events.filter(event => !event.debrief || !event.debried === '');
   console.log(currentEvents);
@@ -112,9 +99,9 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth }) => {
   };
 
   const handleEventChange = (event) => {
-    const selectedEventId = Number(event.target.value);
-    const eventDetails = currentEvents.find(e => e.id === selectedEventId);
-    setSelectedEvent(eventDetails);
+    // const selectedEventId = Number(event.target.value);
+    // const eventDetails = currentEvents.find(e => e.id === selectedEventId);
+    setSelectedEvent(event);
   }
 
   // Revamp in future to take premade presets that users declare.
@@ -130,9 +117,6 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth }) => {
     const fillers = eventUserData.filter(member => member.roles && ['Engineer', 'Rifleman', 'Grenadier', 'Autorifleman', 'Marksman'].some(role => member.roles.includes(role)));
     const unselected = eventUserData.filter(member => !member.roles || (!member.roles.includes('Team Leader') && !member.roles.includes('Medic') && !['Engineer', 'Grenadier', 'Rifleman', 'Autorifleman', 'Marksman'].some(role => member.roles.includes(role))));
 
-    console.log(teamLeaders)
-    console.log(medics)
-    console.log(fillers)
     const newParties = [];
     const usedMembers = new Set();
 
