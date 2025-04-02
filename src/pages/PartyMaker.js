@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
-import { customDropdown } from '../components';
+import { CustomDropdown } from '../components';
 const moment = require('moment');
 
 // Sub-Component: No Events Message
@@ -15,7 +15,7 @@ const NoEvents = () => {
 // Sub-Component: Event Selection Dropdown
 const EventSelection = ({ currentEvents, selectedEvent, handleEventChange, formatDateTime }) => (
   <div className="flex flex-col justify-center text-white uppercase font-WorkSans text-center">
-    <customDropdown 
+    <CustomDropdown 
       formatDateTime={formatDateTime}
       options={currentEvents} 
       selectedOption={selectedEvent}
