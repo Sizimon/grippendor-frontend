@@ -129,7 +129,7 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth, presets }) => {
       const members = eventUserData.filter(
         (member) => !usedMembers.has(member.user_id) && member.roles && member.roles.includes(roleId)
       );
-      return member.slice(0, count);
+      return members.slice(0, count);
     }
 
     while (true) {
