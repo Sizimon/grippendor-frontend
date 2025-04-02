@@ -12,7 +12,7 @@ const Typewriter = ({ header }) => {
   let cumulativeDelay = 0; // Initialize cumulative delay
 
   return (
-    <h2 className='text-start'>
+    <h2 key={header} className='text-start'>
       {words.map((word, wordIndex) => (
         <span key={wordIndex} className='inline-block mr-1'>
           {word.split('').map((letter, letterIndex) => {

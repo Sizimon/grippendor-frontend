@@ -103,7 +103,7 @@ const AppContent = ({ auth, setAuth }) => {
           backgroundSize: 'cover',
         }}
       >
-        <TypewriterShort header={currentPage} className="text-primary text-4xl uppercase" />
+        <TypewriterShort key={currentPage} header={currentPage} className="text-primary text-4xl uppercase" />
       </div>
 
       {/* Routes */}
