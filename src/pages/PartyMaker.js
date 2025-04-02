@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Typewriter } from '../components';
+import { customDropdown } from '../components';
 const moment = require('moment');
 
 // Sub-Component: No Events Message
@@ -15,7 +15,12 @@ const NoEvents = () => {
 // Sub-Component: Event Selection Dropdown
 const EventSelection = ({ currentEvents, selectedEvent, handleEventChange, formatDateTime }) => (
   <div className="flex flex-col justify-center text-white uppercase font-WorkSans text-center">
-    <label htmlFor="event-select" className="block text-2xl mb-2">Select Event</label>
+    <customDropdown 
+      formatDateTime={formatDateTime}
+      options={currentEvents} 
+      selectedOption={selectedEvent}
+      onOptionSelect={(option) => handleEventChange({ target: {value:option.id} })}/>
+    {/* <label htmlFor="event-select" className="block text-2xl mb-2">Select Event</label>
     <select
       id="event-select"
       className="bg-zinc-800 text-white p-2 rounded mb-4 text-center"
@@ -27,7 +32,7 @@ const EventSelection = ({ currentEvents, selectedEvent, handleEventChange, forma
           {event.name} - {formatDateTime(moment(event.event_date).unix())}
         </option>
       ))}
-    </select>
+    </select> */}
   </div>
 );
 // ---
