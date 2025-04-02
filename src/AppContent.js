@@ -23,6 +23,7 @@ const AppContent = ({ auth, setAuth }) => {
     '/events': 'EVENTS',
   };
   const currentPage = pageTitles[location.pathname.replace(`/bot-dashboard/${guildId}`, '')] || 'DASHBOARD';
+  console.log(currentPage)
 
   // Handle scroll event for sticky navigation
   useEffect(() => {
@@ -102,7 +103,7 @@ const AppContent = ({ auth, setAuth }) => {
           backgroundSize: 'cover',
         }}
       >
-        <Typewriter header={currentPage} className="text-primary text-4xl" />
+        <TypewriterShort header={currentPage} className="text-primary text-4xl uppercase" />
       </div>
 
       {/* Routes */}
