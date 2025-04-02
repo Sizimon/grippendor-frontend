@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { TypewriterLong } from '../components';
+import { Typewriter } from '../components';
 const moment = require('moment');
 
 // Sub-Component: Event Card
@@ -23,7 +23,7 @@ const EventCard = ({ event, formatDateTime, handleEventClick }) => (
       </div>
       <div className='flex justify-center items-center'>
         <p className='text-white'>
-          <TypewriterLong header={event.summary}/>
+          <Typewriter header={event.summary}/>
         </p>
       </div>
       <div className='flex mt-auto'>
