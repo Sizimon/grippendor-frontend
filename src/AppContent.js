@@ -102,7 +102,7 @@ const AppContent = ({ auth, setAuth }) => {
           backgroundSize: 'cover',
         }}
       >
-        <Typewriter header={currentPage} className="text-primary" />
+        <Typewriter header={currentPage} className="text-primary text-4xl" />
       </div>
 
       {/* Routes */}

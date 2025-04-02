@@ -23,7 +23,7 @@ const EventCard = ({ event, formatDateTime, handleEventClick }) => (
       </div>
       <div className='flex justify-center items-center'>
         <p className='text-white'>
-          <Typewriter header={event.summary} />
+          <Typewriter header={event.summary} className='text-white text-lg' />
         </p>
       </div>
       <div className='flex mt-auto'>
