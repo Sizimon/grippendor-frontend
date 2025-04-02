@@ -22,7 +22,7 @@ const EventCard = ({ event, formatDateTime, handleEventClick }) => (
         <h2 className='text-lg'>{event.type}</h2>
       </div>
       <div className='flex justify-center items-center'>
-        <p className='text-xl'>
+        <p className='text-white'>
           <Typewriter header={event.summary} />
         </p>
       </div>

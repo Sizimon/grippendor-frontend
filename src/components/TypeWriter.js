@@ -1,13 +1,13 @@
 import { motion } from 'framer-motion';
 
-const LETTER_DELAY = 0.05;
-const BOX_FADE_DURATION = 0.1;
+const LETTER_DELAY = 0.125;
+const BOX_FADE_DURATION = 0.125;
 
 const Typewriter = ({ header }) => {
 
   return (
     <h2
-      className='text-primary font-Roboto uppercase text-4xl md:text-5xl 4k:text-8xl text-center m-auto'
+      className='font-Roboto uppercase text-4xl md:text-5xl 4k:text-8xl text-center m-auto'
     >
       {header.split('').map((letter, index) => {
         return (
