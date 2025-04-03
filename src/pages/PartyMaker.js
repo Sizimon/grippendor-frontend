@@ -70,7 +70,6 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth, presets }) => {
 
   // State for selected event
   const [selectedEvent, setSelectedEvent] = useState(currentEvents.length > 0 ? currentEvents[0] : null);
-  fetchEventUserData(selectedEvent?.id);
 
   // Fetches the event user data whenever the user selects a new event from the list.
   useEffect(() => {
