@@ -101,6 +101,7 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth, presets }) => {
         }
       );
       setEventUserData(response.data.eventUserData);
+      console.log(eventUserData);
     } catch (error) {
       console.error('Error fetching event user data:', error);
       setError('Failed to fetch event user data.');
