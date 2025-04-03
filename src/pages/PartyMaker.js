@@ -129,7 +129,7 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth, presets }) => {
     const newParties = [];
     const usedMembers = new Set();
 
-    const getMembersForRole = (roleId, count) => {
+    const getMembersForRole = (roleName, count) => {
       if (!eventUserData || !Array.isArray(eventUserData)) {
         console.warn('Invalid event user data:', eventUserData);
         return [];
@@ -141,15 +141,15 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth, presets }) => {
           return false;
         }
 
-        const hasRole = member.roles.includes(roleId);
+        const hasRole = member.roles.includes(roleName);
         if (!hasRole) {
-          console.log(`Member ${member.name} does not have roleId ${roleId}`);
+          console.log(`Member ${member.name} does not have roleName ${roleName}`);
         }
 
         return !usedMembers.has(member.user_id) && hasRole;
       });
 
-      console.log(`Filtered members for roleId ${roleId}:`, members);
+      console.log(`Filtered members for role name ${roleName}:`, members);
       return members.slice(0, count);
 
     }
@@ -158,8 +158,8 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth, presets }) => {
       const partyMembers = [];
       let canFormParty = true;
 
-      roles.forEach(({ roleId, roleName, count }) => {
-        const members = getMembersForRole(roleId, count);
+      roles.forEach(({ roleName, count }) => {
+        const members = getMembersForRole(roleName, count);
         if (members.length < count) {
           canFormParty = false;
         } else {
