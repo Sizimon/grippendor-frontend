@@ -311,7 +311,8 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth, presets }) => {
                       {filteredPresets.map((preset) => {
                         let roles = [];
                         try {
-                          roles = JSON.parse(preset.data)?.roles || [];
+                          const data = typeof preset.data === 'string' ? JSON.parse(preset.data) : preset.data;
+                          roles = data?.roles || [];
                         } catch (error) {
                           console.error('Failed to parse roles:', error);
                         }
