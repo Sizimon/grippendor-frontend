@@ -124,6 +124,7 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth, presets }) => {
     }
 
     const { roles } = selectedPreset.data;
+    console.log('Roles:', roles);
     const newParties = [];
     const usedMembers = new Set();
 
@@ -131,6 +132,7 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth, presets }) => {
       const members = eventUserData.filter(
         (member) => !usedMembers.has(member.user_id) && member.roles && member.roles.includes(roleId)
       );
+      console.log(members)
       return members.slice(0, count);
     }
 
@@ -145,7 +147,10 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth, presets }) => {
         } else {
           members.forEach((member) => {
             usedMembers.add(member.user_id);
+            console.log('Member added to usedMembers:', member);
             partyMembers.push({ ...member, role: roleName });
+            console.log('Party member:', member);
+            console.log('Party members:', partyMembers);
           });
         }
       });
@@ -159,6 +164,7 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth, presets }) => {
     }
 
     setParties(newParties);
+    console.log('Created Party:', newParties);
     setUnselectedMembers(eventUserData.filter((member) => !usedMembers.has(member.user_id)));
     setCreated(!created);
   };
