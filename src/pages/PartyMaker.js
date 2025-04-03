@@ -130,11 +130,28 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth, presets }) => {
     const usedMembers = new Set();
 
     const getMembersForRole = (roleId, count) => {
-      const members = eventUserData.filter(
-        (member) => !usedMembers.has(member.user_id) && member.roles && member.roles.includes(roleId)
-      );
-      console.log(members)
+      if (!eventUserData || !Array.isArray(eventUserData)) {
+        console.warn('Invalid event user data:', eventUserData);
+        return [];
+      }
+
+      const members = eventUserData.filter((member) => {
+        if (!member.roles || !Array.isArray(member.roles)) {
+          console.warn('Invalid member roles:', member);
+          return false;
+        }
+
+        const hasRole = member.roles.includes(roleId);
+        if (!hasRole) {
+          console.log(`Member ${member.name} does not have roleId ${roleId}`);
+        }
+
+        return !usedMembers.has(member.user_id) && hasRole;
+      });
+
+      console.log(`Filtered members for roleId ${roleId}:`, members);
       return members.slice(0, count);
+
     }
 
     while (true) {
