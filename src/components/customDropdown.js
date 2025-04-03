@@ -13,10 +13,10 @@ const CustomDropdown = ({ options, selectedOption, onOptionSelect, formatDateTim
         <div className='relative inline-blow w-64'>
             {/* Dropdown Button */}
             <div 
-                className='bg-zinc-800 text-white p-3 rounded cursor-pointer'
+                className='bg-zinc-950 text-white p-3 rounded cursor-pointer transition delay-50 duration-200 ease-in-out hover:bg-zinc-800'
                 onClick={() => setIsOpen(!isOpen)}
             >
-                {selectedOption ? selectedOption.name : 'Select and option'}
+                {selectedOption ? selectedOption.name : 'Select an option'}
             </div>
             {/* Dropdown Options */}
             {isOpen && (

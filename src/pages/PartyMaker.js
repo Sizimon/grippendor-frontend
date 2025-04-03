@@ -14,7 +14,8 @@ const NoEvents = () => {
 
 // Sub-Component: Event Selection Dropdown
 const EventSelection = ({ currentEvents, selectedEvent, handleEventChange, formatDateTime }) => (
-  <div className="flex flex-col justify-center text-white uppercase font-WorkSans text-center">
+  <div className="flex flex-col justify-center text-white uppercase font-WorkSans text-center mb-4">
+    <h2 className="text-white text-3xl border-b-primary border-b-[1px] mb-1">SELECT EVENT</h2>
     <CustomDropdown
       options={currentEvents}
       selectedOption={selectedEvent}
@@ -114,7 +115,8 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth, presets }) => {
     setSelectedEvent(event);
   }
 
-  // Revamp in future to take premade presets that users declare.
+  // Party making logic
+  // This function creates parties based on the selected event and preset.
   const createParties = (event) => {
     if (!event || !eventUserData || !selectedPreset) {
       console.warn('No event, user data or preset selected.');
@@ -160,82 +162,6 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth, presets }) => {
     setUnselectedMembers(eventUserData.filter((member) => !usedMembers.has(member.user_id)));
     setCreated(!created);
   };
-
-  //   console.log('eventUserData:', eventUserData);
-  //   const teamLeaders = eventUserData.filter(member => member.roles && member.roles.includes('Team Leader'));
-  //   const medics = eventUserData.filter(member => member.roles && member.roles.includes('Medic'));
-  //   const fillers = eventUserData.filter(member => member.roles && ['Engineer', 'Rifleman', 'Grenadier', 'Autorifleman', 'Marksman'].some(role => member.roles.includes(role)));
-  //   const unselected = eventUserData.filter(member => !member.roles || (!member.roles.includes('Team Leader') && !member.roles.includes('Medic') && !['Engineer', 'Grenadier', 'Rifleman', 'Autorifleman', 'Marksman'].some(role => member.roles.includes(role))));
-
-  //   const removeFromAllArrays = (member) => {
-  //     const removeFromArray = (array, member) => {
-  //       const index = array.findIndex(m => m.user_id === member.user_id);
-  //       if (index !== -1) {
-  //         array.splice(index, 1);
-  //       }
-  //     };
-  //     removeFromArray(teamLeaders, member);
-  //     removeFromArray(medics, member);
-  //     removeFromArray(fillers, member);
-  //   };
-
-  //   while (teamLeaders.length >= 1 && medics.length >= 1 && fillers.length >= 2) {
-  //     const partyMembers = [];
-
-  //     let teamLeader = teamLeaders.find(member => !usedMembers.has(member.user_id) && !member.roles.includes('Medic'));
-  //     if (!teamLeader) {
-  //       if (medics.length > 1) {
-  //         teamLeader = teamLeaders.find(member => !usedMembers.has(member.user_id) && member.roles.includes('Medic'));
-  //       }
-  //     }
-
-  //     const medic = medics.find(member => !usedMembers.has(member.user_id));
-
-  //     if (teamLeader && medic) {
-  //       usedMembers.add(teamLeader.user_id);
-  //       removeFromAllArrays(teamLeader);
-  //       partyMembers.push({ ...teamLeader, role: 'Team Leader' });
-
-  //       usedMembers.add(medic.user_id);
-  //       removeFromAllArrays(medic);
-  //       partyMembers.push({ ...medic, role: 'Medic' });
-
-  //       const filler1 = fillers.find(member => !usedMembers.has(member.user_id));
-  //       if (filler1) {
-  //         usedMembers.add(filler1.user_id);
-  //         removeFromAllArrays(filler1);
-  //         const filler1Role = filler1.roles.find(role => ['Engineer', 'Rifleman', 'Grenadier', 'Autorifleman', 'Marksman'].includes(role));
-  //         partyMembers.push({ ...filler1, role: filler1Role });
-  //       }
-
-  //       const filler2 = fillers.find(member => !usedMembers.has(member.user_id));
-  //       if (filler2) {
-  //         usedMembers.add(filler2.user_id);
-  //         removeFromAllArrays(filler2);
-  //         const filler2Role = filler2.roles.find(role => ['Engineer', 'Rifleman', 'Grenadier', 'Autorifleman', 'Marksman'].includes(role));
-  //         partyMembers.push({ ...filler2, role: filler2Role });
-  //       }
-
-  //       console.log(usedMembers);
-
-  //       if (partyMembers.length === 4) {
-  //         const party = {
-  //           id: newParties.length + 1,
-  //           members: partyMembers
-  //         };
-  //         newParties.push(party);
-  //       } else {
-  //         break;
-  //       }
-  //     } else {
-  //       break;
-  //     }
-  //   }
-
-  //   setParties(newParties);
-  //   setUnselectedMembers(unselected);
-  //   setCreated(!created);
-  // };
 
   if (!events) {
     return <NoEvents />;
