@@ -31,7 +31,7 @@ const PartyList = ({ parties }) => (
   <div className="grid grid-flow-row grid-cols-1 md:grid-cols-2 bp:grid-cols-3 w-full px-10">
     {parties.length !== 0 ? (
       parties.map((party, partyIndex) => (
-        <div key={partyIndex} className="col-span-1 bg-zinc-900 rounded-lg m-4 p-4">
+        <div key={partyIndex} className="col-span-1 bg-zinc-950 rounded-lg m-4 p-4">
           <h3 className="text-center text-lg font-WorkSans py-2">Party {party.id}</h3>
           {party.members.map((member, memberIndex) => (
             <div key={memberIndex} className="flex items-center p-2 m-1">
