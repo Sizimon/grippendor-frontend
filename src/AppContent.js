@@ -87,7 +87,7 @@ const AppContent = ({ auth, setAuth }) => {
 
   // Handle sign out
   const handleSignOut = () => {
-    sessionStorage.removeItem('auth');
+    localStorage.removeItem('auth');
     setAuth(null);
     navigate('/bot-dashboard/login');
   };

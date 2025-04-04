@@ -8,7 +8,7 @@ function App() {
   const [auth, setAuth] = useState(null);
 
   useEffect(() => {
-    const storedAuth = sessionStorage.getItem('auth')
+    const storedAuth = localStorage.getItem('auth')
     if (storedAuth) {
       setAuth(JSON.parse(storedAuth));
     }
@@ -18,7 +18,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/bot-dashboard/login" element={<Login setAuth={setAuth} />} />
-        <Route path="/bot-dashboard" element={auth ? <Navigate to={`/${auth.guildId}`} /> : <Navigate to="/bot-dashboard/login" />} />
+        <Route path="/bot-dashboard" element={auth ? <Navigate to={`/bot-dasboard/${auth.guildId}`} /> : <Navigate to="/bot-dashboard/login" />} />
         <Route path="/bot-dashboard/:guildId/*" element={auth ? <AppContent auth={auth} setAuth={setAuth} /> : <Navigate to="/bot-dashboard/login" />} />
       </Routes>
     </Router>

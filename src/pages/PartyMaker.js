@@ -111,8 +111,6 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth, presets }) => {
   };
 
   const handleEventChange = (event) => {
-    // const selectedEventId = Number(event.target.value);
-    // const eventDetails = currentEvents.find(e => e.id === selectedEventId);
     setSelectedEvent(event);
   }
 

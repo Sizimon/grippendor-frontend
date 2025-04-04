@@ -20,6 +20,7 @@ const Login = ({ setAuth }) => {
       });
       if (response.data.success) {
         setAuth({ guildId, token: response.data.token });
+        localStorage.setItem('auth', JSON.stringify({ guildId, token: response.data.token }));
         navigate(`/bot-dashboard/${guildId}`);
       } else {
         setError('Invalid guildId or password');
