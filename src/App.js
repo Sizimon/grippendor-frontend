@@ -28,7 +28,7 @@ function App() {
           element={<Login setAuth={setAuth} />} />
         <Route 
           path="/bot-dashboard" 
-          element={auth ? <Navigate to={`/bot-dasboard/${auth.guildId}`} /> : 
+          element={auth ? <Navigate to={`/bot-dashboard/${auth.guildId}`} /> : 
           <Navigate to="/bot-dashboard/login" />} />
         <Route 
           path="/bot-dashboard/:guildId/*" 
