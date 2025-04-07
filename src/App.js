@@ -11,18 +11,17 @@ function App() {
   useEffect(() => {
     const storedAuth = localStorage.getItem('auth')
     if (storedAuth) {
-      setAuth(JSON.parse(storedAuth));
-      // try {
-      //   const parsedAuth = JSON.parse(storedAuth);
-      //   if (parsedAuth && parsedAuth.guildId && parsedAuth.token) {
-      //     setAuth(parsedAuth);
-      //   } else {
-      //     localStorage.removeItem('auth');
-      //   }
-      // } catch (error) {
-      //   console.error('Error parsing auth data:', error);
-      //   localStorage.removeItem('auth');
-      // }
+      try {
+        const parsedAuth = JSON.parse(storedAuth);
+        if (parsedAuth && parsedAuth.guildId && parsedAuth.token) {
+          setAuth(parsedAuth);
+        } else {
+          localStorage.removeItem('auth');
+        }
+      } catch (error) {
+        console.error('Error parsing auth data:', error);
+        localStorage.removeItem('auth');
+      }
     }
     setIsLoading(false);
   }, []);
@@ -36,15 +35,26 @@ function App() {
       <Routes>
       <Route 
           path="/bot-dashboard/login"
-          element={<Login setAuth={setAuth} />} />
+          element={
+          <Login setAuth={setAuth} />
+          } 
+        />
         <Route 
           path="/bot-dashboard" 
-          element={auth ? <Navigate to={`/bot-dashboard/${auth.guildId}`} /> : 
-          <Navigate to="/bot-dashboard/login" />} />
+          element={
+            auth 
+              ? <Navigate to={`/bot-dashboard/${auth.guildId}`} /> 
+              : <Navigate to="/bot-dashboard/login" />
+            } 
+        />
         <Route 
           path="/bot-dashboard/:guildId/*" 
-          element={auth ? <AppContent auth={auth} setAuth={setAuth} /> : 
-          <Navigate to="/bot-dashboard/login" />} />
+          element={
+            auth 
+            ? <AppContent auth={auth} setAuth={setAuth} /> 
+            : <Navigate to="/bot-dashboard/login" />
+          } 
+        />
       </Routes>
     </Router>
   );
