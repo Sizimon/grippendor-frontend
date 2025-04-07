@@ -11,17 +11,18 @@ function App() {
   useEffect(() => {
     const storedAuth = localStorage.getItem('auth')
     if (storedAuth) {
-      try {
-        const parsedAuth = JSON.parse(storedAuth);
-        if (parsedAuth && parsedAuth.guildId && parsedAuth.token) {
-          setAuth(parsedAuth);
-        } else {
-          localStorage.removeItem('auth');
-        }
-      } catch (error) {
-        console.error('Error parsing auth data:', error);
-        localStorage.removeItem('auth');
-      }
+      setAuth(JSON.parse(storedAuth));
+      // try {
+      //   const parsedAuth = JSON.parse(storedAuth);
+      //   if (parsedAuth && parsedAuth.guildId && parsedAuth.token) {
+      //     setAuth(parsedAuth);
+      //   } else {
+      //     localStorage.removeItem('auth');
+      //   }
+      // } catch (error) {
+      //   console.error('Error parsing auth data:', error);
+      //   localStorage.removeItem('auth');
+      // }
     }
     setIsLoading(false);
   }, []);
