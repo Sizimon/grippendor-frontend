@@ -34,28 +34,17 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route 
+      <Route 
           path="/bot-dashboard/login"
-          element={
-          <Login setAuth={setAuth} />
-          } 
-        />
+          element={<Login setAuth={setAuth} />} />
         <Route 
           path="/bot-dashboard" 
-          element={
-            auth 
-              ? <Navigate to={`/bot-dashboard/${auth.guildId}`} /> 
-              : <Navigate to="/bot-dashboard/login" />
-            } 
-        />
+          element={auth ? <Navigate to={`/bot-dashboard/${auth.guildId}`} /> : 
+          <Navigate to="/bot-dashboard/login" />} />
         <Route 
           path="/bot-dashboard/:guildId/*" 
-          element={
-            auth 
-            ? <AppContent auth={auth} setAuth={setAuth} /> 
-            : <Navigate to="/bot-dashboard/login" />
-          } 
-        />
+          element={auth ? <AppContent auth={auth} setAuth={setAuth} /> : 
+          <Navigate to="/bot-dashboard/login" />} />
       </Routes>
     </Router>
   );
