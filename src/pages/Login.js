@@ -43,10 +43,11 @@ const Login = ({ setAuth }) => {
         onSubmit={handleLogin}
         className='p-2 xs:p-8 w-[80vw] md:w-[50vw] ap:w-[30vw] 4k:h-[30vh] 4k:w-[20vw] shadow-lg bg-zinc-900 bg-opacity-90 justify-center items-start flex flex-col gap-4'
       >
-        <h2 className='font-WorkSans text-2xl xs:text-4xl md:text-5xl bp:text-6xl ap:text-6xl 4k:text-9xl text-white self-center py-[2vh]'><span className="text-teal-300">G</span>ripendor<span className='text-teal-300'>B</span>ot</h2>
-        {error && <p className="error">{error}</p>}
+        <h2 className='font-WorkSans text-2xl xs:text-4xl md:text-5xl bp:text-6xl ap:text-6xl 4k:text-9xl text-white self-center pt-8'><span className="text-teal-300">G</span>ripendor<span className='text-teal-300'>B</span>ot</h2>
+        <a className='text-lg text-teal-300 no-underline hover:underline mb-8 cursor-pointer' href="https://discord.com/oauth2/authorize?client_id=1306969234261147718" target="_blank">Add the bot to your server!</a>
+        {error && <p className="error text-red-600 text-xl uppercase">{error}</p>}
         <div className='w-full flex flex-col items-start justify-between'>
-          <label className='text-white text-xs xs:text-base md:text-xl bp:text-2xl 4k:text-6xl'>Guild ID</label>
+          <label className='text-white text-xs xs:text-base md:text-xl bp:text-2xl 4k:text-6xl'>Guild ID &nbsp;<a className='no-underline hover:underline text-sm text-teal-300' href="https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID" target="_blank">How to find guildID</a></label>
           <input
             type="text"
             className='p-2 w-full bg-zinc-800 bg-opacity-75 rounded-full outline-none text-white text-xs xs:text-base md:text-xl bp:text-2xl 4k:text-6xl placeholder-zinc-400'
