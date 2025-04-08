@@ -8,13 +8,29 @@ function App() {
   const [auth, setAuth] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  function isTokenExpired(token) {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const currentTime = Math.floor(Date.now() / 1000);
+      return payload.exp < currentTime;
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return true; // Assume expired if there's an error
+    }
+  }
+
   useEffect(() => {
     const storedAuth = localStorage.getItem('auth')
     if (storedAuth) {
       try {
         const parsedAuth = JSON.parse(storedAuth);
         if (parsedAuth && parsedAuth.guildId && parsedAuth.token) {
-          setAuth(parsedAuth);
+          if (isTokenExpired(parsedAuth.token)) {
+            console.warn('Token has expired. Redirecting to login...');
+            localStorage.removeItem('auth');
+          } else {
+            setAuth(parsedAuth);
+          }
         } else {
           localStorage.removeItem('auth');
         }
