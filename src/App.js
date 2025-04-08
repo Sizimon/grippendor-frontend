@@ -26,7 +26,7 @@ function App() {
         const parsedAuth = JSON.parse(storedAuth);
         if (parsedAuth && parsedAuth.guildId && parsedAuth.token) {
           if (isTokenExpired(parsedAuth.token)) {
-            console.warn('Token has expired. Redirecting to login...');
+            // console.warn('Token has expired. Redirecting to login...');
             localStorage.removeItem('auth');
           } else {
             setAuth(parsedAuth);

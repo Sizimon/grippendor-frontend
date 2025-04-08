@@ -73,7 +73,7 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth, presets }) => {
 
   // Fetches the event user data whenever the user selects a new event from the list.
   useEffect(() => {
-    console.log('Selected Event:', selectedEvent);
+    // console.log('Selected Event:', selectedEvent);
     if (selectedEvent) {
       const matchingPresets = presets.filter(preset => preset.game_role_id === selectedEvent.game_name);
       setFilteredPresets(matchingPresets);
@@ -99,9 +99,9 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth, presets }) => {
           },
         }
       );
-      console.log('Response Data:', response.data); // Log the full response
+      // console.log('Response Data:', response.data); // Log the full response
       setEventUserData(response.data.eventUserData);
-      console.log('Event User Data:', response.data.eventUserData); // Log the extracted data
+      // console.log('Event User Data:', response.data.eventUserData); // Log the extracted data
     } catch (error) {
       console.error('Error fetching event user data:', error);
       setError('Failed to fetch event user data.');
@@ -123,7 +123,7 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth, presets }) => {
     }
 
     const { roles } = selectedPreset.data;
-    console.log('Roles:', roles);
+    // console.log('Roles:', roles);
     const newParties = [];
     const usedMembers = new Set();
 
@@ -147,7 +147,7 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth, presets }) => {
         return !usedMembers.has(member.user_id) && hasRole;
       });
 
-      console.log(`Filtered members for role name ${roleName}:`, members);
+      // console.log(`Filtered members for role name ${roleName}:`, members);
       return members.slice(0, count);
 
     }
@@ -163,10 +163,10 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth, presets }) => {
         } else {
           members.forEach((member) => {
             usedMembers.add(member.user_id);
-            console.log('Member added to usedMembers:', member);
+            // console.log('Member added to usedMembers:', member);
             partyMembers.push({ ...member, role: roleName });
-            console.log('Party member:', member);
-            console.log('Party members:', partyMembers);
+            // console.log('Party member:', member);
+            // console.log('Party members:', partyMembers);
           });
         }
       });
@@ -180,7 +180,7 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth, presets }) => {
     }
 
     setParties(newParties);
-    console.log('Created Party:', newParties);
+    // console.log('Created Party:', newParties);
     setUnselectedMembers(eventUserData.filter((member) => !usedMembers.has(member.user_id)));
     setCreated(!created);
   };
