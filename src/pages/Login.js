@@ -45,7 +45,7 @@ const Login = ({ setAuth }) => {
       >
         <h2 className='font-WorkSans text-2xl xs:text-4xl md:text-5xl bp:text-6xl ap:text-6xl 4k:text-9xl text-white self-center pt-8'><span className="text-teal-300">G</span>ripendor<span className='text-teal-300'>B</span>ot</h2>
         <a className='text-lg text-teal-300 no-underline hover:underline mb-8 cursor-pointer self-center' href="https://discord.com/oauth2/authorize?client_id=1306969234261147718" target="_blank">Add the bot to your server!</a>
-        {error && <p className="error text-red-600 text-xl uppercase">{error}</p>}
+        {error && <p className="error text-teal-300 text-xl uppercase">{error}</p>}
         <div className='w-full flex flex-col items-start justify-between'>
           <label className='text-white text-xs xs:text-base md:text-xl bp:text-2xl 4k:text-6xl'>Guild ID &nbsp;<a className='no-underline hover:underline text-sm text-teal-300' href="https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID" target="_blank">How to find guildID</a></label>
           <input
