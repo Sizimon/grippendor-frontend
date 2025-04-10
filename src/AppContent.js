@@ -24,7 +24,6 @@ const AppContent = ({ auth, setAuth }) => {
     '/events': 'EVENTS',
   };
   const currentPage = pageTitles[location.pathname.replace(`/bot-dashboard/${guildId}`, '')] || 'DASHBOARD';
-  console.log(currentPage)
 
   // Handle scroll event for sticky navigation
   useEffect(() => {

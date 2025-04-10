@@ -100,7 +100,7 @@ const ImageModal = ({ selectedImage, handleCloseImageModal }) => (
     <motion.img
       src={selectedImage}
       alt='Full size'
-      className='rounded-lg shadow-lg w-[80vw] h-[80vh] object-cover'
+      className='rounded-lg shadow-lg w-9/10 h-auto md:w-4/5 md:h-4/5 object-contain'
       initial={{ scale: 0.8 }}
       animate={{ scale: 1 }}
       exit={{ scale: 0.8 }}

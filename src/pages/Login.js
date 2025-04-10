@@ -41,7 +41,7 @@ const Login = ({ setAuth }) => {
       }}>
       <form
         onSubmit={handleLogin}
-        className='p-2 xs:p-8 w-[80vw] md:w-[50vw] ap:w-[30vw] 4k:h-[30vh] 4k:w-[20vw] shadow-lg bg-zinc-900 bg-opacity-90 justify-center items-start flex flex-col gap-4'
+        className='p-2 xs:p-8 w-4/5 md:w-1/2 ap:w-1/3 4k:h-1/3 4k:w-1/5 max-w-full shadow-lg bg-zinc-900 bg-opacity-90 justify-center items-start flex flex-col gap-4'
       >
         <h2 className='font-WorkSans text-2xl xs:text-4xl md:text-5xl bp:text-6xl ap:text-6xl 4k:text-9xl text-white self-center pt-8'><span className="text-teal-300">G</span>ripendor<span className='text-teal-300'>B</span>ot</h2>
         <a className='text-lg text-teal-300 no-underline hover:underline mb-8 cursor-pointer self-center' href="https://discord.com/oauth2/authorize?client_id=1306969234261147718" target="_blank">Add the bot to your server!</a>

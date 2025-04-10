@@ -66,7 +66,6 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth, presets }) => {
 
   // Filter events with no debrief (Events that have not finished)
   const currentEvents = events.filter(event => !event.debrief || !event.debried === '');
-  console.log(currentEvents);
 
   // State for selected event
   const [selectedEvent, setSelectedEvent] = useState(currentEvents.length > 0 ? currentEvents[0] : null);
