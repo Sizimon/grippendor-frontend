@@ -1,6 +1,6 @@
 import React from 'react';
 import Slider from 'react-slick';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Typewriter } from '../components';
 
@@ -46,12 +46,12 @@ const EventCard = ({ event, formatDateTime, handleEventClick }) => (
 
 // Sub-Component: Event Details Modal
 const EventDetailsModal = ({ selectedEvent, formatDateTime, handleCloseModal, handleImageClick }) => {
-  useEffect(() => {
-    const modal = document.querySelector('.modal-content');
-    if (modal) {
-      modal.scrollTop = 0; // Scroll to top when modal opens
-    }
-  }, []);
+  // useEffect(() => {
+  //   const modal = document.querySelector('.modal-content');
+  //   if (modal) {
+  //     modal.scrollTop = 0; // Scroll to top when modal opens
+  //   }
+  // }, []);
 
   const settings = {
     arrows: false,
@@ -72,7 +72,7 @@ const EventDetailsModal = ({ selectedEvent, formatDateTime, handleCloseModal, ha
       exit={{ opacity: 0 }}
     >
       <motion.div
-        className='modal-content bg-zinc-900 text-white p-4 rounded-lg shadow-lg w-9/10 md:w-full md:h-4/6 max-h-screen overflow-y-auto flex flex-col'
+        className='bg-zinc-900 text-white p-4 rounded-lg shadow-lg w-9/10 md:w-full md:h-4/6 max-h-screen overflow-y-auto flex flex-col'
         initial={{ scale: 0.8 }}
         animate={{ scale: 1 }}
         exit={{ scale: 0.8 }}
@@ -86,7 +86,7 @@ const EventDetailsModal = ({ selectedEvent, formatDateTime, handleCloseModal, ha
           <div className='flex flex-col items-center md:p-4'>
             <p className='mb-4 text-center'>{selectedEvent.description}</p>
           </div>
-          <div className='flex flex-col justify-center items-center w-full md:p-4'>
+          <div className='flex flex-col justify-center items-center max-h-screen md:p-4'>
             {typeof selectedEvent.image_urls === 'string' && JSON.parse(selectedEvent.image_urls).length > 0 ? (
               <Slider {...settings}>
                 {JSON.parse(selectedEvent.image_urls).map((url, index) => (
@@ -94,7 +94,7 @@ const EventDetailsModal = ({ selectedEvent, formatDateTime, handleCloseModal, ha
                     key={index}
                     src={url}
                     alt={`Event image ${index + 1}`}
-                    className="shadow-lg cursor-pointer col-span-1 h-auto w-[300px] object-cover p-4 self-center"
+                    className="shadow-lg cursor-pointer col-span-1 h-auto max-h-[300px] w-auto max-w-full object-contain p-4 self-center"
                     onClick={() => handleImageClick(url)}
                   />
                 ))}
