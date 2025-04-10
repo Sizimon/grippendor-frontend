@@ -86,7 +86,7 @@ const EventDetailsModal = ({ selectedEvent, formatDateTime, handleCloseModal, ha
           <div className='flex flex-col items-center md:p-4'>
             <p className='mb-4 text-center'>{selectedEvent.description}</p>
           </div>
-          <div className='flex flex-col justify-center items-center max-h-screen md:p-4'>
+          <div className='justify-center items-center w-full md:p-4'>
             {typeof selectedEvent.image_urls === 'string' && JSON.parse(selectedEvent.image_urls).length > 0 ? (
               <Slider {...settings}>
                 {JSON.parse(selectedEvent.image_urls).map((url, index) => (
