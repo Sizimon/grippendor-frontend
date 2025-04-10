@@ -60,7 +60,7 @@ const EventDetailsModal = ({ selectedEvent, formatDateTime, handleCloseModal, ha
       animate={{ scale: 1 }}
       exit={{ scale: 0.8 }}
     >
-      <div className='flex flex-col items-center pb-4 w-full'>
+      <div className='flex flex-col items-center mb-4 mt-12 md:mt-0 w-full'>
         <p>{formatDateTime(moment(selectedEvent.event_date).unix())}</p>
         <h2 className='text-2xl font-bold'>{selectedEvent.name}</h2>
         <h3 className='text-lg'>{selectedEvent.type}</h3>
@@ -87,7 +87,7 @@ const EventDetailsModal = ({ selectedEvent, formatDateTime, handleCloseModal, ha
       </div>
       {selectedEvent.debrief && <p className='mb-4'>{selectedEvent.debrief}</p>}
       <button
-        className='bg-primary text-white px-4 py-2 rounded mt-4'
+        className='bg-primary text-white px-4 py-2 rounded mt-4 mb-12'
         onClick={handleCloseModal}
       >
         Close
