@@ -1,8 +1,13 @@
 import React from 'react';
+import Slider from 'react-slick';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Typewriter } from '../components';
 const moment = require('moment');
+
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import './Events.css';
 
 // Sub-Component: Event Card
 const EventCard = ({ event, formatDateTime, handleEventClick }) => (
@@ -23,7 +28,7 @@ const EventCard = ({ event, formatDateTime, handleEventClick }) => (
       </div>
       <div className='flex justify-center items-center'>
         <p className='text-white'>
-          <Typewriter header={event.summary}/>
+          <Typewriter header={event.summary} />
         </p>
       </div>
       <div className='flex mt-auto'>
@@ -47,53 +52,66 @@ const EventDetailsModal = ({ selectedEvent, formatDateTime, handleCloseModal, ha
     }
   }, []);
 
+  const settings = {
+    arrows: false,
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+  }
+
   return (
     <motion.div
-    className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50'
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-  >
-    <motion.div
-      className='modal-content bg-zinc-900 text-white p-4 rounded-lg shadow-lg w-9/10 md:w-full md:h-4/6 max-h-screen overflow-y-auto flex flex-col'
-      initial={{ scale: 0.8 }}
-      animate={{ scale: 1 }}
-      exit={{ scale: 0.8 }}
+      className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50'
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
     >
-      <div className='flex flex-col items-center mb-4 mt-12 md:mt-0 w-full'>
-        <p>{formatDateTime(moment(selectedEvent.event_date).unix())}</p>
-        <h2 className='text-2xl font-bold'>{selectedEvent.name}</h2>
-        <h3 className='text-lg'>{selectedEvent.type}</h3>
-      </div>
-      <div className='grid grid-flow-row grid-cols-1 md:grid-cols-2 gap-4 px:4 md:px-12 w-full'>
-        <div className='flex flex-col items-center md:p-4'>
-          <p className='mb-4'>{selectedEvent.description}</p>
-        </div>
-        <div className='grid grid-flow-row grid-cols-1 md:grid-cols-3 justify-center items-center w-full md:p-4'>
-          {typeof selectedEvent.image_urls === 'string' && JSON.parse(selectedEvent.image_urls).length > 0 ? (
-            JSON.parse(selectedEvent.image_urls).map((url, index) => (
-              <img
-                key={index}
-                src={url}
-                alt={`Event image ${index + 1}`}
-                className='shadow-lg cursor-pointer col-span-1 h-auto w-[300px] object-cover p-2'
-                onClick={() => handleImageClick(url)}
-              />
-            ))
-          ) : (
-            <p className='text-white col-span-3 text-4xl'>No Images Available</p>
-          )}
-        </div>
-      </div>
-      {selectedEvent.debrief && <p className='mb-4'>{selectedEvent.debrief}</p>}
-      <button
-        className='bg-primary text-white px-4 py-2 rounded mt-4 mb-12'
-        onClick={handleCloseModal}
+      <motion.div
+        className='modal-content bg-zinc-900 text-white p-4 rounded-lg shadow-lg w-9/10 md:w-full md:h-4/6 max-h-screen overflow-y-auto flex flex-col'
+        initial={{ scale: 0.8 }}
+        animate={{ scale: 1 }}
+        exit={{ scale: 0.8 }}
       >
-        Close
-      </button>
+        <div className='flex flex-col items-center mb-4 mt-12 md:mt-0 w-full'>
+          <p>{formatDateTime(moment(selectedEvent.event_date).unix())}</p>
+          <h2 className='text-2xl font-bold'>{selectedEvent.name}</h2>
+          <h3 className='text-lg'>{selectedEvent.type}</h3>
+        </div>
+        <div className='grid grid-flow-row grid-cols-1 md:grid-cols-2 gap-4 px:4 md:px-12 w-full'>
+          <div className='flex flex-col items-center md:p-4'>
+            <p className='mb-4 text-center'>{selectedEvent.description}</p>
+          </div>
+          <div className='flex flex-col justify-center items-center w-full md:p-4'>
+            {typeof selectedEvent.image_urls === 'string' && JSON.parse(selectedEvent.image_urls).length > 0 ? (
+              <Slider {...settings}>
+                {JSON.parse(selectedEvent.image_urls).map((url, index) => (
+                  <img
+                    key={index}
+                    src={url}
+                    alt={`Event image ${index + 1}`}
+                    className="shadow-lg cursor-pointer col-span-1 h-auto w-[300px] object-cover p-4 self-center"
+                    onClick={() => handleImageClick(url)}
+                  />
+                ))}
+              </Slider>
+            ) : (
+              <p className="text-white col-span-3 text-4xl">No Images Available</p>
+            )}
+          </div>
+        </div>
+        {selectedEvent.debrief && <p className='mb-4'>{selectedEvent.debrief}</p>}
+        <button
+          className='bg-primary text-white px-4 py-2 rounded mt-4 mb-12'
+          onClick={handleCloseModal}
+        >
+          Close
+        </button>
+      </motion.div>
     </motion.div>
-  </motion.div>
   )
 };
 
