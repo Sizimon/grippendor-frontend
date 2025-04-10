@@ -19,7 +19,7 @@ const EventCard = ({ event, formatDateTime, handleEventClick }) => (
       <div className='flex flex-col justify-center items-center py-4'>
         <p>{formatDateTime(moment(event.event_date).unix())}</p>
         <h1 className='text-xl md:text-4xl font-bold text-primary text-center uppercase'>{event.name}</h1>
-        <h2 className='text-lg'>{event.game_name}</h2>
+        <h2 className='text-lg'>{event.game_name}</h2> {/* Game Name | Need to change as game_name property is actually an ID not name. */}
       </div>
       <div className='flex justify-center items-center'>
         <p className='text-white'>
@@ -47,7 +47,7 @@ const EventDetailsModal = ({ selectedEvent, formatDateTime, handleCloseModal, ha
     exit={{ opacity: 0 }}
   >
     <motion.div
-      className='bg-zinc-900 text-white p-4 rounded-lg shadow-lg w-screen flex flex-col justify-center items-center'
+      className='bg-zinc-900 text-white p-4 rounded-lg shadow-lg w-9/10 h-full md:w-full md:h-2/5 flex flex-col justify-center items-center'
       initial={{ scale: 0.8 }}
       animate={{ scale: 1 }}
       exit={{ scale: 0.8 }}
