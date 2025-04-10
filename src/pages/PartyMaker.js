@@ -74,7 +74,7 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth, presets }) => {
   useEffect(() => {
     // console.log('Selected Event:', selectedEvent);
     if (selectedEvent) {
-      const matchingPresets = presets.filter(preset => preset.game_role_id === selectedEvent.game_name);
+      const matchingPresets = presets.filter(preset => preset.game_role_id === selectedEvent.game_id);
       setFilteredPresets(matchingPresets);
       fetchEventUserData(selectedEvent.id);
     }
