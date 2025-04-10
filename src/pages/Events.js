@@ -39,15 +39,23 @@ const EventCard = ({ event, formatDateTime, handleEventClick }) => (
 );
 
 // Sub-Component: Event Details Modal
-const EventDetailsModal = ({ selectedEvent, formatDateTime, handleCloseModal, handleImageClick }) => (
-  <motion.div
+const EventDetailsModal = ({ selectedEvent, formatDateTime, handleCloseModal, handleImageClick }) => {
+  useEffect(() => {
+    const modal = document.querySelector('.modal-content');
+    if (modal) {
+      modal.scrollTop = 0; // Scroll to top when modal opens
+    }
+  }, []);
+
+  return (
+    <motion.div
     className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50'
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
     exit={{ opacity: 0 }}
   >
     <motion.div
-      className='bg-zinc-900 text-white p-4 rounded-lg shadow-lg w-9/10 md:w-full md:h-4/6 max-h-screen overflow-y-auto flex flex-col justify-center items-center'
+      className='modal-content bg-zinc-900 text-white p-4 rounded-lg shadow-lg w-9/10 md:w-full md:h-4/6 max-h-screen overflow-y-auto flex flex-col'
       initial={{ scale: 0.8 }}
       animate={{ scale: 1 }}
       exit={{ scale: 0.8 }}
@@ -86,7 +94,8 @@ const EventDetailsModal = ({ selectedEvent, formatDateTime, handleCloseModal, ha
       </button>
     </motion.div>
   </motion.div>
-);
+  )
+};
 
 // Sub-Component: Image Modal
 const ImageModal = ({ selectedImage, handleCloseImageModal }) => (
