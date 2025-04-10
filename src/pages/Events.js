@@ -47,7 +47,7 @@ const EventDetailsModal = ({ selectedEvent, formatDateTime, handleCloseModal, ha
     exit={{ opacity: 0 }}
   >
     <motion.div
-      className='bg-zinc-900 text-white p-4 rounded-lg shadow-lg w-9/10 md:w-full md:h-2/5 max-h-screen overflow-y-auto flex flex-col justify-center items-center'
+      className='bg-zinc-900 text-white p-4 rounded-lg shadow-lg w-9/10 md:w-full md:h-4/6 max-h-screen overflow-y-auto flex flex-col justify-center items-center'
       initial={{ scale: 0.8 }}
       animate={{ scale: 1 }}
       exit={{ scale: 0.8 }}
@@ -57,18 +57,18 @@ const EventDetailsModal = ({ selectedEvent, formatDateTime, handleCloseModal, ha
         <h2 className='text-2xl font-bold'>{selectedEvent.name}</h2>
         <h3 className='text-lg'>{selectedEvent.type}</h3>
       </div>
-      <div className='grid grid-flow-row grid-cols-1 md:grid-cols-2 gap-4 px-12 w-full'>
-        <div className='flex flex-col items-center p-6'>
+      <div className='grid grid-flow-row grid-cols-1 md:grid-cols-2 gap-4 px:4 md:px-12 w-full'>
+        <div className='flex flex-col items-center md:p-4'>
           <p className='mb-4'>{selectedEvent.description}</p>
         </div>
-        <div className='grid grid-flow-row grid-cols-1 md:grid-cols-3 justify-center items-center w-full p-4'>
+        <div className='grid grid-flow-row grid-cols-1 md:grid-cols-3 justify-center items-center w-full md:p-4'>
           {typeof selectedEvent.image_urls === 'string' && JSON.parse(selectedEvent.image_urls).length > 0 ? (
             JSON.parse(selectedEvent.image_urls).map((url, index) => (
               <img
                 key={index}
                 src={url}
                 alt={`Event image ${index + 1}`}
-                className='shadow-lg cursor-pointer col-span-1 h-full w-full object-cover p-2'
+                className='shadow-lg cursor-pointer col-span-1 h-auto w-[300px] object-cover p-2'
                 onClick={() => handleImageClick(url)}
               />
             ))
