@@ -86,7 +86,7 @@ const EventDetailsModal = ({ selectedEvent, formatDateTime, handleCloseModal, ha
           <div className='flex flex-col items-center md:p-4'>
             <p className='mb-4 text-center'>{selectedEvent.description}</p>
           </div>
-          <div className='justify-center items-center w-full md:p-4'>
+          <div className='justify-center items-center w-full md:p-4 mb-8 self-center'>
             {typeof selectedEvent.image_urls === 'string' && JSON.parse(selectedEvent.image_urls).length > 0 ? (
               <Slider {...settings}>
                 {JSON.parse(selectedEvent.image_urls).map((url, index) => (
@@ -106,7 +106,7 @@ const EventDetailsModal = ({ selectedEvent, formatDateTime, handleCloseModal, ha
         </div>
         {selectedEvent.debrief && <p className='mb-4'>{selectedEvent.debrief}</p>}
         <button
-          className='bg-primary text-white px-4 py-2 rounded mt-4 mb-12'
+          className='bg-primary text-white px-4 py-2 rounded mt-4 mb-12 md:mb-0 w-1/4 self-center'
           onClick={handleCloseModal}
         >
           Close
