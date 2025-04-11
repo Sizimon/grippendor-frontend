@@ -75,7 +75,7 @@ const EventDetailsModal = ({ selectedEvent, formatDateTime, handleCloseModal, ha
           <p>{formatDateTime(moment(selectedEvent.event_date).unix())}</p>
           <h2 className='text-2xl font-bold text-primary'>{selectedEvent.name}</h2>
         </div>
-        <div className='grid grid-flow-row grid-cols-1 md:grid-cols-2 gap-4 px:4 md:px-12 w-full'>
+        <div className='grid grid-flow-row grid-cols-1 ap:grid-cols-2 gap-4 px:4 md:px-12 w-full'>
           <div className='flex flex-col items-center md:p-4'>
             <p className='mb-4 text-center'>{selectedEvent.description}</p>
           </div>
