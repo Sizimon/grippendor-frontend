@@ -66,7 +66,7 @@ const EventDetailsModal = ({ selectedEvent, formatDateTime, handleCloseModal, ha
       exit={{ opacity: 0 }}
     >
       <motion.div
-        className='bg-zinc-900 text-white p-4 rounded-lg shadow-lg w-9/10 md:w-full md:h-5/6 max-h-screen overflow-y-auto flex flex-col'
+        className='bg-zinc-900 text-white p-4 rounded-lg shadow-lg w-9/10 md:w-full md:h-4/6 ap:h-5/6 max-h-screen overflow-y-auto flex flex-col justify-center'
         initial={{ scale: 0.8 }}
         animate={{ scale: 1 }}
         exit={{ scale: 0.8 }}
