@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams, Route, Routes } from 'react-router-dom';
 import axios from 'axios';
-import Banner from './assets/images/banner-spf.png';
+// import Banner from './assets/images/banner-spf.png';
 import { Typewriter, Footer, NavigationBar } from './components';
 import { Home, Events, PartyMaker } from './pages';
 
@@ -105,7 +105,7 @@ const AppContent = ({ auth, setAuth }) => {
       <div
         className="h-[20vh] ap:h-[30vh] flex items-center justify-center text-primary text-4xl md:text-6xl bp:text-8xl 4k:text-10xl font-bold"
         style={{
-          backgroundImage: `url(${Banner})`,
+          backgroundImage: `url(${config?.banner || 'Image failed to load'})`,
           backgroundSize: 'cover',
         }}
       >
