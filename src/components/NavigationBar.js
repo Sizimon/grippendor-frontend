@@ -48,17 +48,38 @@ const NavigationBar = ({ config, guildId, isScrolled, handleSignOut }) => {
           </div>
           <ul className="py-2 text-sm text-zinc-200" aria-labelledby="dropdownInformationButton">
             <li>
-              <Link to={`/bot-dashboard/${guildId}`} className="text-white transition delay-50 duration-200 ease-in-out hover:text-primary font-WorkSans px-4 py-2 uppercase">
+              <Link 
+                to={`/bot-dashboard/${guildId}`}
+                className="text-white transition delay-50 duration-200 ease-in-out hover:text-primary font-WorkSans px-4 py-2 uppercase"
+                onClick={() => {
+                  setMenuOpen(false);
+                  setActive(false);
+                }}
+              >
                 Dashboard
               </Link>
             </li>
             <li>
-              <Link to={`/bot-dashboard/${guildId}/party-maker`} className="text-white transition delay-50 duration-200 ease-in-out hover:text-primary font-WorkSans px-4 py-2 uppercase">
+              <Link 
+                to={`/bot-dashboard/${guildId}/party-maker`} 
+                className="text-white transition delay-50 duration-200 ease-in-out hover:text-primary font-WorkSans px-4 py-2 uppercase"
+                onClick={() => {
+                  setMenuOpen(false);
+                  setActive(false);
+                }}
+              >
                 Party Maker
               </Link>
             </li>
             <li>
-              <Link to={`/bot-dashboard/${guildId}/events`} className="text-white transition delay-50 duration-200 ease-in-out hover:text-primary font-WorkSans px-4 py-2 uppercase">
+              <Link
+                to={`/bot-dashboard/${guildId}/events`} 
+                className="text-white transition delay-50 duration-200 ease-in-out hover:text-primary font-WorkSans px-4 py-2 uppercase"
+                onClick={() => {
+                  setMenuOpen(false);
+                  setActive(false);
+                }}
+              >
                 Events
               </Link>
             </li>
@@ -83,6 +104,10 @@ const NavigationBar = ({ config, guildId, isScrolled, handleSignOut }) => {
         <Link to={`/bot-dashboard/${guildId}/events`} className="text-white transition delay-50 duration-200 ease-in-out hover:text-primary hover:scale-105 text-xl 4k:text-6xl uppercase font-WorkSans px-4">
           Events
         </Link>
+        <p
+          className="text-white transition delay-50 duration-200 ease-in-out hover:text-primary hover:scale-105 text-xl 4k:text-6xl uppercase font-WorkSans px-4 cursor-pointer"
+          onClick={handleSignOut}
+        >Sign Out</p>
       </div>
     </nav>
   );
