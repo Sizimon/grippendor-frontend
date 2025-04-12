@@ -24,6 +24,7 @@ const AppContent = ({ auth, setAuth }) => {
     '/events': 'EVENTS',
   };
   const currentPage = pageTitles[location.pathname.replace(`/bot-dashboard/${guildId}`, '')] || 'DASHBOARD';
+  const highlightedPage = location.pathname.replace(`/bot-dashboard/${guildId}`, '');
 
   // Handle scroll event for sticky navigation
   useEffect(() => {
@@ -99,6 +100,7 @@ const AppContent = ({ auth, setAuth }) => {
         guildId={guildId}
         isScrolled={isScrolled}
         handleSignOut={handleSignOut}
+        highlightedPage={highlightedPage}
       />
 
       {/* Page Header */}

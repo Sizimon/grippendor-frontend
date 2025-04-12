@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import MenuButton from './MenuButton';
 
-const NavigationBar = ({ config, guildId, isScrolled, handleSignOut }) => {
+const NavigationBar = ({ config, guildId, isScrolled, handleSignOut, highlightedPage }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [active, setActive] = useState(false);
   const dropdownRef = useRef(null);
@@ -95,19 +95,36 @@ const NavigationBar = ({ config, guildId, isScrolled, handleSignOut }) => {
         </div>
       </div>
       <div className="hidden bp:flex bp:flex-row gap-4">
-        <Link to={`/bot-dashboard/${guildId}`} className="text-white transition delay-50 duration-200 ease-in-out hover:text-primary hover:scale-105 text-xl 4k:text-6xl uppercase font-WorkSans px-4">
+        <Link 
+          to={`/bot-dashboard/${guildId}`} 
+          className={`transition delay-50 duration-200 ease-in-out hover:text-primary hover:scale-105 text-xl 4k:text-6xl uppercase font-WorkSans px-4 ${
+          highlightedPage === '/' ? 'text-primary' : 'text-white'
+        }`}
+        >
           Dashboard
         </Link>
-        <Link to={`/bot-dashboard/${guildId}/party-maker`} className="text-white transition delay-50 duration-200 ease-in-out hover:text-primary hover:scale-105 text-xl 4k:text-6xl uppercase font-WorkSans px-4">
+        <Link 
+          to={`/bot-dashboard/${guildId}/party-maker`} 
+          className={`transition delay-50 duration-200 ease-in-out hover:text-primary hover:scale-105 text-xl 4k:text-6xl uppercase font-WorkSans px-4 ${
+            highlightedPage === 'party-maker' ? 'text-primary' : 'text-white'
+          }`}
+        >
           Party Maker
         </Link>
-        <Link to={`/bot-dashboard/${guildId}/events`} className="text-white transition delay-50 duration-200 ease-in-out hover:text-primary hover:scale-105 text-xl 4k:text-6xl uppercase font-WorkSans px-4">
+        <Link 
+          to={`/bot-dashboard/${guildId}/events`} 
+          className={`transition delay-50 duration-200 ease-in-out hover:text-primary hover:scale-105 text-xl 4k:text-6xl uppercase font-WorkSans px-4 ${
+            highlightedPage === '/events' ? 'text-primary' : 'text-white'
+          }`}
+        >
           Events
         </Link>
         <p
           className="text-white transition delay-50 duration-200 ease-in-out hover:text-primary hover:scale-105 text-xl 4k:text-6xl uppercase font-WorkSans px-4 cursor-pointer"
           onClick={handleSignOut}
-        >Sign Out</p>
+        >
+          Sign Out
+        </p>
       </div>
     </nav>
   );
