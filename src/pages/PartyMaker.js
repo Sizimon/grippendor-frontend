@@ -213,7 +213,7 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth, presets }) => {
         ) : (
           <motion.div
             key="not-created"
-            className='flex flex-col justify-center items-center px-4 bg-zinc-900 py-44'
+            className='flex flex-col justify-center items-center px-4 bg-zinc-900 py-4'
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
@@ -248,9 +248,9 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth, presets }) => {
                   repeatType: 'reverse',
                 }}
               >
-                <h2 className="text-xl font-bold">{selectedEvent.name}</h2>
+                <h2 className="text-xl font-bold text-primary">{selectedEvent.name}</h2>
                 <p>{formatDateTime(moment(selectedEvent.event_date).unix())}</p>
-                <p>{selectedEvent.summary}</p>
+                <p className='text-center'>{selectedEvent.summary}</p>
                 {filteredPresets.length > 0 ? (
                   <div className="flex flex-col items-center text-white mt-4">
                     <h3 className="text-lg font-bold">Available Presets</h3>
@@ -288,7 +288,7 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth, presets }) => {
                   </div>
                 ) : (
                   <div className="flex flex-col items-center text-white mt-4">
-                    <h3 className="text-lg font-bold">No Presets Available</h3>
+                    <h3 className="text-lg font-bold text-primary">No Presets Available</h3>
                     <p className="text-sm text-center mt-2">
                       You can create a preset using the Discord bot. Use the command <code>/create-preset</code> to get started.
                     </p>
