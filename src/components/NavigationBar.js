@@ -106,7 +106,7 @@ const NavigationBar = ({ config, guildId, isScrolled, handleSignOut, highlighted
         <Link 
           to={`/bot-dashboard/${guildId}/party-maker`} 
           className={`transition delay-50 duration-200 ease-in-out hover:text-primary hover:scale-105 text-xl 4k:text-6xl uppercase font-WorkSans px-4 ${
-            highlightedPage === 'party-maker' ? 'text-primary' : 'text-white'
+            highlightedPage === '/party-maker' ? 'text-primary' : 'text-white'
           }`}
         >
           Party Maker

@@ -23,8 +23,8 @@ const AppContent = ({ auth, setAuth }) => {
     '/party-maker': 'PARTY MAKER',
     '/events': 'EVENTS',
   };
-  const currentPage = pageTitles[location.pathname.replace(`/bot-dashboard/${guildId}`, '')] || 'DASHBOARD';
-  const highlightedPage = location.pathname.replace(`/bot-dashboard/${guildId}`, '');
+  const currentPage = pageTitles[location.pathname.replace(`/bot-dashboard/${guildId}`, '') || '/'] || 'DASHBOARD';
+  const highlightedPage = location.pathname.replace(`/bot-dashboard/${guildId}`, '') || '/';
 
   // Handle scroll event for sticky navigation
   useEffect(() => {
