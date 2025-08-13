@@ -23,8 +23,8 @@ const AppContent = ({ auth, setAuth }) => {
     '/party-maker': 'PARTY MAKER',
     '/events': 'EVENTS',
   };
-  const currentPage = pageTitles[location.pathname.replace(`/bot-dashboard/${guildId}`, '') || '/'] || 'DASHBOARD';
-  const highlightedPage = location.pathname.replace(`/bot-dashboard/${guildId}`, '') || '/';
+  const currentPage = pageTitles[location.pathname.replace(`/grippendor/${guildId}`, '') || '/'] || 'DASHBOARD';
+  const highlightedPage = location.pathname.replace(`/grippendor/${guildId}`, '') || '/';
 
   // Handle scroll event for sticky navigation
   useEffect(() => {
@@ -38,7 +38,7 @@ const AppContent = ({ auth, setAuth }) => {
     const fetchData = async () => {
       try {
         // Fetch configuration
-        const configResponse = await axios.get(`https://szymonsamus.dev/bot-backend/config/${guildId}`, {
+        const configResponse = await axios.get(`https://szymonsamus.dev/grippendor-backend/config/${guildId}`, {
           headers: { Authorization: `Bearer ${auth.token}` },
         });
         setConfig(configResponse.data);
@@ -47,19 +47,19 @@ const AppContent = ({ auth, setAuth }) => {
         }
 
         // Fetch user data
-        const userResponse = await axios.get(`https://szymonsamus.dev/bot-backend/userdata/${guildId}`, {
+        const userResponse = await axios.get(`https://szymonsamus.dev/grippendor-backend/userdata/${guildId}`, {
           headers: { Authorization: `Bearer ${auth.token}` },
         });
         setUserData(userResponse.data);
 
         // Fetch events
-        const eventsResponse = await axios.get(`https://szymonsamus.dev/bot-backend/eventdata/${guildId}`, {
+        const eventsResponse = await axios.get(`https://szymonsamus.dev/grippendor-backend/eventdata/${guildId}`, {
           headers: { Authorization: `Bearer ${auth.token}` },
         });
         setEvents(eventsResponse.data);
 
         // Fetch presets
-        const presetsResponse = await axios.get(`https://szymonsamus.dev/bot-backend/presets/${guildId}`, {
+        const presetsResponse = await axios.get(`https://szymonsamus.dev/grippendor-backend/presets/${guildId}`, {
           headers: { Authorization: `Bearer ${auth.token}` },
         });
         setPresets(presetsResponse.data);
@@ -89,7 +89,7 @@ const AppContent = ({ auth, setAuth }) => {
   const handleSignOut = () => {
     localStorage.removeItem('auth');
     setAuth(null);
-    navigate('/bot-dashboard/login');
+    navigate('/grippendor/login');
   };
 
   return (

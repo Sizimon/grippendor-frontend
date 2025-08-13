@@ -49,7 +49,7 @@ const NavigationBar = ({ config, guildId, isScrolled, handleSignOut, highlighted
           <ul className="py-2 text-sm text-zinc-200" aria-labelledby="dropdownInformationButton">
             <li>
               <Link 
-                to={`/bot-dashboard/${guildId}`}
+                to={`/grippendor/${guildId}`}
                 className="text-white transition delay-50 duration-200 ease-in-out hover:text-primary font-WorkSans px-4 py-2 uppercase"
                 onClick={() => {
                   setMenuOpen(false);
@@ -61,7 +61,7 @@ const NavigationBar = ({ config, guildId, isScrolled, handleSignOut, highlighted
             </li>
             <li>
               <Link 
-                to={`/bot-dashboard/${guildId}/party-maker`} 
+                to={`/grippendor/${guildId}/party-maker`} 
                 className="text-white transition delay-50 duration-200 ease-in-out hover:text-primary font-WorkSans px-4 py-2 uppercase"
                 onClick={() => {
                   setMenuOpen(false);
@@ -73,7 +73,7 @@ const NavigationBar = ({ config, guildId, isScrolled, handleSignOut, highlighted
             </li>
             <li>
               <Link
-                to={`/bot-dashboard/${guildId}/events`} 
+                to={`/grippendor/${guildId}/events`} 
                 className="text-white transition delay-50 duration-200 ease-in-out hover:text-primary font-WorkSans px-4 py-2 uppercase"
                 onClick={() => {
                   setMenuOpen(false);
@@ -96,7 +96,7 @@ const NavigationBar = ({ config, guildId, isScrolled, handleSignOut, highlighted
       </div>
       <div className="hidden bp:flex bp:flex-row gap-4">
         <Link 
-          to={`/bot-dashboard/${guildId}`} 
+          to={`/grippendor/${guildId}`} 
           className={`transition delay-50 duration-200 ease-in-out hover:text-primary hover:scale-105 text-xl 4k:text-6xl uppercase font-WorkSans px-4 ${
           highlightedPage === '/' ? 'text-primary' : 'text-white'
         }`}
@@ -104,7 +104,7 @@ const NavigationBar = ({ config, guildId, isScrolled, handleSignOut, highlighted
           Dashboard
         </Link>
         <Link 
-          to={`/bot-dashboard/${guildId}/party-maker`} 
+          to={`/grippendor/${guildId}/party-maker`} 
           className={`transition delay-50 duration-200 ease-in-out hover:text-primary hover:scale-105 text-xl 4k:text-6xl uppercase font-WorkSans px-4 ${
             highlightedPage === '/party-maker' ? 'text-primary' : 'text-white'
           }`}
@@ -112,7 +112,7 @@ const NavigationBar = ({ config, guildId, isScrolled, handleSignOut, highlighted
           Party Maker
         </Link>
         <Link 
-          to={`/bot-dashboard/${guildId}/events`} 
+          to={`/grippendor/${guildId}/events`} 
           className={`transition delay-50 duration-200 ease-in-out hover:text-primary hover:scale-105 text-xl 4k:text-6xl uppercase font-WorkSans px-4 ${
             highlightedPage === '/events' ? 'text-primary' : 'text-white'
           }`}

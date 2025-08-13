@@ -50,25 +50,25 @@ function App() {
     <Router>
       <Routes>
       <Route 
-          path="/bot-dashboard/login"
+          path="/grippendor/login"
           element={
           <Login setAuth={setAuth} />
           } 
         />
         <Route 
-          path="/bot-dashboard" 
+          path="/grippendor" 
           element={
             auth 
-              ? <Navigate to={`/bot-dashboard/${auth.guildId}`} /> 
-              : <Navigate to="/bot-dashboard/login" />
+              ? <Navigate to={`/grippendor/${auth.guildId}`} /> 
+              : <Navigate to="/grippendor/login" />
             } 
         />
         <Route 
-          path="/bot-dashboard/:guildId/*" 
+          path="/grippendor/:guildId/*" 
           element={
             auth 
             ? <AppContent auth={auth} setAuth={setAuth} /> 
-            : <Navigate to="/bot-dashboard/login" />
+            : <Navigate to="/grippendor/login" />
           } 
         />
       </Routes>
