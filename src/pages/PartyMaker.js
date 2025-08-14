@@ -91,7 +91,7 @@ const PartyMaker = ({ events, formatDateTime, guildId, auth, presets }) => {
 
     try {
       const response = await axios.get(
-        `https://szymonsamus.dev/bot-backend/eventuserdata/${guildId}/${eventId}`,
+        `https://szymonsamus.dev/grippendor-backend/eventuserdata/${guildId}/${eventId}`,
         {
           headers: {
             Authorization: `Bearer ${auth.token}`,
