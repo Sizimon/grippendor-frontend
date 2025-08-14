@@ -86,10 +86,14 @@ const AppContent = ({ auth, setAuth }) => {
   };
 
   // Handle sign out
-  const handleSignOut = () => {
-    localStorage.removeItem('auth');
-    setAuth(null);
-    navigate('/grippendor/login');
+  const handleSignOut = async () => {
+    try {
+      await axios.post('/grippendor-backend/logout');
+      setAuth(null);
+    } catch (error) {
+      console.error('Error signing out:', error);
+      setAuth(null);
+    }
   };
 
   return (

@@ -2,44 +2,32 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { Login } from './pages';
 import AppContent from './AppContent';
+import axios from 'axios';
 
 
 function App() {
   const [auth, setAuth] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  function isTokenExpired(token) {
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      const currentTime = Math.floor(Date.now() / 1000);
-      return payload.exp < currentTime;
-    } catch (error) {
-      console.error('Error decoding token:', error);
-      return true; // Assume expired if there's an error
-    }
-  }
+  axios.defaults.withCredentials = true;
 
   useEffect(() => {
-    const storedAuth = localStorage.getItem('auth')
-    if (storedAuth) {
+    const checkAuth = async () => {
       try {
-        const parsedAuth = JSON.parse(storedAuth);
-        if (parsedAuth && parsedAuth.guildId && parsedAuth.token) {
-          if (isTokenExpired(parsedAuth.token)) {
-            // console.warn('Token has expired. Redirecting to login...');
-            localStorage.removeItem('auth');
-          } else {
-            setAuth(parsedAuth);
-          }
-        } else {
-          localStorage.removeItem('auth');
+        const response = await axios.get('/grippendor-backend/check-auth');
+        if (response.data.authenticated) {
+          setAuth({ guildId: response.data.guildId });
         }
       } catch (error) {
-        console.error('Error parsing auth data:', error);
-        localStorage.removeItem('auth');
+        // User is not authenticated or token is invalid
+        console.log('User not authenticated');
+        setAuth(null);
+      } finally {
+        setIsLoading(false);
       }
-    }
-    setIsLoading(false);
+    };
+
+    checkAuth();
   }, []);
 
   if (isLoading) {

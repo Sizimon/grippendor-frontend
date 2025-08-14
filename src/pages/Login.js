@@ -12,22 +12,26 @@ const Login = ({ setAuth }) => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setError('');
+
+
     try {
-      const response = await axios.post('https://szymonsamus.dev/bot-backend/login', { guildId, password }, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      const response = await axios.post('https://szymonsamus.dev/grippendor-backend/login', {
+        guildId,
+        password
       });
       if (response.data.success) {
-        setAuth({ guildId, token: response.data.token });
-        localStorage.setItem('auth', JSON.stringify({ guildId, token: response.data.token }));
-        navigate(`/bot-dashboard/${guildId}`);
+        // Set auth state - no need to store token in localStorage
+        setAuth({ guildId });
+        // Navigate will happen automatically due to the auth state change
       } else {
-        setError('Invalid guildId or password');
+        setError('Invalid credentials');
       }
-    } catch (err) {
-      console.error('Login error:', err);
-      setError(`Error: ${err.response ? err.response.data.message : err.message}`);
+    } catch (error) {
+      setError('Login failed. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -68,9 +72,9 @@ const Login = ({ setAuth }) => {
             title='Use the password provided during bot setup to login, or contact your server admin for the password.'
             required />
         </div>
-        <button 
-        type="submit"
-        className='p-2 4k:p-6 w-[20vw] md:w-[10vw] 4k:w-[5vw] font-WorkSans xs:text-lg md:text-2xl bp:text-3xl 4k:text-7xl rounded-md self-center transition delay-50 duration-200 ease-in-out bg-zinc-950 text-white hover:text-teal-300 hover:bg-zinc-800 hover:scale-105 hover:translate-y-1'
+        <button
+          type="submit"
+          className='p-2 4k:p-6 w-[20vw] md:w-[10vw] 4k:w-[5vw] font-WorkSans xs:text-lg md:text-2xl bp:text-3xl 4k:text-7xl rounded-md self-center transition delay-50 duration-200 ease-in-out bg-zinc-950 text-white hover:text-teal-300 hover:bg-zinc-800 hover:scale-105 hover:translate-y-1'
         >Login</button>
       </form>
     </div>
