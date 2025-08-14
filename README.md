@@ -1,5 +1,7 @@
 # Attendance Dashboard - Frontend
 
+> **⚠️ WARNING: This application currently uses localStorage for authentication token storage, which is not ideal for production applications due to security vulnerabilities (XSS attacks). This was a learning project and authentication will be refactored in the future to implement more secure methods such as httpOnly cookies or proper session management.**
+
 This README provides a comprehensive guide to understanding, setting up, and contributing to the frontend of the **Attendance Dashboard** project. The frontend is designed to deliver an intuitive and responsive user interface, enabling users to manage and view attendance data efficiently. It interacts with the backend API to fetch, display, and update attendance records in real-time.
 
 ---
