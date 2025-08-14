@@ -19,9 +19,8 @@ const Login = ({ setAuth }) => {
         password
       });
       if (response.data.success) {
-        // Set auth state - no need to store token in localStorage
         setAuth({ guildId });
-        // Navigate will happen automatically due to the auth state change
+        navigate(`/grippendor/${guildId}`);
       } else {
         setError('Invalid credentials');
       }
