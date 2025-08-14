@@ -12,10 +12,7 @@ const Login = ({ setAuth }) => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
     setError('');
-
-
     try {
       const response = await axios.post('https://szymonsamus.dev/grippendor-backend/login', {
         guildId,
@@ -30,9 +27,7 @@ const Login = ({ setAuth }) => {
       }
     } catch (error) {
       setError('Login failed. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
+    } 
   };
 
   return (
